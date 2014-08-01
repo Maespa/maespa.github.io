@@ -34,6 +34,8 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 	/* [disabled]text-decoration: none; */
 	background-color: #000;
 }
+
+
 /* ~~ This fixed width container surrounds all other blocks ~~ */
 .container {
 	width: 960px;
@@ -92,9 +94,12 @@ ul.nav a, ul.nav a:visited { /* grouping these selectors makes sure that your li
 	background-color: #333333;
 	color: #CCC;
 }
-ul.nav a:hover, ul.nav a:active, ul.nav a:focus { /* this changes the background and text color for both mouse and keyboard navigators */
+ul.nav a:hover, ul.nav a:focus { /* this changes the background and text color for both mouse and keyboard navigators */
 	background-color: #666666;
 	color: #FFF;
+}
+ul.nav a:active{
+	background-color:rgba(153,204,102,1)
 }
 
 /* ~~ The footer ~~ */
