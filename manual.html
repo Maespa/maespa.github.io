@@ -39,7 +39,7 @@
       <p>The input files for MAESTRA use the FORTRAN NAMELIST format. In this manual we use the notation:</p>
       <p>NAMELIST /NAME/ VAR1, VAR2</p>
       <p>to indicate a namelist. In the actual input file, the above namelist should be written like this:</p>
-      <ul>
+      <ul class="namelistcode">
         <dl>
           <dt>&amp;NAME</dt>
           <dt>VAR1=0.05</dt>
@@ -47,14 +47,16 @@
           <dt>/</dt>
         </dl>
       </ul>
-      <p>Arrays of numbers should be specified as space-separated numbers:</p>
-      <ul>
-        <dl>
-          <dt>&amp;NAME</dt>
-          <dt>VAR2= 0.05 370.1</dt>
-          <dt>/</dt>
-        </dl>
+      
+      Arrays of numbers should be specified as space-separated numbers:</p>
+      <ul class="namelistcode">
+      <dl>
+      <dt>&amp;NAME</dt>
+      <dt>VAR2= 0.05 370.1</dt>
+      <dt>/</dt>
+      </dl>
       </ul>
+      
       <p>It does not matter what order these namelists are in. Within a namelist, it does not matter what order the variables are in, EXCEPT that all arrays of strings (such as lists of dates) should come last. It does not matter if some variables are missing, but you will, however, get an error if there are additional variables in any namelist. If some data is missing which is essential for the program to run, the program writes an error message to the error output file <a href="#maeserr">maeserr.dat</a>, and terminates. If data is missing for which a default value can be used, a warning notice will be written to maeserr.dat, but the program will continue, using the default value.</p>
       <p><a name="date format"></a>All dates are specified in the format 'DD/MM/YY'. If 50 &lt;= YY &lt;= 99, the years 1950 - 1999 are assumed; if 00 &lt;= YY &lt;= 49 the years 2000 - 2049 are assumed. This will need to be fixed come the 2040's - hopefully by someone else!</p>
       <p><a name="Maximum array"></a>Maximum array sizes: all the maximum array sizes are defined in the file MAESTCOM. These maxima can be changed by altering MAESTCOM and re-compiling the program. The maxumum sizes are now quite large so this should rarely be needed.</p>
@@ -88,15 +90,16 @@
         <li>Finally, if you want the program to do the calculations for all trees, then omit all of NOTARGET, ITARGETS, and NORANDOM. Again, if you do not want to include trees around the edge of the plot, you can specify the edge width using EDGEDIST (in m). Trees within this distance from the edge will not be used as target trees (but they will be used to calculate shading on the target trees).</li>
       </ul>
       <a name="Multi-species"></a>Multi-species settings
-      <p>NAMELIST /SPECIES/ NSPECIES,SPECIESNAMES,PHYFILES,STRFILES</p>
+      <p class="namelistcode">NAMELIST /SPECIES/ NSPECIES,SPECIESNAMES,PHYFILES,STRFILES</p>
       <p>This namelist allows multi-species stands of trees. NSPECIES is the number of species in the stand. SPECIESNAMES is an array of names of the species, this is shown in the output files but not otherwise used. PHYFILES is an array of names of the physiology input files, the first corresponding to species 1, etc. STRFILES is an array of structure input files (to override str.dat if it exists). Note that if NSPECIES is set to 1, but an array of STRFILES or PHYFILES is defined, only the first one is used (and the standard phy.dat and str.dat files are not used!).</p>
       <p>Here is an example namelist:</p>
-      &amp;SPECIES<br>
+      <span class="namelistcode">&amp;SPECIES<br>
       NSPECIES=3<br>
       SPECIESNAMES='E.sclerophylla' 'E.crebra' 'E.sparsifolia'<br>
       PHYFILES='physcler.dat' 'phycreb.dat' 'physpar.dat'<br>
       STRFILES='strscler.dat' 'strcreb.dat' 'strspar.dat'<br>
-      /
+      /<br>
+      </span>
       <p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">furthe below</a> for details on that namelist.</p>
       <a name="Number of layers and"></a>Number of layers and angles to integrate over NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ&lt;
       <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in MAESTCOM as MAXLAY. Default: 6.</p>
