@@ -1,5 +1,7 @@
 @import url('http://fonts.googleapis.com/css?family=Open+Sans');
 @import url('http://fonts.googleapis.com/css?family=Source+Code+Pro');
+@import url('http://fonts.googleapis.com/css?family=Bree+Serif');
+
 @charset "utf-8";
 body {
 	font-family: 'Open Sans', sans-serif;
@@ -118,8 +120,14 @@ header, section, footer, aside, article, figure {
 	display: block;
 }
 .container .content h1 {
-	font-size: 32px;
-	font-weight: 600;
+	font-size: 36px;
+	font-weight: 500;
+	font-family: 'Bree Serif', serif;
+}
+.container .content h2 {
+	font-size: 22px;
+	font-weight: 200;
+	font-family: 'Bree Serif', serif;
 }
 
 body#home a#homenav,
