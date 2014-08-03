@@ -99,7 +99,8 @@ ul.nav a:hover, ul.nav a:focus { /* this changes the background and text color f
 	color: #FFF;
 }
 ul.nav a:active{
-	background-color:rgba(153,204,102,1)
+    background-color: #666666;
+	color: #FFF;
 }
 
 /* ~~ The footer ~~ */
@@ -117,4 +118,14 @@ header, section, footer, aside, article, figure {
 .container .content h1 {
 	font-size: 36px;
 	font-weight: 600;
+}
+
+body#home a#homenav,
+body#download a#downloadnav,
+body#manual a#manualnav,
+body#biblio a#biblionav {
+	color: #000;
+	background: #930;
+	background-color: rgba(210,210,210,1);
+	font-weight: bolder;
 }
