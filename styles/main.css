@@ -62,9 +62,9 @@ header {
 
 */
 .sidebar1 {
-	/*float: right;*/
-	position:fixed;
-	left: 975px;
+	float: right;
+	/*position:fixed;
+	left: 975px;*/
 	width: 180px;
 	height: 600px;
 	background-color: #333333;
