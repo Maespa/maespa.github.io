@@ -65,7 +65,7 @@
       <p>The first line can include the title of the file, which is used to indicate in the output which input file was used.</p>
       <p>Following that, all input is in namelists, which may be in any order.</p>
       <p><a name="Control of output"></a>Control of output files</p>
-      <p>NAMELIST /CONTROL/ IOHRLY, IOTUTD, IOHIST, IORESP, ISIMUS, IPOINTS</p>
+      <p class="namelistlong">NAMELIST /CONTROL/ IOHRLY, IOTUTD, IOHIST, IORESP, ISIMUS, IPOINTS</p>
       <p>IOHRLY is a flag to indicate how detailed the outputs should be. If IOHRLY = 0, there is no hourly output; if IOHRLY = 1, hourly values are output to <a href="#hrflux">hrflux.dat</a>; if IOHRLY = 2, values for each layer are output to <a href="#layflx">layflx.dat</a>. Default: 0.</p>
       <p>IOTUTD is a flag to indicate how often the diffuse transmittances should be calculated. This calculation takes a significant amount of time, and does not really need to be done more than once a week unless the leaf area is changing rapidly (the diffuse transmittances do not change greatly from day to day). If IOTUTD &gt; 0, the transmittances are calculated every TUTD&rsquo;th day. Default: 1.</p>
       <p>IOHIST is a flag to indicate that you want the <a href="#PAR">PAR histogram</a> printed out. The histogram is only printed if IOHIST = 1. Default: IOHIST = 0.</p>
@@ -73,10 +73,10 @@
       <p>ISIMUS is a flag to indicate whether you want the understorey calculations to be done. If ISIMUS = 1, the input file <a href="#ustorey">ustorey.dat</a> is required, and the file <a href="#ustorey">uspar.dat</a> is created.</p>
       <p>IPOINTS is a flag to indicate whether you want to output PAR transmission data to user-defined points. See the description of the <a href="#pointsdat">points.dat</a> input file for instructions.</p>
       <p><a name="Dates"></a>Dates</p>
-      <p>NAMELIST /DATES/ START, END</p>
+      <p class="namelistlong">NAMELIST /DATES/ START, END</p>
       <p>START is the starting date for the simulation, in format &lsquo;DD/MM/YY&rsquo;. END is the end date for the simulation, in format &lsquo;DD/MM/YY&rsquo;. Default: if both dates are missing or both = &lsquo;01/01/50&rsquo;, then all of the met data in the met data file is used.</p>
       <p><a name="Target trees"></a>Number of Trees in Calculations</p>
-      <p>NAMELIST /TREESCON/ NOTREES, NOTARGET, ITARGETS, NORANDOM, EDGEDIST</p>
+      <p class="namelistlong">NAMELIST /TREESCON/ NOTREES, NOTARGET, ITARGETS, NORANDOM, EDGEDIST</p>
       <p>NOTREES is the number of surrounding trees considered when calculating the shading of the target tree (the closest trees to the target tree are used).</p>
       <p>You can specify the target tree(s) in a number of ways:</p>
       <ul>
@@ -87,17 +87,19 @@
         <li>To make the program choose target trees randomly, set NORANDOM to the number of target trees you want. If you only want trees from the centre of the plot to be chosen, set EDGEDIST to the width of the plot edges (in m).</li>
         <li>Finally, if you want the program to do the calculations for all trees, then omit all of NOTARGET, ITARGETS, and NORANDOM. Again, if you do not want to include trees around the edge of the plot, you can specify the edge width using EDGEDIST (in m). Trees within this distance from the edge will not be used as target trees (but they will be used to calculate shading on the target trees).</li>
       </ul>
-      <a name="Multi-species"></a>Multi-species settings
-      <p>NAMELIST /SPECIES/ NSPECIES,SPECIESNAMES,PHYFILES,STRFILES</p>
+      <p><a name="Multi-species">Multi-species settings</a></p>
+      <p class="namelistlong">NAMELIST /SPECIES/ NSPECIES,SPECIESNAMES,PHYFILES,STRFILES</p>
       <p>This namelist allows multi-species stands of trees. NSPECIES is the number of species in the stand. SPECIESNAMES is an array of names of the species, this is shown in the output files but not otherwise used. PHYFILES is an array of names of the physiology input files, the first corresponding to species 1, etc. STRFILES is an array of structure input files (to override str.dat if it exists). Note that if NSPECIES is set to 1, but an array of STRFILES or PHYFILES is defined, only the first one is used (and the standard phy.dat and str.dat files are not used!).</p>
-      <p>Here is an example namelist:</p>
-      &amp;SPECIES<br>
+      
+      <p>Here is an example namelist:
+      <span class="namelistlong">&amp;SPECIES<br>
       NSPECIES=3<br>
       SPECIESNAMES='E.sclerophylla' 'E.crebra' 'E.sparsifolia'<br>
       PHYFILES='physcler.dat' 'phycreb.dat' 'physpar.dat'<br>
       STRFILES='strscler.dat' 'strcreb.dat' 'strspar.dat'<br>
-      /
-      <p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">furthe below</a> for details on that namelist.</p>
+      /</span>
+      </p>
+<p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">furthe below</a> for details on that namelist.</p>
       <a name="Number of layers and"></a>Number of layers and angles to integrate over NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ&lt;
       <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in MAESTCOM as MAXLAY. Default: 6.</p>
       <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
@@ -113,15 +115,15 @@
       <p><a name="ITERMAX"></a>ITERMAX controls iterations in the combined photosynthesis-transpiration model. If ITERMAX = 0, leaf temperature is assumed = air temperature, and the iteration procedure is not carried out. If ITERMAX &gt; 0, an iterative method is used to find leaf temperature, photosynthesis, and transpiration. ITERMAX gives the maximum number of iterations (ensuring convergence). Default: 0.</p>
       Climate change scenarios
       <p>The program can add a fixed amount to CO2 concentration and temperature from the met file. The following namelist is only needed if you want a scenario implemented:</p>
-      <p>NAMELIST /CCSCEN/ CO2INC, TINC</p>
+      <p class="namelistlong">NAMELIST /CCSCEN/ CO2INC, TINC</p>
       <p>where CO2INC is the amount of increase in the CO2 concentration (in mmol mol-1) and TINC is the amount of increase in the air temperature (° C). Both soil and air temperature are increased. The absolute humidity (in g m-3) is maintained constant; RH and VPD are adjusted accordingly.</p>
       <a name="Effect of"></a>Effect of OTC on Met Data
       <p>If you are simulating growth within an open-top chamber (OTC) or other controlled environment and met data was measured outside the chamber you may want to correct for the effects of the chamber. This can be done using the namelist:</p>
-      <p>NAMELIST /OTC/ TOTC, WINDOTC, PAROTC, FBEAMOTC</p>
+      <p class="namelistlong">NAMELIST /OTC/ TOTC, WINDOTC, PAROTC, FBEAMOTC</p>
       <p>Where TOTC is the increase in air temperature (degC), WINDOTC is the absolute wind speed inside the chamber (m s-1), PAROTC is the fractional reduction in incident PAR (fraction) and FBEAMOTC is the fractional reduction in beam fraction of PAR (fraction). Only one value can be specified for each parameter.</p>
       <a name="PAR"></a>PAR histogram
       <p>The program can print out a histogram of PAR absorbed over the course of the simulation. It is printed to histo.dat if IOHIST = 1 (in the CONTROL namelist, above). The following namelist is needed only if you want the histogram:</p>
-      <p>NAMELIST /HISTO/ BINSIZE</p>
+      <p class="namelistlong">NAMELIST /HISTO/ BINSIZE</p>
       <p>where BINSIZE is the size of the classes in the histogram (in mmol m-2 s-1). The maximum number of classes is given by MAXHISTO in MAESTCOM.</p>
     </section>
     <section>
