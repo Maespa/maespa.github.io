@@ -30,7 +30,7 @@
     <section>
       <h2>Introduction</h2>
 
-<p>This page describes input and output files of Maespa (and Maestra). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels.</p>
+<p>This page describes input and output files of Maespa (and Maespa). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels.</p>
 
 <p>Briefly,</p>
 <ul>
@@ -56,7 +56,7 @@
     
     <section>
       <h2>Input File Format      </h2>
-      <p>The input files for MAESTRA use the FORTRAN NAMELIST format. In this manual we use the notation:</p>
+      <p>The input files for Maespa use the FORTRAN NAMELIST format. In this manual we use the notation:</p>
       <p>NAMELIST /NAME/ VAR1, VAR2</p>
       <p>to indicate a namelist. In the actual input file, the above namelist should be written like this:</p>
       <ul>
@@ -77,7 +77,7 @@
       </ul>
       <p>It does not matter what order these namelists are in. Within a namelist, it does not matter what order the variables are in, EXCEPT that all arrays of strings (such as lists of dates) should come last. It does not matter if some variables are missing, but you will, however, get an error if there are additional variables in any namelist. If some data is missing which is essential for the program to run, the program writes an error message to the error output file <a href="#maeserr">maeserr.dat</a>, and terminates. If data is missing for which a default value can be used, a warning notice will be written to maeserr.dat, but the program will continue, using the default value.</p>
       <p><a name="date format"></a>All dates are specified in the format 'DD/MM/YY'. If 50 &lt;= YY &lt;= 99, the years 1950 - 1999 are assumed; if 00 &lt;= YY &lt;= 49 the years 2000 - 2049 are assumed. This will need to be fixed come the 2040's - hopefully by someone else!</p>
-      <p><a name="Maximum array"></a>Maximum array sizes: all the maximum array sizes are defined in the file MAESTCOM. These maxima can be changed by altering MAESTCOM and re-compiling the program. The maxumum sizes are now quite large so this should rarely be needed.</p>
+      <p><a name="Maximum array"></a>Maximum array sizes: all the maximum array sizes are defined in the file maestcom.f90. These maxima can be changed by altering maestcom.f90 and re-compiling the program. The maxumum sizes are now quite large so this should rarely be needed.</p>
     </section>
 
     <section>
@@ -121,7 +121,7 @@
       </p>
 <p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">furthe below</a> for details on that namelist.</p>
       <a name="Number of layers and"></a>Number of layers and angles to integrate over NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ&lt;
-      <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in MAESTCOM as MAXLAY. Default: 6.</p>
+      <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in maestcom.f90 as MAXLAY. Default: 6.</p>
       <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
       <p>Defaults: NZEN = 5 (maximum MAXANG); NAZ = 11 (no maximum enforced).</p>
       <a name="Choice of submodel"></a>Choice of submodel
@@ -144,7 +144,7 @@
       <a name="PAR"></a>PAR histogram
       <p>The program can print out a histogram of PAR absorbed over the course of the simulation. It is printed to histo.dat if IOHIST = 1 (in the CONTROL namelist, above). The following namelist is needed only if you want the histogram:</p>
       <p class="namelistlong">NAMELIST /HISTO/ BINSIZE</p>
-      <p>where BINSIZE is the size of the classes in the histogram (in mmol m-2 s-1). The maximum number of classes is given by MAXHISTO in MAESTCOM.</p>
+      <p>where BINSIZE is the size of the classes in the histogram (in mmol m-2 s-1). The maximum number of classes is given by MAXHISTO in maestcom.f90.</p>
     </section>
     <section>
       <h2>The trees file (trees.dat)      </h2>
@@ -159,7 +159,7 @@
       <p>NAMELIST /AERODYN/ ZHT, ZPD, Z0HT</p>
       <p>Transpiration rate is calculated from the conductance of the whole canopy, as well as by applying the coupled photosynthesis-stomatal conductance model at each grid point in the canopy (and summed). Both are output in <a href="#hrflux">hrflux.dat</a> for comparison. The canopy stomatal conductance is calculated as the sum of the individual leaf conductances. The canopy boundary layer conductance is calculated from</p>
       <p>gb = K2 * U / (LN((ZHT - ZPD)/Z0HT))2 (T1)</p>
-      <p>(Jones 1992 eqn. 3.42). U is the above-canopy wind speed, K is von Karman's constant (defined in MAESTCOM), and the parameters required are ZHT (measurement height, m), ZPD (zero-plane displacement, m) and Z0HT (roughness length, m). If these parameters aren't specified, this calculation is not done.</p>
+      <p>(Jones 1992 eqn. 3.42). U is the above-canopy wind speed, K is von Karman's constant (defined in maestcom.f90), and the parameters required are ZHT (measurement height, m), ZPD (zero-plane displacement, m) and Z0HT (roughness length, m). If these parameters aren't specified, this calculation is not done.</p>
       <p><a name="speclist"></a>Multi-species list</p>
       <p>NAMELIST /SPECLIST/ ISPECIES</p>
       <p>Here, the species of each tree is specified. ISPECIES is an array of integers (1,2,...) that correspond to the multi-species definitions in confile.dat. See <a href="#multi-species">here</a> for those settings. If any of the ISPECIES values is set to a value higher than NSPECIES, a warning is printed to maeserr.dat, and all species are set to 1.</p>
@@ -238,7 +238,7 @@
             <td valign="top" width="14%">&lsquo;WIND&rsquo;</td>
             <td valign="top" width="13%">m s-1</td>
             <td valign="top" width="38%">wind speed above the canopy</td>
-            <td valign="top" width="36%">Assumed = DEFWIND (defined in maestcom)</td>
+            <td valign="top" width="36%">Assumed = DEFWIND (defined in maestcom.f90)</td>
           </tr>
           <tr>
             <td valign="top" width="14%">&lsquo;TAIR&rsquo;</td>
@@ -441,10 +441,10 @@
       <p>First line: title of physiology file used in the output files.</p>
       <a name="age"></a>Number of age classes of foliage
       <p>NAMELIST /NOAGES/ NOAGEP</p>
-      <p>NOAGEP is the number of age classes for which physiological parameters are specified. If NOAGEC (the number of age classes for which leaf area density distributions are specified, given in str.dat) is not equal to 1, then NOAGEP must equal 1 or NOAGEC. The parameters NFOL, JMAX, VCMAX and RD can be specified for different age classes of foliage. However they do not all need to be specified for all age classes - but they must either be specified for all foliage or for NOAGEP age classes. Neither NOAGEP nor NOAGEC should exceed MAXC, specified in MAESTCOM If NOAGEP = 1, then this namelist can be omitted.</p>
+      <p>NOAGEP is the number of age classes for which physiological parameters are specified. If NOAGEC (the number of age classes for which leaf area density distributions are specified, given in str.dat) is not equal to 1, then NOAGEP must equal 1 or NOAGEC. The parameters NFOL, JMAX, VCMAX and RD can be specified for different age classes of foliage. However they do not all need to be specified for all age classes - but they must either be specified for all foliage or for NOAGEP age classes. Neither NOAGEP nor NOAGEC should exceed MAXC, specified in maestcom.f90 If NOAGEP = 1, then this namelist can be omitted.</p>
       Proportions of leaf area in each age class
       <p>NAMELIST /PHENOL/ PROP</p>
-      <p>PROP is an array containing the proportion of leaf area in each age class. This is only read in if either NOAGEP &gt; 1 or NOAGEC &gt; 1. NOAGEP or NOAGEC indicate how many entries there should be in this array (maximum MAXC, in MAESTCOM) Also, the entries in the array should sum to one.</p>
+      <p>PROP is an array containing the proportion of leaf area in each age class. This is only read in if either NOAGEP &gt; 1 or NOAGEC &gt; 1. NOAGEP or NOAGEC indicate how many entries there should be in this array (maximum MAXC, in maestcom.f90) Also, the entries in the array should sum to one.</p>
       <a name="Reflectance"></a>Reflectance and transmittance
       <p>NAMELIST /ABSORP/ NOLAYERS,RHOSOL,ATAU,ARHO</p>
       <p>NOLAYERS is the number of crown layers for which reflectance and transmittance are specified.</p>
@@ -456,8 +456,8 @@
         NAMELIST /BBLGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP<br>
         NAMELIST /BBMGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP NAMELIST /BBGSCON/ CONDUNITS</p>
       <p>The flag <a href="#Choice%20of%20submodel">MODELGS </a>(read in namelist CONTROL) indicates which stomatal conductance model is to be used, and hence, which set of parameters to read. If MODELGS = 2, BBGS is read; if MODELGS = 3, BBLGS is read; if MODELGS = 4, BBMGS is read.</p>
-      <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO2 or H2O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO2. A message is displayed in the Maeserr.dat file after running Maestra how the parameters were handled (to avoid fairly common mistakes).</p>
-      <p>If the stomatal conductance parameters are for CO2, they are converted in the program to conductance to water vapour by multiplying by the constant GSVGSC = 1.57 (in MAESTCOM).</p>
+      <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO2 or H2O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO2. A message is displayed in the Maeserr.dat file after running Maespa how the parameters were handled (to avoid fairly common mistakes).</p>
+      <p>If the stomatal conductance parameters are for CO2, they are converted in the program to conductance to water vapour by multiplying by the constant GSVGSC = 1.57 (in maestcom.f90).</p>
       <p>For all models, WLEAF is the width of the leaf in m, used in calculating the boundary layer conductance (Leuning et al 1995 PC&amp;E 18:1183-1200). NSIDES is the number of sides of the leaf with stomata; default 1.</p>
       <p>The effect of soil moisture is the same for all three models - gs is reduced by multiplying by a factor f that ranges from 0 to 1. There are three alternative ways of specifying f.</p>
       <p>If the soil moisture is specified in the met file as soil water content, the soil moisture deficit (q) is calculated as q = (SWMAX - SWC)/(SWMAX - SWMIN). The effect of q on gs can be either an exponential or linear decline. The exponential relationship is given by:</p>
@@ -503,7 +503,7 @@
       <ul>
         <p>THETA J2 - (AJQI + JMAX) J + AJQ I JMAX = 0 (P12)</p>
       </ul>
-      <p>where I is the leaf absorbed PAR, and JMAX, AJQ and THETA are the parameters. The default value of AJQ is ALPHAQ = 0.425 (defined in maestcom). AJQ may also be specified by date, layer and age – see below.</p>
+      <p>where I is the leaf absorbed PAR, and JMAX, AJQ and THETA are the parameters. The default value of AJQ is ALPHAQ = 0.425 (defined in maestcom.f90). AJQ may also be specified by date, layer and age – see below.</p>
       <p>IECO determines whether the temperature dependences of Km and G* are those of Medlyn et al. (1999) Plant Cell Environ. 22:1475-1495 (IECO = 1 - default) or Bernacchi et al. (2001) Plant Cell Environ. 24:253-260 (IECO = 0).</p>
       <p>The temperature response of JMAX is given by:</p>
       <ul>
@@ -607,7 +607,7 @@
 
     <section>
       <h2>The test points file (points.dat)</h2>
-      <p>Optionally, the Maestra model can output PAR transmission to user-defined xyz points (this was formerly done by the stand-alone maestest.exe program). This may be useful to compare to PAR sensor readings. The settings for these points are in the points.dat file.</p>
+      <p>Optionally, the Maespa model can output PAR transmission to user-defined xyz points (this was formerly done by the stand-alone maestest.exe program). This may be useful to compare to PAR sensor readings. The settings for these points are in the points.dat file.</p>
       <p>Note also that you need to set the flag IPOINTS=1 in the CONTROL namelist in confile.dat, see <a href="#confile">here</a> for details.</p>
       <p>The input file points.dat contains two namelists, one giving the number of points (and an 'input type' see below), the second giving the x, y, and z co-ordinates of each point. If INPUTTYPE=1, the example namelists may look like these:</p>
       <ul>
@@ -648,7 +648,7 @@
   <footer>
     <p>This is a footer and I suppose we could write some stuff here too?!</p>
     <address>
-      Contact : remkoduursma@gmail.com
+      <p>Contact : remkoduursma@gmail.com</p>
     </address>
   </footer>
   <!-- end .container --></div>
