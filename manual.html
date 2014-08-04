@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Untitled Document</title>
+<title>Maespa technical manual</title>
 <link href="styles/main.css" rel="stylesheet" type="text/css">
 
 </head>
@@ -30,10 +30,31 @@
     <h1>Technical Manual</h1>
     <section>
      <h2>Introduction</h2>
-      <p>Several necessary input files, some other optional ones. </p>
-      <p>Insert unordered list here with navigation to input files and output files described below. watpars.dat will be on separate page?</p>
-      <p>&nbsp; </p>
+
+<p>This page describes input and output files of Maespa (and Maestra). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels.</p>
+
+<p>Briefly,</p>
+<ul>
+        <li>The forest canopy is represented in the model as an array of tree crowns, whose positions and dimensions are specified.</li>
+          <li>Calculations are done for just one tree crown at a time, the 'target tree', but there can be multiple target trees in a plot.</li>
+          <li>The distribution of leaf area within the target crown is specified, as is the leaf angle distribution.</li>
+          <li>The main meteorological driving variables include incident radiation, air temperature and humidity, and optionally the CO2 concentration, atmospheric pressure, and others.</li>
+          <li>The target crown is divided into a number of grid points, and the radiation penetrating to each grid point is calculated for three wavebands (PAR, near infra-red and longwave). Direct, diffuse, and scattered radiation are considered separately.</li>
+          <li>The absorbed PAR at each grid point drives the photosynthesis and transpiration routines.</li>
+          <li>Photosynthesis is calculated from the Farquhar-von Caemmerer model, including temperature sensitivities of all parameters.</li>
+          <li>Stomatal conductance can be calculated from either of the Ball-Berry, Ball-Berry-Leuning, Ball-Berry-Opti or Tuzet et al. models.</li>
+          <li>Transpiration is calculated by applying the Penman-Monteith equation at each gridpoint, and summing over the gridpoints.</li>
+      </ul>
+        
     </section>
+    
+    <section> 
+    <h2>Maestra or Maespa?</h2>
+    
+    <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (watpars.dat). If it is not present in the directory where you run Maespa, the model will run in Maestra mode.</p>
+    
+    </section>
+    
     <section>
       <h2>Input File Format      </h2>
       <p>The input files for MAESTRA use the FORTRAN NAMELIST format. In this manual we use the notation:</p>
