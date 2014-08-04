@@ -43,7 +43,9 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 .container {
 	width: 960px;
 	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
-	background-image: url(../images/treebark.jpg);
+	background-image: url(../images/1840599.jpg);
+	
+	;/*url(../images/treebark.jpg);*/
 	background-attachment: fixed;
 }
 /* ~~ The header is not given a width. It will extend the full width of your layout. ~~ */
@@ -113,8 +115,9 @@ ul.nav a:active{
 footer {
 	padding: 10px 0;
 	background-color: rgba(204,204,204,0.6);
-	position: relative;/* this gives IE6 hasLayout to properly clear */
-	clear: both; /* this clear property forces the .container to understand where the columns end and contain them */
+	position: relative;
+	clear: both;
+	font-size: smaller;	
 }
 
 /*HTML 5 support - Sets new HTML 5 tags to display:block so browsers know how to render the tags properly. */
@@ -144,4 +147,11 @@ body#biblio a#biblionav {
 .namelistlong {
 	font-family: 'Source Code Pro', sans-serif ;
 	font-weight:bolder
+}
+.container header {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 42px;
+	font-style: italic;
+	font-weight: lighter;
+	color: rgba(204,204,204,1);
 }
