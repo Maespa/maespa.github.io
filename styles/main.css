@@ -26,7 +26,7 @@ a img { /* this selector removes the default blue border displayed in some brows
 }
 /* ~~ Styling for your site's links must remain in this order - including the group of selectors that create the hover effect. ~~ */
 a:link {
-	color: #42413C;
+	color: #181818;
 	text-decoration: underline; /* unless you style your links to look extremely unique, it's best to provide underlines for quick visual identification */
 }
 a:visited {
@@ -35,7 +35,7 @@ a:visited {
 }
 a:hover, a:active, a:focus { /* this group of selectors will give a keyboard navigator the same hover experience as the person using a mouse. */
 	/* [disabled]text-decoration: none; */
-	background-color: #000;
+	background-color: #E9E9E9;
 }
 
 
@@ -68,7 +68,7 @@ header {
 	/*position:fixed;
 	left: 975px;*/
 	width: 180px;
-	height: 600px;
+	height: 380px;
 	background-color: #333333;
 	padding-bottom: 10px;
 	
@@ -89,7 +89,7 @@ header {
 /* ~~ The navigation list styles (can be removed if you choose to use a premade flyout menu like Spry) ~~ */
 ul.nav {
 	list-style: none; /* this removes the list marker */
-	border-top: 1px solid #666; /* this creates the top border for the links - all others are placed using a bottom border on the LI */
+	border-top: 3px solid #666; /* this creates the top border for the links - all others are placed using a bottom border on the LI */
 	margin-bottom: 30px; /* this creates the space between the navigation on the content below */
 }
 ul.nav li {
