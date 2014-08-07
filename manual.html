@@ -122,7 +122,8 @@
         /</span>
       </p>
 <p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">furthe below</a> for details on that namelist.</p>
-      <a name="Number of layers and"></a>Number of layers and angles to integrate over NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ&lt;
+      <h3><a name="Number of layers and"></a>Number of layers and angles to integrate over </h3>
+      <p class="namelistlong">NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ</p>
       <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in maestcom.f90 as MAXLAY. Default: 6.</p>
       <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
       <p>Defaults: NZEN = 5 (maximum MAXANG); NAZ = 11 (no maximum enforced).</p>
