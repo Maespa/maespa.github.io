@@ -1,6 +1,7 @@
 @import url('http://fonts.googleapis.com/css?family=Open+Sans');
-@import url('http://fonts.googleapis.com/css?family=Source+Code+Pro');
+/*@import url('http://fonts.googleapis.com/css?family=Source+Code+Pro');*/
 @import url('http://fonts.googleapis.com/css?family=Bree+Serif');
+@import url('http://fonts.googleapis.com/css?family=Cousine');
 
 @charset "utf-8";
 body {
@@ -43,7 +44,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 .container {
 	width: 960px;
 	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
-	background-image: url(../images/1840599.jpg);
+	background-image: url(../images/treebark.jpg);
 	
 	;/*url(../images/treebark.jpg);*/
 	background-attachment: fixed;
@@ -145,13 +146,19 @@ body#biblio a#biblionav {
 	font-weight: bolder;
 }
 .namelistlong {
-	font-family: 'Source Code Pro', sans-serif ;
-	font-weight:bolder
+	font-family: 'Cousine', sans-serif;
+	font-weight: 500;
+	font-size: smaller;
+}
+.code{
+	font-family: 'Cousine', sans-serif;
+	font-weight: 500;
 }
 .container header {
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 42px;
 	font-style: italic;
-	font-weight: lighter;
-	color: rgba(204,204,204,1);
+	font-weight: bolder;
+	color: rgba(24,24,24,1);
+	text-shadow: -6px -6px 4px rgba(171,171,171,1);
 }
