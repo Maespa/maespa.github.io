@@ -88,14 +88,14 @@
       <p><a name="Control of output"></a>Control of output files</p>
       <p class="namelistlong">NAMELIST /CONTROL/ IOHRLY, IOTUTD, IOHIST, IORESP, ISIMUS, IPOINTS</p>
       <p><span class="code">IOHRLY</span> is a flag to indicate how detailed the outputs should be. If <span class="code">IOHRLY</span> = 0, there is no hourly output; if <span class="code">IOHRLY</span> = 1, hourly values are output to <a href="#hrflux">hrflux.dat</a>; if <span class="code">IOHRLY</span> = 2, values for each layer are output to <a href="#layflx">layflx.dat</a>. Default: 0.</p>
-      <p><span class="code">IOTUTD</span> is a flag to indicate how often the diffuse transmittances should be calculated. This calculation takes a significant amount of time, and does not really need to be done more than once a week unless the leaf area is changing rapidly (the diffuse transmittances do not change greatly from day to day). If <span class="code">IOTUTD</span> &gt; 0, the transmittances are calculated every <span class="code">TUTD</span>&rsquo;th day. Default: 1.</p>
+      <p><span class="code">IOTUTD</span> is a flag to indicate how often the diffuse transmittances should be calculated. This calculation takes a significant amount of time, and does not really need to be done more than once a week unless the leaf area is changing rapidly (the diffuse transmittances do not change greatly from day to day). If <span class="code">IOTUTD</span> &gt; 0, the transmittances are calculated every <span class="code">TUTD</span>'th day. Default: 1.</p>
       <p><span class="code">IOHIST</span> is a flag to indicate that you want the <a href="#PAR">PAR histogram</a> printed out. The histogram is only printed if <span class="code">IOHIST</span> = 1. Default: <span class="code">IOHIST</span> = 0.</p>
       <p><span class="code">IORESP</span> is a flag to indicate whether you want the respiration fluxes to be printed out. If <span class="code">IORESP</span> = 1, the file <a href="#resp">resp.dat</a> is created. Default: <span class="code">IORESP</span> = 0.</p>
       <p><span class="code">ISIMUS</span> is a flag to indicate whether you want the understorey calculations to be done. If <span class="code">ISIMUS</span> = 1, the input file <a href="#ustorey">ustorey.dat</a> is required, and the file <a href="#ustorey">uspar.dat</a> is created.</p>
       <p><span class="code">IPOINTS</span> is a flag to indicate whether you want to output PAR transmission data to user-defined points. See the description of the <a href="#pointsdat">points.dat</a> input file for instructions.</p>
       <p><a name="Dates"></a>Dates</p>
       <p class="namelistlong">NAMELIST /DATES/ START, END</p>
-      <p>START is the starting date for the simulation, in format &lsquo;DD/MM/YY&rsquo;. END is the end date for the simulation, in format &lsquo;DD/MM/YY&rsquo;. Default: if both dates are missing or both = &lsquo;01/01/50&rsquo;, then all of the met data in the met data file is used.</p>
+      <p>START is the starting date for the simulation, in format 'DD/MM/YY'. END is the end date for the simulation, in format 'DD/MM/YY'. Default: if both dates are missing or both = '01/01/50', then all of the met data in the met data file is used.</p>
       <p><a name="Target trees"></a>Number of Trees in Calculations</p>
       <p class="namelistlong">NAMELIST /TREESCON/ NOTREES, NOTARGET, ITARGETS, NORANDOM, EDGEDIST</p>
       <p>NOTREES is the number of surrounding trees considered when calculating the shading of the target tree (the closest trees to the target tree are used).</p>
@@ -177,7 +177,7 @@
         NAMELIST /INDIVLAREA/ NODATES, VALUES, DATES</p>
       <p>The tree dimensions (the radii of the crowns in both X and Y directions (in m), the height of the crown and the trunk space (both in m), the stem diameter (in m) and the leaf area (in m2) can be specified for each tree individually, using these namelists. They can be specified on a series of dates - linear interpolation is used between those dates.</p>
       <p>If they are to be constant throughout the simulation, then NODATES should be 1. DATES can be omitted. VALUES should be given in order of tree number.</p>
-      <p>If they are specified for a series of dates, then both NODATES and DATES should be given - the dates in format &lsquo;DD/MM/YY&rsquo;. The values should be given in a table with a row for each tree and a column for each date.</p>
+      <p>If they are specified for a series of dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in a table with a row for each tree and a column for each date.</p>
       <p>The stem diameter is only used for calculating the woody respiration. If it is missing, woody respiration is not calculated. If any of the other dimensions are missing, an error will occur. The stem diameter should be specified at the height required for the <a href="#Allometric">allometric relationship</a> between height, diameter, and woody biomass.</p>
       <a name="Tree Dim -ALL"></a>Tree Dimensions - Specified for All Trees
       <p class="namelistlong">NAMELIST /ALLRADX/ NODATES, VALUES, DATES <br>
@@ -188,12 +188,12 @@
         NAMELIST /ALLLAREA/ NODATES, VALUES, DATES</p>
       <p>Alternatively, the tree dimensions (the radii of the crowns in both X and Y directions, the height of the crown and the trunk space, stem diameter and the leaf area (in m2) can be assumed to be the same for all trees, and the common values input using these namelists. As for the dimensions for individual trees, the dimensions of all trees can be specified on a series of dates, with linear interpolation being used between those dates.</p>
       <p>If the values are to be constant throughout the simulation, then NODATES should be 1, DATES can be omitted, and VALUES should just consist of the single number.</p>
-      <p>If the values are specified for a series of a dates, then both NODATES and DATES should be given - the dates in format &lsquo;DD/MM/YY&rsquo;. The values should be given in date order.</p>
+      <p>If the values are specified for a series of a dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in date order.</p>
       <p>It is not necessary to use the same format for all dimensions - for example, the height of all trees may be assumed the same, whereas leaf area may be specified for each tree. Similarly, different dates may be given for each dimension - height may be constant throughout the simulation, with leaf area changing.</p>
       <a name="Phenology"></a>Phenology of leaf area development
       <p>The development of leaf area may be modelled by specifying leaf area on different dates, or by using the phenology model described by Wang, Rey &amp; Jarvis (1998, GCB). To use this phenology model, replace the INDIVLAREA or ALLLAREA namelist by the following:</p>
       <p class="namelistlong">NAMELIST /PHENOLOGY/ FLUSHDATE, DT1, DT2, DT3, DT4, EXPTIME, MAXLEAVES, SIZELEAF</p>
-      <p>where FLUSHDATE is the date of flushing (&lsquo;DD/MM/YY&rsquo;); DT1, DT2, DT3, and DT4 are the number of days from the flush date to the end of the first flush, end of the second flush, start of leaf senescence, and end of leaf senescence, respectively; EXPTIME is the time taken for a single leaf to fully expand (days); MAXLEAVES is the maximum number of leaves, and SIZELEAF is the mean leaf size (m2). The maximum leaf area is thus given by MAXLEAVES*SIZELEAF. It is currently assumed, using this model, that all trees have the same leaf area.</p>
+      <p>where FLUSHDATE is the date of flushing ('DD/MM/YY'); DT1, DT2, DT3, and DT4 are the number of days from the flush date to the end of the first flush, end of the second flush, start of leaf senescence, and end of leaf senescence, respectively; EXPTIME is the time taken for a single leaf to fully expand (days); MAXLEAVES is the maximum number of leaves, and SIZELEAF is the mean leaf size (m2). The maximum leaf area is thus given by MAXLEAVES*SIZELEAF. It is currently assumed, using this model, that all trees have the same leaf area.</p>
     </section>
 
     <section>
@@ -205,8 +205,8 @@
         followed by the actual (space-delimited) data. Note that the line DATA STARTS must be in exactly that format, ie caps, and no tabs or following blank spaces.</p>
       <a name="Constant met"></a>Constant met data
       <p class="namelistlong">NAMELIST /ENVIRON/ CA, PRESS, DIFSKY, SWMIN, SWMAX</p>
-      <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mmol mol-1, which is assumed not to vary with time. This value is only used if the &lsquo;CA&rsquo; column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
-      <p>PRESS is the atmospheric pressure, in Pa, also assumed not to vary with time. This value is only used if the &lsquo;PRESS&rsquo; column is missing from the met file. The default value for PRESS is 1.0125 * 105 Pa.</p>
+      <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mmol mol-1, which is assumed not to vary with time. This value is only used if the 'CA' column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
+      <p>PRESS is the atmospheric pressure, in Pa, also assumed not to vary with time. This value is only used if the 'PRESS' column is missing from the met file. The default value for PRESS is 1.0125 * 105 Pa.</p>
       <p>DIFSKY controls the distribution of diffuse radiation incident from the sky. The distribution function is given by</p>
       <p class="namelistlong">G(q) = (1 + DIFSKY*cos(q)) / (1 + 2/p DIFSKY)</p>
       <p>For a uniform overcast sky, DIFSKY = 0.0 (default). See Wang &amp; Jarvis (1990) Silva Carelica 15:167-180 and Steven &amp; Unsworth (1980) Quart. J. Roy. Meteorol. Soc. 105: 593-602 for more information about DIFSKY.</p>
@@ -214,105 +214,103 @@
         <span class="namelistlong">SMD = (SWMAX – SW) / (SWMAX – SWMIN)</span></p>
       <a name="Latitude &"></a>Latitude &amp; Longitude
       <p class="namelistlong">NAMELIST /LATLONG/ LATHEM,LAT,LONHEM,LONG,TZLONG</p>
-      <p>LATHEM is either &lsquo;N&rsquo; or &lsquo;S&rsquo;, indicating the hemisphere. Similarly, LONHEM is either &lsquo;W&rsquo; or &lsquo;E&rsquo;. LAT and LONG are the latitude and longitude, respectively. Both are arrays of three numbers, indicating the degrees, minutes, and seconds. TZLONG is the longitude of the meridian of the time zone, specified in degrees.</p>
+      <p>LATHEM is either 'N' or 'S', indicating the hemisphere. Similarly, LONHEM is either 'W' or 'E'. LAT and LONG are the latitude and longitude, respectively. Both are arrays of three numbers, indicating the degrees, minutes, and seconds. TZLONG is the longitude of the meridian of the time zone, specified in degrees.</p>
       Daily temperature amplitude
       <p class="namelistlong">NAMELIST /BRISTO/ DELTAT</p>
       <p>If incident radiation values are missing, the program can use the formula of Bristow &amp; Campbell (1984) Ag For Met 31: 159-166 to calculate incident PAR from air temperature. To use this option the above namelist must be specified. DELTAT should have 12 values representing the mean monthly daily temperature amplitude for each month of the year.</p>
       <a name="metformat"></a>Metformat
       <p class="namelistlong">NAMELIST /METFORMAT/ DAYORHR, KHRSPERDAY, NOCOLUMNS, COLUMNS, STARTDATE, ENDDATE</p>
       <p>NOTE:The format of this namelist was modified in April 2009, older files need to be reformatted accordingly.</p>
-      <p>DAYORHR is a flag indicating whether the met file is daily (DAYORHR = 0) or &lsquo;hourly&rsquo; (DAYORHR = 1) data.</p>
+      <p>DAYORHR is a flag indicating whether the met file is daily (DAYORHR = 0) or 'hourly' (DAYORHR = 1) data.</p>
       <p>KHRSPERDAY is the number of timesteps per day. For example, if the input data are hourly, this should be set to 24. There is no longer a need to recompile if this setting is changed. The maximum number of timesteps per day is set at 1440 (minutely input data). Note: If the input data are daily, KHRSPERDAY should still be set to 24 or 48, depending on how many calculations should be performed per day (which affects daily totals as well). It is recommended to set it to 48 when using daily data.</p>
-      <p>STARTDATE and ENDDATE are the start and end dates of the met data, respectively (&lsquo;DD/MM/YY&rsquo;).</p>
+      <p>STARTDATE and ENDDATE are the start and end dates of the met data, respectively ('DD/MM/YY').</p>
       <p>NOCOLUMNS gives the number of columns of meteorological data, and COLUMNS is a list of names describing the content of each column. The following names are recognised:</p>
-      <ul>
-        <li>For hourly data:</li>
-      </ul>
+      <h3>For hourly data</h3>
       <table border="1" cellpadding="7" width="607">
         <tbody>
           <tr>
-            <td valign="top" width="14%">Name</td>
-            <td valign="top" width="13%">Units</td>
-            <td valign="top" width="38%">Definition</td>
-            <td valign="top" width="36%">If not specified</td>
+            <td width="11%"><strong>Name</strong></td>
+            <td width="17%"><strong>Units</strong></td>
+            <td width="41%"><strong>Definition</strong></td>
+            <td width="31%"><strong>If not specified</strong></td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;WIND&rsquo;</td>
-            <td valign="top" width="13%">m s-1</td>
-            <td valign="top" width="38%">wind speed above the canopy</td>
-            <td valign="top" width="36%">Assumed = DEFWIND (defined in maestcom.f90)</td>
+            <td>'WIND'</td>
+            <td>m s-1</td>
+            <td>wind speed above the canopy</td>
+            <td>Assumed = DEFWIND (defined in maestcom.f90)</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;TAIR&rsquo;</td>
-            <td valign="top" width="13%">ºC</td>
-            <td valign="top" width="38%">air temperature</td>
-            <td valign="top" width="36%">Error.</td>
+            <td>'TAIR'</td>
+            <td>ºC</td>
+            <td>air temperature</td>
+            <td>Error.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;TSOIL&rsquo;</td>
-            <td valign="top" width="13%">ºC</td>
-            <td valign="top" width="38%">soil temperature</td>
-            <td valign="top" width="36%">Assumed = TAIR</td>
+            <td>'TSOIL'</td>
+            <td>ºC</td>
+            <td>soil temperature</td>
+            <td>Assumed = TAIR</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;RH&rsquo;</td>
-            <td valign="top" width="13%">fraction</td>
-            <td valign="top" width="38%">relative humidity</td>
-            <td valign="top" width="36%">Calculated from VPD, VMFD or TAIR</td>
+            <td>'RH'</td>
+            <td>fraction</td>
+            <td>relative humidity</td>
+            <td>Calculated from VPD, VMFD or TAIR</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;RH%&rsquo;</td>
-            <td valign="top" width="13%">percent</td>
-            <td valign="top" width="38%">relative humidity (different units)</td>
-            <td valign="top" width="36%">"</td>
+            <td>'RH%'</td>
+            <td>percent</td>
+            <td>relative humidity (different units)</td>
+            <td>Calculated from VPD, VMFD or TAIR</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;VPD&rsquo;</td>
-            <td valign="top" width="13%">Pa</td>
-            <td valign="top" width="38%">vapour pressure deficit</td>
-            <td valign="top" width="36%">Calculated fromc RH, VMFD or TAIR</td>
+            <td>'VPD'</td>
+            <td>Pa</td>
+            <td>vapour pressure deficit</td>
+            <td>Calculated fromc RH, VMFD or TAIR</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;VMFD&rsquo;</td>
-            <td valign="top" width="13%">mmol mol-1</td>
-            <td valign="top" width="38%">vapour pressure mole fraction deficit</td>
-            <td valign="top" width="36%">Calculated from RH or VPD, and PRESS</td>
+            <td>'VMFD'</td>
+            <td>mmol mol-1</td>
+            <td>vapour pressure mole fraction deficit</td>
+            <td>Calculated from RH or VPD, and PRESS</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;CA&rsquo;</td>
-            <td valign="top" width="13%">ppm</td>
-            <td valign="top" width="38%">atmospheric CO2 concentration</td>
-            <td valign="top" width="36%">Constant value from ENVIRON namelist used.</td>
+            <td>'CA'</td>
+            <td>ppm</td>
+            <td>atmospheric CO2 concentration</td>
+            <td>Constant value from ENVIRON namelist used.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;PAR&rsquo;</td>
-            <td valign="top" width="13%">mmol m-2s-1</td>
-            <td valign="top" width="38%">hourly incident photosynthetically active radiation</td>
-            <td valign="top" width="36%">Calculated from RAD. If RAD absent, calculated from TAIR (DELTAT needed).</td>
+            <td>'PAR'</td>
+            <td>mmol m-2s-1</td>
+            <td>hourly incident photosynthetically active radiation</td>
+            <td>Calculated from RAD. If RAD absent, calculated from TAIR (DELTAT needed).</td>
           </tr>
           <tr>
             <td>'RAD'</td>
             <td>W m-2</td>
             <td>hourly incident total short-wave radiation</td>
-            <td>Calculated from &lsquo;PAR&rsquo;. If PAR absent, calculated from TAIR (DELTAT needed).</td>
+            <td>Calculated from 'PAR'. If PAR absent, calculated from TAIR (DELTAT needed).</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;FBEAM&rsquo;</td>
-            <td valign="top" width="13%">fraction</td>
-            <td valign="top" width="38%">fraction of incident PAR which is direct-beam</td>
-            <td valign="top" width="36%">Calculated from PAR (Spitters et al 1986)</td>
+            <td>'FBEAM'</td>
+            <td>fraction</td>
+            <td>fraction of incident PAR which is direct-beam</td>
+            <td>Calculated from PAR (Spitters et al 1986)</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;PRESS&rsquo;</td>
-            <td valign="top" width="13%">Pa</td>
-            <td valign="top" width="38%">atmospheric pressure</td>
-            <td valign="top" width="36%">Constant value from ENVIRON namelist used.</td>
+            <td>'PRESS'</td>
+            <td>Pa</td>
+            <td>atmospheric pressure</td>
+            <td>Constant value from ENVIRON namelist used.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;TDEW&rsquo;</td>
-            <td valign="top" width="13%">ºC</td>
-            <td valign="top" width="38%">Dewpoint temperature</td>
-            <td valign="top" width="36%">RH or VPD used.</td>
+            <td>'TDEW'</td>
+            <td>ºC</td>
+            <td>Dewpoint temperature</td>
+            <td>RH or VPD used.</td>
           </tr>
           <tr>
             <td>'SW'</td>
@@ -328,52 +326,51 @@
           </tr>
         </tbody>
       </table>
-      <ul>
-        <li>For daily data:</li>
-      </ul>
+      <h3>For daily data
+      </h3>
       <table border="1" cellpadding="7" width="607">
         <tbody>
           <tr>
-            <td valign="top" width="14%">Name</td>
-            <td valign="top" width="13%">Units</td>
-            <td valign="top" width="38%">Definition</td>
-            <td valign="top" width="36%">If not specified</td>
+            <td width="11%"><strong>Name</strong></td>
+            <td width="17%"><strong>Units</strong></td>
+            <td width="41%"><strong>Definition</strong></td>
+            <td width="31%"><strong>If not specified</strong></td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;WIND&rsquo;</td>
-            <td valign="top" width="13%">m s-1</td>
-            <td valign="top" width="38%">wind speed above the canopy</td>
-            <td valign="top" width="36%">Assumed to be zero.</td>
+            <td>'WIND'</td>
+            <td>m s-1</td>
+            <td>wind speed above the canopy</td>
+            <td>Assumed to be zero.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;TMIN&rsquo;</td>
-            <td valign="top" width="13%">ºC</td>
-            <td valign="top" width="38%">minimum daily temperature</td>
-            <td valign="top" width="36%">Error.</td>
+            <td>'TMIN'</td>
+            <td>ºC</td>
+            <td>minimum daily temperature</td>
+            <td>Error.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;TMAX&rsquo;</td>
-            <td valign="top" width="13%">ºC</td>
-            <td valign="top" width="38%">maximum daily temperature</td>
-            <td valign="top" width="36%">Error.</td>
+            <td>'TMAX'</td>
+            <td>ºC</td>
+            <td>maximum daily temperature</td>
+            <td>Error.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;CA&rsquo;</td>
-            <td valign="top" width="13%">ppm</td>
-            <td valign="top" width="38%">atmospheric CO2 concentration</td>
-            <td valign="top" width="36%">Constant value from ENVIRON namelist used.</td>
+            <td>'CA'</td>
+            <td>ppm</td>
+            <td>atmospheric CO2 concentration</td>
+            <td>Constant value from ENVIRON namelist used.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;PAR&rsquo; or 'SI'</td>
-            <td valign="top" width="13%">MJ d-1</td>
-            <td valign="top" width="38%">daily incident radiation (PAR = photosynthetically active radiation, 400 - 700 nm; SI = total shortwave radiation)</td>
-            <td valign="top" width="36%">Error.</td>
+            <td>'PAR' or 'SI'</td>
+            <td>MJ d-1</td>
+            <td>daily incident radiation (PAR = photosynthetically active radiation, 400 - 700 nm; SI = total shortwave radiation)</td>
+            <td>Error.</td>
           </tr>
           <tr>
-            <td valign="top" width="14%">&lsquo;FBEAM&rsquo;</td>
-            <td valign="top" width="13%">fraction</td>
-            <td valign="top" width="38%">fraction (0-1) of incident PAR which is direct-beam</td>
-            <td valign="top" width="36%">Calculated from PAR (Spitters et al 1986)</td>
+            <td>'FBEAM'</td>
+            <td>fraction</td>
+            <td>fraction (0-1) of incident PAR which is direct-beam</td>
+            <td>Calculated from PAR (Spitters et al 1986)</td>
           </tr>
           <tr>
             <td>'SW'</td>
@@ -389,8 +386,8 @@
           </tr>
         </tbody>
       </table>
-      <p>It doesn&rsquo;t matter what order these columns are in, so long as the columns of data correspond to the titles in the namelist. The available options are fairly readily extended through the functions OPENMETF, GETMETHR and GETMETDAY. Additional (unused) columns should be identified by some other name to those above; they will then be ignored by the program.</p>
-      <p>Missing data</p>
+      <p>It doesn't matter what order these columns are in, so long as the columns of data correspond to the titles in the namelist. The available options are fairly readily extended through the functions OPENMETF, GETMETHR and GETMETDAY. Additional (unused) columns should be identified by some other name to those above; they will then be ignored by the program.</p>
+      <h3>Missing data</h3>
       <p>The program does not handle missing met data at all, all data must be specified. Note that each new line of data is assumed to correspond to a timestep, it is not possible to indicate the time of the timestep. Make sure that when preparing the met data, that you have the same number of timesteps for each day (for example 24 or 48).</p>
     </section>
 
@@ -400,7 +397,7 @@
       <p>Following that, all input is in the following namelists.</p>
       <a name="Crown shape"></a>Crown shape
       <p class="namelistlong">NAMELIST /CANOPY/ CSHAPE</p>
-      <p>CSHAPE is a string indicating the shape of the crown: &lsquo;CONE&rsquo; indicates a conical crown, &lsquo;ELIP&rsquo; a half-ellipsoidal crown, &lsquo;PARA&rsquo; a paraboloidal crown, &lsquo;ROUND&rsquo; a full ellipsoid, &lsquo;CYL&rsquo; an upright cylinder, &lsquo;BOX&rsquo; a box shape (suitable for the mini-ecosystems, for example). Default: half-ellipsoidal.</p>
+      <p>CSHAPE is a string indicating the shape of the crown: 'CONE' indicates a conical crown, 'ELIP' a half-ellipsoidal crown, 'PARA' a paraboloidal crown, 'ROUND' a full ellipsoid, 'CYL' an upright cylinder, 'BOX' a box shape (suitable for the mini-ecosystems, for example). Default: half-ellipsoidal.</p>
       <a name="Leaf incidence"></a>Leaf incidence angle
       <p class="namelistlong">NAMELIST /LIA/ ELP,NALPHA,FALPHA,AVGANG</p>
       <p>This namelist describes the leaf angle distribution, used in the radiative transfer calculations. There are three options to specify this namelist:</p>
@@ -490,7 +487,7 @@
         NAMELIST /NFOL/ DATES, VALUES</p>
       <p>If MODELJM = 1, or MODELRD = 1, indicating leaf N is required to calculate some of the parameters, then leaf N contents are read in. These can be specified for different dates, canopy layers, and foliage age classes.</p>
       <p>NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
-      <p>DATES gives the dates at which N contents were specified, in the format &lsquo;DD/MM/YY&rsquo;. NODATES must be at least 1, but if it is only 1, then that value is used throughout the simulation.</p>
+      <p>DATES gives the dates at which N contents were specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then that value is used throughout the simulation.</p>
       <p>VALUES gives the leaf N contents (in g m-2). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
       <a name="Photosynthetic"></a>Photosynthetic parameters
       <p>The tables of Jmax and Vcmax (JMAXTABLE and VCMAXTABLE) may be either read in, or calculated from leaf N content. If they are read in (MODELJM = 0), the following namelists should be used:</p>
@@ -499,7 +496,7 @@
         NAMELIST /VCMAXCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /VCMAX/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
-      <p>DATES gives the dates at which JMAX &amp; VCMAX were specified, in the format &lsquo;DD/MM/YY&rsquo;. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
+      <p>DATES gives the dates at which JMAX &amp; VCMAX were specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
       <p>VALUES gives the parameter values (in mmol m-2 s-1). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class. The values should be corrected to 25 °C.</p>
       <p>If the parameters are <a href="#Choice%20of%20submodel">calculated from leaf N content</a>, then the following namelists should be used:</p>
       <p class="namelistlong">NAMELIST /JMAXN/ JMAXA,JMAXB,VCMAXA,VCMAXB</p>
@@ -533,7 +530,7 @@
       <p class="namelistlong">NAMELIST /RDCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /RD/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
-      <p>DATES gives the dates at which RD was specified, in the format &lsquo;DD/MM/YY&rsquo;. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
+      <p>DATES gives the dates at which RD was specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
       <p>VALUES gives the leaf dark respiration rate (in mmol m-2 s-1). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
       <p>If RD is to be calculated from leaf N content, then the following namelist should be used:</p>
       <p class="namelistlong">NAMELIST /RDN/ RDA, RDB</p>
@@ -555,7 +552,7 @@
       <p class="namelistlong">NAMELIST /SLACON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /SLA/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which SLA is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
-      <p>DATES gives the dates at which SLA was specified, in the format &lsquo;DD/MM/YY&rsquo;. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
+      <p>DATES gives the dates at which SLA was specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
       <p>VALUES gives the specific leaf area (in m2 kg-1). The values must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
       <a name="Woody respiration rates"></a>Woody respiration rates
       <p class="namelistlong">NAMELIST /WRESP/ EFFY, RM, RMA, RTEMP, Q10W, STEMFORM <br>

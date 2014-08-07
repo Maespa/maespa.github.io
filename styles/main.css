@@ -132,6 +132,11 @@ header, section, footer, aside, article, figure {
 }
 .container .content h2 {
 	font-size: 22px;
+	font-weight: 300;
+	font-family: 'Bree Serif', serif;
+}
+.container .content h3 {
+	font-size: 18px;
 	font-weight: 200;
 	font-family: 'Bree Serif', serif;
 }
@@ -161,4 +166,22 @@ body#biblio a#biblionav {
 	font-weight: bolder;
 	color: rgba(24,24,24,1);
 	text-shadow: -6px -6px 4px rgba(171,171,171,1);
+}
+table, th, td {
+   border: 1px solid green;
+}
+table {
+    border-collapse: collapse;
+	width: 100%;
+}
+th {
+    height: 50px;
+    background-color: green;
+    color: white;
+}
+td {
+    text-align: right;
+    height: 50px;
+    vertical-align: bottom;
+	padding: 5px;
 }
