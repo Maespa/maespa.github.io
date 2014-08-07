@@ -43,27 +43,15 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 /* ~~ This fixed width container surrounds all other blocks ~~ */
 .container {
 	width: 960px;
-	margin: 0 auto; /* the auto value on the sides, coupled with the width, centers the layout */
+	margin: 0 auto;
 	background-image: url(../images/treebark.jpg);
-	
-	;/*url(../images/treebark.jpg);*/
 	background-attachment: fixed;
 }
-/* ~~ The header is not given a width. It will extend the full width of your layout. ~~ */
+
 header {
 	background-color: rgba(255,255,255,0.2);
 }
-/* ~~ These are the columns for the layout. ~~ 
 
-1) Padding is only placed on the top and/or bottom of the block elements. The elements within these blocks have padding on their sides. This saves you from any "box model math". Keep in mind, if you add any side padding or border to the block itself, it will be added to the width you define to create the *total* width. You may also choose to remove the padding on the element in the block element and place a second block element within it with no width and the padding necessary for your design.
-
-2) No margin has been given to the columns since they are all floated. If you must add margin, avoid placing it on the side you're floating toward (for example: a right margin on a block set to float right). Many times, padding can be used instead. For blocks where this rule must be broken, you should add a "display:inline" declaration to the block element's rule to tame a bug where some versions of Internet Explorer double the margin.
-
-3) Since classes can be used multiple times in a document (and an element can also have multiple classes applied), the columns have been assigned class names instead of IDs. For example, two sidebar blocks could be stacked if necessary. These can very easily be changed to IDs if that's your preference, as long as you'll only be using them once per document.
-
-4) If you prefer your nav on the left instead of the right, simply float these columns the opposite direction (all left instead of all right) and they'll render in reverse order. There's no need to move the blocks around in the HTML source.
-
-*/
 .sidebar1 {
 	float: right;
 	/*position:fixed;
@@ -160,12 +148,13 @@ body#biblio a#biblionav {
 	font-weight: 500;
 }
 .container header {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 42px;
-	font-style: italic;
-	font-weight: bolder;
+	/*font-family: Arial, Helvetica, sans-serif;*/
+	font-family: 'Open Sans', sans-serif;
+	font-size: 46px;
+	/*font-style: italic;*/
+	font-weight: 900;
 	color: rgba(24,24,24,1);
-	text-shadow: -6px -6px 4px rgba(171,171,171,1);
+	text-shadow: -3px -3px 2px rgba(160,160,160,1);
 }
 table, th, td {
    border: 1px solid green;

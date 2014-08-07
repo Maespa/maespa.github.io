@@ -85,7 +85,7 @@
       <h2>The control file (confile.dat)      </h2>
       <p>The first line can include the title of the file, which is used to indicate in the output which input file was used.</p>
       <p>Following that, all input is in namelists, which may be in any order.</p>
-      <p><a name="Control of output"></a>Control of output files</p>
+      <h3><a name="Control of output"></a>Control of output files</h3>
       <p class="namelistlong">NAMELIST /CONTROL/ IOHRLY, IOTUTD, IOHIST, IORESP, ISIMUS, IPOINTS</p>
       <p><span class="code">IOHRLY</span> is a flag to indicate how detailed the outputs should be. If <span class="code">IOHRLY</span> = 0, there is no hourly output; if <span class="code">IOHRLY</span> = 1, hourly values are output to <a href="#hrflux">hrflux.dat</a>; if <span class="code">IOHRLY</span> = 2, values for each layer are output to <a href="#layflx">layflx.dat</a>. Default: 0.</p>
       <p><span class="code">IOTUTD</span> is a flag to indicate how often the diffuse transmittances should be calculated. This calculation takes a significant amount of time, and does not really need to be done more than once a week unless the leaf area is changing rapidly (the diffuse transmittances do not change greatly from day to day). If <span class="code">IOTUTD</span> &gt; 0, the transmittances are calculated every <span class="code">TUTD</span>'th day. Default: 1.</p>
@@ -93,10 +93,10 @@
       <p><span class="code">IORESP</span> is a flag to indicate whether you want the respiration fluxes to be printed out. If <span class="code">IORESP</span> = 1, the file <a href="#resp">resp.dat</a> is created. Default: <span class="code">IORESP</span> = 0.</p>
       <p><span class="code">ISIMUS</span> is a flag to indicate whether you want the understorey calculations to be done. If <span class="code">ISIMUS</span> = 1, the input file <a href="#ustorey">ustorey.dat</a> is required, and the file <a href="#ustorey">uspar.dat</a> is created.</p>
       <p><span class="code">IPOINTS</span> is a flag to indicate whether you want to output PAR transmission data to user-defined points. See the description of the <a href="#pointsdat">points.dat</a> input file for instructions.</p>
-      <p><a name="Dates"></a>Dates</p>
+      <h3><a name="Dates"></a>Dates</h3>
       <p class="namelistlong">NAMELIST /DATES/ START, END</p>
-      <p>START is the starting date for the simulation, in format 'DD/MM/YY'. END is the end date for the simulation, in format 'DD/MM/YY'. Default: if both dates are missing or both = '01/01/50', then all of the met data in the met data file is used.</p>
-      <p><a name="Target trees"></a>Number of Trees in Calculations</p>
+      <p><span class="code">START</span> is the starting date for the simulation, in format 'DD/MM/YY'. END is the end date for the simulation, in format 'DD/MM/YY'. Default: if both dates are missing or both = '01/01/50', then all of the met data in the met data file is used.</p>
+      <h3><a name="Target trees"></a>Number of Trees in Calculations</h3>
       <p class="namelistlong">NAMELIST /TREESCON/ NOTREES, NOTARGET, ITARGETS, NORANDOM, EDGEDIST</p>
       <p>NOTREES is the number of surrounding trees considered when calculating the shading of the target tree (the closest trees to the target tree are used).</p>
       <p>You can specify the target tree(s) in a number of ways:</p>
@@ -108,7 +108,7 @@
         <li>To make the program choose target trees randomly, set NORANDOM to the number of target trees you want. If you only want trees from the centre of the plot to be chosen, set EDGEDIST to the width of the plot edges (in m).</li>
         <li>Finally, if you want the program to do the calculations for all trees, then omit all of NOTARGET, ITARGETS, and NORANDOM. Again, if you do not want to include trees around the edge of the plot, you can specify the edge width using EDGEDIST (in m). Trees within this distance from the edge will not be used as target trees (but they will be used to calculate shading on the target trees).</li>
       </ul>
-      <p><a name="Multi-species">Multi-species settings</a></p>
+      <h3><a name="Multi-species">Multi-species settings</a></h3>
       <p class="namelistlong">NAMELIST /SPECIES/ NSPECIES,SPECIESNAMES,PHYFILES,STRFILES</p>
       <p>This namelist allows multi-species stands of trees. NSPECIES is the number of species in the stand. SPECIESNAMES is an array of names of the species, this is shown in the output files but not otherwise used. PHYFILES is an array of names of the physiology input files, the first corresponding to species 1, etc. STRFILES is an array of structure input files (to override str.dat if it exists). Note that if NSPECIES is set to 1, but an array of STRFILES or PHYFILES is defined, only the first one is used (and the standard phy.dat and str.dat files are not used!).</p>
       
@@ -126,7 +126,8 @@
       <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in maestcom.f90 as MAXLAY. Default: 6.</p>
       <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
       <p>Defaults: NZEN = 5 (maximum MAXANG); NAZ = 11 (no maximum enforced).</p>
-      <a name="Choice of submodel"></a>Choice of submodel
+      <h3><a name="Choice of submodel"></a>Choice of submodel
+      </h3>
       <p class="namelistlong">NAMELIST /MODEL/ MODELGS, MODELJM, MODELRD, MODELRW, MODELSS, ITERMAX, ISIMUS</p>
       <p>MODELGS indicates which model should be used to calculate stomatal conductance. If MODELGS = 2: Ball-Berry model (response to RH) If MODELGS = 3: Ball-Berry-Leuning model (response to VPD). If MODELGS = 4, the Ball-Berry-Opti model is used (Medlyn et al. 2011).</p>
       <p>Please see the section on <a href="#Stomatal%20conductance">stomatal conductance</a> for more details about the choice of stomatal models.</p>
@@ -135,15 +136,17 @@
       <p>MODELRW indicates how the <a href="#Woody%20respiration%20rates">wood respiration parameters</a> should be read in. If MODELRW = 0, the respiration rate is assumed to depend on stem biomass or surface area. If MODELRW = 1, it depends on diameter according to the relationship used at Collelongo. Default: 0.</p>
       <p><a name="MODELSS"></a>MODELSS indicates whether the photosynthesis calculations are done for sun and shade leaves separately (MODELSS = 0), whether the absorbed radiation is averaged over the foliage in the grid point when calculating photosynthesis (MODELSS = 1). If MODELSS = 2, calculations are done for each leaf angle class separately. Default: 0.</p>
       <p><a name="ITERMAX"></a>ITERMAX controls iterations in the combined photosynthesis-transpiration model. If ITERMAX = 0, leaf temperature is assumed = air temperature, and the iteration procedure is not carried out. If ITERMAX &gt; 0, an iterative method is used to find leaf temperature, photosynthesis, and transpiration. ITERMAX gives the maximum number of iterations (ensuring convergence). Default: 0.</p>
-      Climate change scenarios
+      <h3>Climate change scenarios </h3>
       <p>The program can add a fixed amount to CO2 concentration and temperature from the met file. The following namelist is only needed if you want a scenario implemented:</p>
       <p class="namelistlong">NAMELIST /CCSCEN/ CO2INC, TINC</p>
       <p>where CO2INC is the amount of increase in the CO2 concentration (in mmol mol-1) and TINC is the amount of increase in the air temperature (° C). Both soil and air temperature are increased. The absolute humidity (in g m-3) is maintained constant; RH and VPD are adjusted accordingly.</p>
-      <a name="Effect of"></a>Effect of OTC on Met Data
+      <h3><a name="Effect of"></a>Effect of OTC on Met Data
+      </h3>
       <p>If you are simulating growth within an open-top chamber (OTC) or other controlled environment and met data was measured outside the chamber you may want to correct for the effects of the chamber. This can be done using the namelist:</p>
       <p class="namelistlong">NAMELIST /OTC/ TOTC, WINDOTC, PAROTC, FBEAMOTC</p>
       <p>Where TOTC is the increase in air temperature (degC), WINDOTC is the absolute wind speed inside the chamber (m s-1), PAROTC is the fractional reduction in incident PAR (fraction) and FBEAMOTC is the fractional reduction in beam fraction of PAR (fraction). Only one value can be specified for each parameter.</p>
-      <a name="PAR"></a>PAR histogram
+      <h3><a name="PAR"></a>PAR histogram
+      </h3>
       <p>The program can print out a histogram of PAR absorbed over the course of the simulation. It is printed to histo.dat if IOHIST = 1 (in the CONTROL namelist, above). The following namelist is needed only if you want the histogram:</p>
       <p class="namelistlong">NAMELIST /HISTO/ BINSIZE</p>
       <p>where BINSIZE is the size of the classes in the histogram (in mmol m-2 s-1). The maximum number of classes is given by MAXHISTO in maestcom.f90.</p>
@@ -152,23 +155,27 @@
       <h2>The trees file (trees.dat)      </h2>
       <p>First line: title of file (as with other input files, the title is included in the output files)</p>
       <p>Following that, all input is in namelist blocks, which may be in any order.</p>
-      <a name="Plot"></a>Plot Details
+      <h3><a name="Plot"></a>Plot Details
+      </h3>
       <p class="namelistlong">NAMELIST /PLOT/ XMAX,YMAX,X0,Y0,NOTREES,XSLOPE,YSLOPE,BEARING,SHADEHT</p>
       <p>XMAX and YMAX are the maximum x and y coordinates of tree locations, respectively (m) - essential. X0 and Y0 are offset values for the co-ordinates and are zero by default. As an example: if your x co-ordinate begins at 500 and goes to 600, X0 should be 500 and XMAX should be 600. In the model, the plot size is calculated as (YMAX - Y0) * (XMAX - X0).</p>
       <p>NOTREES is the total number of trees in the plot - essential. XSLOPE and YSLOPE are the slopes of the plot in x- and y- directions (degrees) - default zero. BEARING is the bearing of the x-axis from SOUTH (degrees) - essential. The stocking is given by NOTREES / (XMAX * YMAX).</p>
       <p>SHADEHT is a parameter to describe external shading of the plot, e.g. for shadecloth placed over a greenhouse. The greenhouse is assumed to be rectangular with corners at co-ordinates (0,0), (0,YMAX), (XMAX,0), (XMAX,YMAX). The shadecloth is assumed to be SHADEHT m high. It is assumed that no radiation passes through the shadecloth. Default: SHADEHT = 0.0 (i.e. no shading).</p>
-      <a name="Plot Aerodynamics"></a>Plot Aerodynamics
+      <h3><a name="Plot Aerodynamics"></a>Plot Aerodynamics
+      </h3>
       <p class="namelistlong">NAMELIST /AERODYN/ ZHT, ZPD, Z0HT</p>
       <p>Transpiration rate is calculated from the conductance of the whole canopy, as well as by applying the coupled photosynthesis-stomatal conductance model at each grid point in the canopy (and summed). Both are output in <a href="#hrflux">hrflux.dat</a> for comparison. The canopy stomatal conductance is calculated as the sum of the individual leaf conductances. The canopy boundary layer conductance is calculated from</p>
       <p class="namelistlong">gb = K<sup>2</sup> * U / (LN((ZHT - ZPD)/Z0HT))<sup>2</sup></p>
       <p>(Jones 1992 eqn. 3.42). U is the above-canopy wind speed, K is von Karman's constant (defined in maestcom.f90), and the parameters required are ZHT (measurement height, m), ZPD (zero-plane displacement, m) and Z0HT (roughness length, m). If these parameters aren't specified, this calculation is not done.</p>
-      <p><a name="speclist"></a>Multi-species list</p>
+      <h3><a name="speclist"></a>Multi-species list</h3>
       <p class="namelistlong">NAMELIST /SPECLIST/ ISPECIES</p>
       <p>Here, the species of each tree is specified. ISPECIES is an array of integers (1,2,...) that correspond to the multi-species definitions in confile.dat. See <a href="#multi-species">here</a> for those settings. If any of the ISPECIES values is set to a value higher than NSPECIES, a warning is printed to maeserr.dat, and all species are set to 1.</p>
-      <a name="X & Y"></a>X &amp; Y Co-ordinates
+      <h3><a name="X & Y"></a>X &amp; Y Co-ordinates
+      </h3>
       <p class="namelistlong">NAMELIST /XY/ XYCOORDS</p>
       <p>The X and Y co-ordinates of each tree can be specified explicitly in this namelist, in order x1, y1, x2, y2, .. etc. Alternatively, if this namelist is missing, then the trees will be assumed to be spaced evenly at a distance of SQRT (XMAX*YMAX / NOALLTREES).</p>
-      <a name="Tree Dim Indiv"></a>Tree Dimensions - Specified for Individual Trees
+      <h3><a name="Tree Dim Indiv"></a>Tree Dimensions - Specified for Individual Trees
+      </h3>
       <p class="namelistlong">NAMELIST /INDIVRADX/ NODATES, VALUES, DATES <br>
         NAMELIST /INDIVRADY/ NODATES, VALUES, DATES <br>
         NAMELIST /INDIVHTCROWN/ NODATES, VALUES, DATES <br>
@@ -179,7 +186,8 @@
       <p>If they are to be constant throughout the simulation, then NODATES should be 1. DATES can be omitted. VALUES should be given in order of tree number.</p>
       <p>If they are specified for a series of dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in a table with a row for each tree and a column for each date.</p>
       <p>The stem diameter is only used for calculating the woody respiration. If it is missing, woody respiration is not calculated. If any of the other dimensions are missing, an error will occur. The stem diameter should be specified at the height required for the <a href="#Allometric">allometric relationship</a> between height, diameter, and woody biomass.</p>
-      <a name="Tree Dim -ALL"></a>Tree Dimensions - Specified for All Trees
+      <h3><a name="Tree Dim -ALL"></a>Tree Dimensions - Specified for All Trees
+      </h3>
       <p class="namelistlong">NAMELIST /ALLRADX/ NODATES, VALUES, DATES <br>
         NAMELIST /ALLRADY/ NODATES, VALUES, DATES <br>
         NAMELIST /ALLHTCROWN/ NODATES, VALUES, DATES <br>
@@ -190,7 +198,8 @@
       <p>If the values are to be constant throughout the simulation, then NODATES should be 1, DATES can be omitted, and VALUES should just consist of the single number.</p>
       <p>If the values are specified for a series of a dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in date order.</p>
       <p>It is not necessary to use the same format for all dimensions - for example, the height of all trees may be assumed the same, whereas leaf area may be specified for each tree. Similarly, different dates may be given for each dimension - height may be constant throughout the simulation, with leaf area changing.</p>
-      <a name="Phenology"></a>Phenology of leaf area development
+      <h3><a name="Phenology"></a>Phenology of leaf area development
+      </h3>
       <p>The development of leaf area may be modelled by specifying leaf area on different dates, or by using the phenology model described by Wang, Rey &amp; Jarvis (1998, GCB). To use this phenology model, replace the INDIVLAREA or ALLLAREA namelist by the following:</p>
       <p class="namelistlong">NAMELIST /PHENOLOGY/ FLUSHDATE, DT1, DT2, DT3, DT4, EXPTIME, MAXLEAVES, SIZELEAF</p>
       <p>where FLUSHDATE is the date of flushing ('DD/MM/YY'); DT1, DT2, DT3, and DT4 are the number of days from the flush date to the end of the first flush, end of the second flush, start of leaf senescence, and end of leaf senescence, respectively; EXPTIME is the time taken for a single leaf to fully expand (days); MAXLEAVES is the maximum number of leaves, and SIZELEAF is the mean leaf size (m2). The maximum leaf area is thus given by MAXLEAVES*SIZELEAF. It is currently assumed, using this model, that all trees have the same leaf area.</p>
@@ -201,9 +210,10 @@
       <p>The first line of the file is the title, which is shown in the output files.</p>
       <p>This is followed by several namelists (described below).</p>
       <p>Then there is the line <br>
-        DATA STARTS <br>
+        <span class="namelistlong">DATA STARTS </span><br>
         followed by the actual (space-delimited) data. Note that the line DATA STARTS must be in exactly that format, ie caps, and no tabs or following blank spaces.</p>
-      <a name="Constant met"></a>Constant met data
+      <h3><a name="Constant met"></a>Constant met data
+      </h3>
       <p class="namelistlong">NAMELIST /ENVIRON/ CA, PRESS, DIFSKY, SWMIN, SWMAX</p>
       <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mmol mol-1, which is assumed not to vary with time. This value is only used if the 'CA' column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
       <p>PRESS is the atmospheric pressure, in Pa, also assumed not to vary with time. This value is only used if the 'PRESS' column is missing from the met file. The default value for PRESS is 1.0125 * 105 Pa.</p>
@@ -212,13 +222,15 @@
       <p>For a uniform overcast sky, DIFSKY = 0.0 (default). See Wang &amp; Jarvis (1990) Silva Carelica 15:167-180 and Steven &amp; Unsworth (1980) Quart. J. Roy. Meteorol. Soc. 105: 593-602 for more information about DIFSKY.</p>
       <p>SWMIN and SWMAX are the minimum and maximum soil water contents. They should be in the same units as soil water values (specified in main met data). Soil moisture deficit, which affects <a href="#Stomatal%20conductance">stomatal conductance</a>, is calculated as: <br>
         <span class="namelistlong">SMD = (SWMAX – SW) / (SWMAX – SWMIN)</span></p>
-      <a name="Latitude &"></a>Latitude &amp; Longitude
+      <h3><a name="Latitude &"></a>Latitude &amp; Longitude
+      </h3>
       <p class="namelistlong">NAMELIST /LATLONG/ LATHEM,LAT,LONHEM,LONG,TZLONG</p>
       <p>LATHEM is either 'N' or 'S', indicating the hemisphere. Similarly, LONHEM is either 'W' or 'E'. LAT and LONG are the latitude and longitude, respectively. Both are arrays of three numbers, indicating the degrees, minutes, and seconds. TZLONG is the longitude of the meridian of the time zone, specified in degrees.</p>
-      Daily temperature amplitude
+      <h3>Daily temperature amplitude </h3>
       <p class="namelistlong">NAMELIST /BRISTO/ DELTAT</p>
       <p>If incident radiation values are missing, the program can use the formula of Bristow &amp; Campbell (1984) Ag For Met 31: 159-166 to calculate incident PAR from air temperature. To use this option the above namelist must be specified. DELTAT should have 12 values representing the mean monthly daily temperature amplitude for each month of the year.</p>
-      <a name="metformat"></a>Metformat
+      <h3><a name="metformat"></a>Metformat
+      </h3>
       <p class="namelistlong">NAMELIST /METFORMAT/ DAYORHR, KHRSPERDAY, NOCOLUMNS, COLUMNS, STARTDATE, ENDDATE</p>
       <p>NOTE:The format of this namelist was modified in April 2009, older files need to be reformatted accordingly.</p>
       <p>DAYORHR is a flag indicating whether the met file is daily (DAYORHR = 0) or 'hourly' (DAYORHR = 1) data.</p>
