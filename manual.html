@@ -702,11 +702,11 @@
     <section>
       <h2>The understorey file (ustorey.dat)</h2>
       <p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated, and averaged to produce the output file.</p>
-      <p>NOTE : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
+      <p><em>Note</em> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
       <p>This grid of understorey sampling points is defined by the following namelist:</p>
-      <p class="namelistlong">NAMELIST /CONTROL/ NOPOINTS, X0, Y0, XMAX, YMAX, IOFORMAT</p>
-      <p>This specified a rectangular grid from X0 to XMAX and Y0 to YMAX, having (approximately) NOPOINTS sampling points. The model then places the points accordingly within this rectangle.</p>
-      <p>The parameter IOFORMAT (0 or 1, default = 0) specifies the level of output required. If 0, outputs hourly values (of incident PAR, absorbed PAR, photosynthesis and transpiration) averaged over all understorey gridpoints. If IOFORMAT = 1, the 'uspar.dat' file will contain estimates for each grid point. <em>Note</em> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly. Only use this option for testing, or otherwise.</p>
+      <p class="namelistlong">NAMELIST /CONTROL/ NOUSPOINTS, X0, Y0, XMAX, YMAX</p>
+      <p>This specified a rectangular grid from X0 to XMAX and Y0 to YMAX, having (approximately) NOUSPOINTS sampling points. The model then places the points accordingly within this rectangle.</p>
+      <p>This produces the <span class="filename">uspar.dat</span> file will contain estimates for each grid point. <em>Note</em> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly! We might add an option with average understorey fluxes in the future.</p>
       <p>Next, the leaf area index, height, and leaf nitrogen content of the understorey is specified:</p>
       <p class="namelistlong">NAMELIST /ALLUSLAI/ NODATES, VALUES, DATES<br>
       NAMELIST /ALHTCROWN/ NODATES, VALUES, DATES<br>
