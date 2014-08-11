@@ -144,8 +144,11 @@ body#biblio a#biblionav {
 	font-size: smaller;
 }
 .code{
-	font-family: 'Cousine', sans-serif;
-	font-weight: 500;
+/*	font-family: 'Cousine', sans-serif;
+	font-weight: 500;*/
+}
+.filename{
+	font-style:italic	
 }
 .container header {
 	/*font-family: Arial, Helvetica, sans-serif;*/
@@ -164,13 +167,13 @@ table {
 	width: 100%;
 }
 th {
-    height: 50px;
+    height: 40px;
     background-color: green;
     color: white;
 }
 td {
     text-align: right;
-    height: 50px;
+    height: 40px;
     vertical-align: bottom;
 	padding: 5px;
 }

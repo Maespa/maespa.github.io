@@ -45,18 +45,112 @@
           <li>Stomatal conductance can be calculated from either of the Ball-Berry, Ball-Berry-Leuning, Ball-Berry-Opti or Tuzet et al. models.</li>
           <li>Transpiration is calculated by applying the Penman-Monteith equation at each gridpoint, and summing over the gridpoints.</li>
       </ul>
-        
   </section>
     
-    <section> 
-    <h2>Maestra or Maespa?</h2>
+    <section><h2>Maestra or Maespa?</h2>
     
-    <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (watpars.dat). If it is not present in the directory where you run Maespa, the model will run in Maestra mode.</p>
+    <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (<span class="filename">watpars.dat</span>). If it is not present in the directory where you run Maespa, the model will run in Maestra mode.</p></section>
     
+    <section><h2>Input and output files</h2>
+      <p>The table below list the required and optional input files. All files must be present in the same directory as the executable. The next table shows the output files produced by Maespa.</p>
+      <table width="200" border="1">
+        <caption>
+          <h3>Input files</h3>
+        </caption>
+        <tr>
+          <td width="24%" class="filename">trees.dat</td>
+          <td width="62%">Tree size and  location information</td>
+          <td width="14%">Mandatory</td>
+        </tr>
+        <tr>
+          <td class="filename">str.dat</td>
+          <td>Stand structure information</td>
+          <td>Mandatory</td>
+        </tr>
+        <tr>
+          <td class="filename">confile.dat</td>
+          <td>Simulation control parameters</td>
+          <td>Mandatory</td>
+        </tr>
+        <tr>
+          <td class="filename">phy.dat</td>
+          <td>Leaf physiology model parameters</td>
+          <td>Mandatory</td>
+        </tr>
+        <tr>
+          <td class="filename">met.dat</td>
+          <td>Meteorological drivers, site location</td>
+          <td>Mandatory</td>
+        </tr>
+        <tr>
+          <td class="filename">watpars.dat</td>
+          <td>Water balance, soil and plant hydraulics. <br>If omitted, model is run in Maestra mode</td>
+          <td>Optional</td>
+        </tr>
+        <tr>
+          <td class="filename">points.dat</td>
+          <td>Coordinates of test points</td>
+          <td>Optional</td>
+        </tr>
+        <tr>
+          <td class="filename">ustorey.dat</td>
+          <td>Understorey parameters</td>
+          <td>Optional</td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      <table width="200" border="1">
+        <caption>
+          <h3>Output files</h3>
+        </caption>
+        <tr>
+          <td width="24%">hrflux.dat</td>
+          <td width="53%">Hourly flux files, contains all flux estimates for each target tree for each timestep.</td>
+          <td width="23%">If eoufvnbierubv</td>
+        </tr>
+        <tr>
+          <td>dayflx.dat</td>
+          <td>Daily flux files, contains totals per tree for all flux estimates</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>Maeserr.dat</td>
+          <td>Maespa error messages and warnings.</td>
+          <td>Always</td>
+        </tr>
+        <tr>
+          <td>watbal.dat</td>
+          <td>Water balance calculations for each timestep</td>
+          <td>If run in Maespa mode</td>
+        </tr>
+        <tr>
+          <td>watbalday.dat</td>
+          <td>Daily summaries of water balance calculations</td>
+          <td>If run in Maespa mode</td>
+        </tr>
+        <tr>
+          <td>tutd.dat</td>
+          <td>Input / output file with diffuse transmittances</td>
+          <td>Optional</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      <p>In addition, when run in Maespa mode, the following files are produced : <span class="filename">watballay.dat</span>,<span class="filename"> watsoilt.dat</span> and <span class="filename">watupt.dat</span> (and sometimes, <span class="filename">wattest.dat</span> - ignore this test file). Each of the three files lists values for, respectively, soil water content, soil temperature and fractional water uptake, for each soil layer for each timestep. Each soil layer is listed in a separate column (leftmost column is the surface layer, and so on), and each timestep is a separate row. These files do not contain any headers. </p>
+      <p>&nbsp;</p>
     </section>
     
-    <section>
-      <h2>Input File Format      </h2>
+    
+    <section><h2>Input File Format</h2>
       <p>The input files for Maespa use the Fortran namelist format. In this manual we use the notation:</p>
       <p class="namelistlong">NAMELIST /NAME/ VAR1, VAR2</p>
       <p>to indicate a namelist. In the actual input file, the above namelist should be written like this:</p>
@@ -76,7 +170,7 @@
           <dt class="namelistlong">/</dt>
         </dl>
       </ul>
-      <p>It does not matter what order these namelists are in. Within a namelist, it does not matter what order the variables are in, <strong>except</strong> that all arrays of strings (such as lists of dates) should come last. It does not matter if some variables are missing, but you will, however, get an error if there are additional variables in any namelist. If some data is missing which is essential for the program to run, the program writes an error message to the error output file <a href="#maeserr">maeserr.dat</a>, and terminates. If data is missing for which a default value can be used, a warning notice will be written to maeserr.dat, but the program will continue, using the default value.</p>
+      <p>It does not matter what order these namelists are in. Within a namelist, it does not matter what order the variables are in, <strong>except</strong> that all arrays of strings (such as lists of dates) should come last. It does not matter if some variables are missing, but you will, however, get an error if there are additional variables in any namelist. If some data is missing which is essential for the program to run, the program writes an error message to the error output file <a href="#maeserr" class="filename">maeserr.dat</a>, and terminates. If data is missing for which a default value can be used, a warning notice will be written to maeserr.dat, but the program will continue, using the default value.</p>
       <p><a name="date format"></a>All dates are specified in the format 'DD/MM/YY'. If 50 &lt;= YY &lt;= 99, the years 1950 - 1999 are assumed; if 00 &lt;= YY &lt;= 49 the years 2000 - 2049 are assumed. This will need to be fixed come the 2040's - hopefully by someone else!</p>
       <p><a name="Maximum array"></a>Maximum array sizes: all the maximum array sizes are defined in the file maestcom.f90. These maxima can be changed by altering maestcom.f90 and re-compiling the program. The maxumum sizes are now quite large so this should rarely be needed.</p>
     </section>
@@ -87,12 +181,12 @@
       <p>Following that, all input is in namelists, which may be in any order.</p>
       <h3><a name="Control of output"></a>Control of output files</h3>
       <p class="namelistlong">NAMELIST /CONTROL/ IOHRLY, IOTUTD, IOHIST, IORESP, ISIMUS, IPOINTS</p>
-      <p><span class="code">IOHRLY</span> is a flag to indicate how detailed the outputs should be. If <span class="code">IOHRLY</span> = 0, there is no hourly output; if <span class="code">IOHRLY</span> = 1, hourly values are output to <a href="#hrflux">hrflux.dat</a>; if <span class="code">IOHRLY</span> = 2, values for each layer are output to <a href="#layflx">layflx.dat</a>. Default: 0.</p>
+      <p><span class="code">IOHRLY</span> is a flag to indicate how detailed the outputs should be. If <span class="code">IOHRLY</span> = 0, there is no hourly output; if <span class="code">IOHRLY</span> = 1, hourly values are output to <a href="#hrflux" class="filename">hrflux.dat</a>; if <span class="code">IOHRLY</span> = 2, values for each layer are output to <a href="#layflx" class="filename">layflx.dat</a>. Default: 0.</p>
       <p><span class="code">IOTUTD</span> is a flag to indicate how often the diffuse transmittances should be calculated. This calculation takes a significant amount of time, and does not really need to be done more than once a week unless the leaf area is changing rapidly (the diffuse transmittances do not change greatly from day to day). If <span class="code">IOTUTD</span> &gt; 0, the transmittances are calculated every <span class="code">TUTD</span>'th day. Default: 1.</p>
       <p><span class="code">IOHIST</span> is a flag to indicate that you want the <a href="#PAR">PAR histogram</a> printed out. The histogram is only printed if <span class="code">IOHIST</span> = 1. Default: <span class="code">IOHIST</span> = 0.</p>
-      <p><span class="code">IORESP</span> is a flag to indicate whether you want the respiration fluxes to be printed out. If <span class="code">IORESP</span> = 1, the file <a href="#resp">resp.dat</a> is created. Default: <span class="code">IORESP</span> = 0.</p>
-      <p><span class="code">ISIMUS</span> is a flag to indicate whether you want the understorey calculations to be done. If <span class="code">ISIMUS</span> = 1, the input file <a href="#ustorey">ustorey.dat</a> is required, and the file <a href="#ustorey">uspar.dat</a> is created.</p>
-      <p><span class="code">IPOINTS</span> is a flag to indicate whether you want to output PAR transmission data to user-defined points. See the description of the <a href="#pointsdat">points.dat</a> input file for instructions.</p>
+      <p><span class="code">IORESP</span> is a flag to indicate whether you want the respiration fluxes to be printed out. If <span class="code">IORESP</span> = 1, the file <a href="#resp" class="filename">resp.dat</a> is created. Default: <span class="code">IORESP</span> = 0.</p>
+      <p><span class="code">ISIMUS</span> is a flag to indicate whether you want the understorey calculations to be done. If <span class="code">ISIMUS</span> = 1, the input file <a href="#ustorey" class="filename">ustorey.dat</a> is required, and the file <a href="#ustorey" class="filename">uspar.dat</a> is created.</p>
+      <p><span class="code">IPOINTS</span> is a flag to indicate whether you want to output PAR transmission data to user-defined points. See the description of the <a href="#pointsdat" class="filename">points.dat</a> input file for instructions.</p>
       <h3><a name="Dates"></a>Dates</h3>
       <p class="namelistlong">NAMELIST /DATES/ START, END</p>
       <p><span class="code">START</span> is the starting date for the simulation, in format 'DD/MM/YY'. END is the end date for the simulation, in format 'DD/MM/YY'. Default: if both dates are missing or both = '01/01/50', then all of the met data in the met data file is used.</p>
@@ -101,7 +195,7 @@
       <p>NOTREES is the number of surrounding trees considered when calculating the shading of the target tree (the closest trees to the target tree are used).</p>
       <p>You can specify the target tree(s) in a number of ways:</p>
       <ul>
-        <li>You can specify the number of a single target tree using NOTARGET. (Where 1 refers to the first tree listed in the <a href="#X%20&%20Y">trees.dat</a> file, and so on).</li>
+        <li>You can specify the number of a single target tree using NOTARGET. (Where 1 refers to the first tree listed in the <a href="#X%20&%20Y" class="filename">trees.dat</a> file, and so on).</li>
         <li>To specify a series of target trees, use the array ITARGETS instead, e.g.<br>
           ITARGETS = 2 12 15 18 25 <br>
           You can specify up to MAXT target trees in this way.</li>
@@ -121,14 +215,13 @@
         STRFILES='strscler.dat' 'strcreb.dat' 'strspar.dat'<br>
         /</span>
       </p>
-<p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">furthe below</a> for details on that namelist.</p>
-      <h3><a name="Number of layers and"></a>Number of layers and angles to integrate over </h3>
+<p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">further below</a> for details on that namelist.</p>
+      <h3><a name="Number of layers and"></a>Number of layers and angles to integrate over</h3>
       <p class="namelistlong">NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ</p>
       <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in maestcom.f90 as MAXLAY. Default: 6.</p>
       <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
       <p>Defaults: NZEN = 5 (maximum MAXANG); NAZ = 11 (no maximum enforced).</p>
-      <h3><a name="Choice of submodel"></a>Choice of submodel
-      </h3>
+      <h3><a name="Choice of submodel"></a>Choice of submodel</h3>
       <p class="namelistlong">NAMELIST /MODEL/ MODELGS, MODELJM, MODELRD, MODELRW, MODELSS, ITERMAX, ISIMUS</p>
       <p>MODELGS indicates which model should be used to calculate stomatal conductance. If MODELGS = 2: Ball-Berry model (response to RH) If MODELGS = 3: Ball-Berry-Leuning model (response to VPD). If MODELGS = 4, the Ball-Berry-Opti model is used (Medlyn et al. 2011).</p>
       <p>Please see the section on <a href="#Stomatal%20conductance">stomatal conductance</a> for more details about the choice of stomatal models.</p>
@@ -140,17 +233,17 @@
       <h3>Climate change scenarios </h3>
       <p>The program can add a fixed amount to CO2 concentration and temperature from the met file. The following namelist is only needed if you want a scenario implemented:</p>
       <p class="namelistlong">NAMELIST /CCSCEN/ CO2INC, TINC</p>
-      <p>where CO2INC is the amount of increase in the CO2 concentration (in mmol mol-1) and TINC is the amount of increase in the air temperature (° C). Both soil and air temperature are increased. The absolute humidity (in g m-3) is maintained constant; RH and VPD are adjusted accordingly.</p>
+      <p>where CO2INC is the amount of increase in the CO2 concentration (in mmol mol<sup>-1</sup>) and TINC is the amount of increase in the air temperature (°C). Both soil and air temperature are increased. The absolute humidity (in g m<sup>-3</sup>) is maintained constant; RH and VPD are adjusted accordingly.</p>
       <h3><a name="Effect of"></a>Effect of OTC on Met Data
       </h3>
       <p>If you are simulating growth within an open-top chamber (OTC) or other controlled environment and met data was measured outside the chamber you may want to correct for the effects of the chamber. This can be done using the namelist:</p>
       <p class="namelistlong">NAMELIST /OTC/ TOTC, WINDOTC, PAROTC, FBEAMOTC</p>
-      <p>Where TOTC is the increase in air temperature (degC), WINDOTC is the absolute wind speed inside the chamber (m s-1), PAROTC is the fractional reduction in incident PAR (fraction) and FBEAMOTC is the fractional reduction in beam fraction of PAR (fraction). Only one value can be specified for each parameter.</p>
+      <p>Where TOTC is the increase in air temperature (degC), WINDOTC is the absolute wind speed inside the chamber (m s<sup>-1</sup>), PAROTC is the fractional reduction in incident PAR (fraction) and FBEAMOTC is the fractional reduction in beam fraction of PAR (fraction). Only one value can be specified for each parameter.</p>
       <h3><a name="PAR"></a>PAR histogram
       </h3>
       <p>The program can print out a histogram of PAR absorbed over the course of the simulation. It is printed to histo.dat if IOHIST = 1 (in the CONTROL namelist, above). The following namelist is needed only if you want the histogram:</p>
       <p class="namelistlong">NAMELIST /HISTO/ BINSIZE</p>
-      <p>where BINSIZE is the size of the classes in the histogram (in mmol m-2 s-1). The maximum number of classes is given by MAXHISTO in maestcom.f90.</p>
+      <p>where BINSIZE is the size of the classes in the histogram (in mmol m<sup>-2</sup> s<sup>-1</sup>). The maximum number of classes is given by MAXHISTO in <span class="filename">maestcom.f90</span>.</p>
     </section>
     <section>
       <h2>The trees file (trees.dat)      </h2>
@@ -159,13 +252,13 @@
       <h3><a name="Plot"></a>Plot Details
       </h3>
       <p class="namelistlong">NAMELIST /PLOT/ XMAX,YMAX,X0,Y0,NOTREES,XSLOPE,YSLOPE,BEARING,SHADEHT</p>
-      <p>XMAX and YMAX are the maximum x and y coordinates of tree locations, respectively (m) - essential. X0 and Y0 are offset values for the co-ordinates and are zero by default. As an example: if your x co-ordinate begins at 500 and goes to 600, X0 should be 500 and XMAX should be 600. In the model, the plot size is calculated as (YMAX - Y0) * (XMAX - X0).</p>
+      <p>XMAX and YMAX are the maximum x and y coordinates of tree locations, respectively (m) - essential. X0 and Y0 are offset values for the co-ordinates and are zero by default. As an example: if your x co-ordinate begins at 500 and goes to 600, X0 should be 500 and XMAX should be 600. In the model, the plot size is calculated as (YMAX - Y0) * (XMAX - X0). The plotsize is used in scaling up the water use of the stand when run in Maespa mode, in Maestra mode the plotsize has no consequences.</p>
       <p>NOTREES is the total number of trees in the plot - essential. XSLOPE and YSLOPE are the slopes of the plot in x- and y- directions (degrees) - default zero. BEARING is the bearing of the x-axis from SOUTH (degrees) - essential. The stocking is given by NOTREES / (XMAX * YMAX).</p>
       <p>SHADEHT is a parameter to describe external shading of the plot, e.g. for shadecloth placed over a greenhouse. The greenhouse is assumed to be rectangular with corners at co-ordinates (0,0), (0,YMAX), (XMAX,0), (XMAX,YMAX). The shadecloth is assumed to be SHADEHT m high. It is assumed that no radiation passes through the shadecloth. Default: SHADEHT = 0.0 (i.e. no shading).</p>
       <h3><a name="Plot Aerodynamics"></a>Plot Aerodynamics
       </h3>
       <p class="namelistlong">NAMELIST /AERODYN/ ZHT, ZPD, Z0HT</p>
-      <p>Transpiration rate is calculated from the conductance of the whole canopy, as well as by applying the coupled photosynthesis-stomatal conductance model at each grid point in the canopy (and summed). Both are output in <a href="#hrflux">hrflux.dat</a> for comparison. The canopy stomatal conductance is calculated as the sum of the individual leaf conductances. The canopy boundary layer conductance is calculated from</p>
+      <p>Transpiration rate is calculated from the conductance of the whole canopy, as well as by applying the coupled photosynthesis-stomatal conductance model at each grid point in the canopy (and summed). Both are output in <a href="#hrflux" class="filename">hrflux.dat</a> for comparison. The canopy stomatal conductance is calculated as the sum of the individual leaf conductances. The canopy boundary layer conductance is calculated from</p>
       <p class="namelistlong">gb = K<sup>2</sup> * U / (LN((ZHT - ZPD)/Z0HT))<sup>2</sup></p>
       <p>(Jones 1992 eqn. 3.42). U is the above-canopy wind speed, K is von Karman's constant (defined in maestcom.f90), and the parameters required are ZHT (measurement height, m), ZPD (zero-plane displacement, m) and Z0HT (roughness length, m). If these parameters aren't specified, this calculation is not done.</p>
       <h3><a name="speclist"></a>Multi-species list</h3>
@@ -174,7 +267,7 @@
       <h3><a name="X & Y"></a>X &amp; Y Co-ordinates
       </h3>
       <p class="namelistlong">NAMELIST /XY/ XYCOORDS</p>
-      <p>The X and Y co-ordinates of each tree can be specified explicitly in this namelist, in order x1, y1, x2, y2, .. etc. Alternatively, if this namelist is missing, then the trees will be assumed to be spaced evenly at a distance of SQRT (XMAX*YMAX / NOALLTREES).</p>
+      <p>The X and Y co-ordinates of each tree can be specified explicitly in this namelist, in order x1, y1, x2, y2, .. etc. Alternatively, if this namelist is missing, then the trees will be assumed to be spaced evenly at a distance of <span class="code">SQRT(XMAX*YMAX / NOALLTREES)</span>.</p>
       <h3><a name="Tree Dim Indiv"></a>Tree Dimensions - Specified for Individual Trees
       </h3>
       <p class="namelistlong">NAMELIST /INDIVRADX/ NODATES, VALUES, DATES <br>
@@ -183,7 +276,7 @@
         NAMELIST /INDIVHTTRUNK/ NODATES, VALUES, DATES <br>
         NAMELIST /INDIVDIAM/ NODATES, VALUES, DATES <br>
         NAMELIST /INDIVLAREA/ NODATES, VALUES, DATES</p>
-      <p>The tree dimensions (the radii of the crowns in both X and Y directions (in m), the height of the crown and the trunk space (both in m), the stem diameter (in m) and the leaf area (in m2) can be specified for each tree individually, using these namelists. They can be specified on a series of dates - linear interpolation is used between those dates.</p>
+      <p>The tree dimensions (the radii of the crowns in both X and Y directions (in m), the height of the crown and the trunk space (both in m), the stem diameter (in m) and the leaf area (in m<sup>2</sup>) can be specified for each tree individually, using these namelists. They can be specified on a series of dates - linear interpolation is used between those dates.</p>
       <p>If they are to be constant throughout the simulation, then NODATES should be 1. DATES can be omitted. VALUES should be given in order of tree number.</p>
       <p>If they are specified for a series of dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in a table with a row for each tree and a column for each date.</p>
       <p>The stem diameter is only used for calculating the woody respiration. If it is missing, woody respiration is not calculated. If any of the other dimensions are missing, an error will occur. The stem diameter should be specified at the height required for the <a href="#Allometric">allometric relationship</a> between height, diameter, and woody biomass.</p>
@@ -195,15 +288,15 @@
         NAMELIST /ALLHTTRUNK/ NODATES, VALUES, DATES <br>
         NAMELIST /ALLDIAM/ NODATES, VALUES, DATES <br>
         NAMELIST /ALLLAREA/ NODATES, VALUES, DATES</p>
-      <p>Alternatively, the tree dimensions (the radii of the crowns in both X and Y directions, the height of the crown and the trunk space, stem diameter and the leaf area (in m2) can be assumed to be the same for all trees, and the common values input using these namelists. As for the dimensions for individual trees, the dimensions of all trees can be specified on a series of dates, with linear interpolation being used between those dates.</p>
+      <p>Alternatively, the tree dimensions (the radii of the crowns in both X and Y directions, the height of the crown and the trunk space, stem diameter and the leaf area (in m<sup>2</sup>) can be assumed to be the same for all trees, and the common values input using these namelists. As for the dimensions for individual trees, the dimensions of all trees can be specified on a series of dates, with linear interpolation being used between those dates.</p>
       <p>If the values are to be constant throughout the simulation, then NODATES should be 1, DATES can be omitted, and VALUES should just consist of the single number.</p>
       <p>If the values are specified for a series of a dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in date order.</p>
       <p>It is not necessary to use the same format for all dimensions - for example, the height of all trees may be assumed the same, whereas leaf area may be specified for each tree. Similarly, different dates may be given for each dimension - height may be constant throughout the simulation, with leaf area changing.</p>
       <h3><a name="Phenology"></a>Phenology of leaf area development
       </h3>
-      <p>The development of leaf area may be modelled by specifying leaf area on different dates, or by using the phenology model described by Wang, Rey &amp; Jarvis (1998, GCB). To use this phenology model, replace the INDIVLAREA or ALLLAREA namelist by the following:</p>
+      <p>The development of leaf area may be modelled by specifying leaf area on different dates, or by using the phenology model described by Wang et al. (1998). To use this phenology model, replace the INDIVLAREA or ALLLAREA namelist by the following:</p>
       <p class="namelistlong">NAMELIST /PHENOLOGY/ FLUSHDATE, DT1, DT2, DT3, DT4, EXPTIME, MAXLEAVES, SIZELEAF</p>
-      <p>where FLUSHDATE is the date of flushing ('DD/MM/YY'); DT1, DT2, DT3, and DT4 are the number of days from the flush date to the end of the first flush, end of the second flush, start of leaf senescence, and end of leaf senescence, respectively; EXPTIME is the time taken for a single leaf to fully expand (days); MAXLEAVES is the maximum number of leaves, and SIZELEAF is the mean leaf size (m2). The maximum leaf area is thus given by MAXLEAVES*SIZELEAF. It is currently assumed, using this model, that all trees have the same leaf area.</p>
+      <p>where FLUSHDATE is the date of flushing ('DD/MM/YY'); DT1, DT2, DT3, and DT4 are the number of days from the flush date to the end of the first flush, end of the second flush, start of leaf senescence, and end of leaf senescence, respectively; EXPTIME is the time taken for a single leaf to fully expand (days); MAXLEAVES is the maximum number of leaves, and SIZELEAF is the mean leaf size (m<sup>2</sup>). The maximum leaf area is thus given by MAXLEAVES*SIZELEAF. It is currently assumed, using this model, that all trees have the same leaf area.</p>
     </section>
 
     <section>
@@ -212,30 +305,31 @@
       <p>This is followed by several namelists (described below).</p>
       <p>Then there is the line <br>
         <span class="namelistlong">DATA STARTS </span><br>
-        followed by the actual (space-delimited) data. Note that the line DATA STARTS must be in exactly that format, ie caps, and no tabs or following blank spaces.</p>
+      followed by the actual (space-delimited) data. Note that the line DATA STARTS must be in exactly that format, ie caps, and no tabs or following blank spaces.</p>
       <h3><a name="Constant met"></a>Constant met data
       </h3>
       <p class="namelistlong">NAMELIST /ENVIRON/ CA, PRESS, DIFSKY, SWMIN, SWMAX</p>
-      <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mmol mol-1, which is assumed not to vary with time. This value is only used if the 'CA' column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
+      <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mmol mol<sup>-1</sup>, which is assumed not to vary with time. This value is only used if the 'CA' column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
       <p>PRESS is the atmospheric pressure, in Pa, also assumed not to vary with time. This value is only used if the 'PRESS' column is missing from the met file. The default value for PRESS is 1.0125 * 105 Pa.</p>
       <p>DIFSKY controls the distribution of diffuse radiation incident from the sky. The distribution function is given by</p>
-      <p class="namelistlong">G(q) = (1 + DIFSKY*cos(q)) / (1 + 2/p DIFSKY)</p>
-      <p>For a uniform overcast sky, DIFSKY = 0.0 (default). See Wang &amp; Jarvis (1990) Silva Carelica 15:167-180 and Steven &amp; Unsworth (1980) Quart. J. Roy. Meteorol. Soc. 105: 593-602 for more information about DIFSKY.</p>
-      <p>SWMIN and SWMAX are the minimum and maximum soil water contents. They should be in the same units as soil water values (specified in main met data). Soil moisture deficit, which affects <a href="#Stomatal%20conductance">stomatal conductance</a>, is calculated as: <br>
-        <span class="namelistlong">SMD = (SWMAX – SW) / (SWMAX – SWMIN)</span></p>
+      <p class="namelistlong">&Gamma;(q) = (1 + DIFSKY*cos(&theta;)) / (1 + 2/&pi; DIFSKY)</p>
+      <p>For a uniform overcast sky, DIFSKY = 0.0 (default). See Wang and Jarvis (1990 Silva Carelica 15:167-180) and Steven &amp; Unsworth (1980 Quart. J. Roy. Meteorol. Soc. 105: 593-602) for more information about DIFSKY.</p>
+     <!--<p>SWMIN and SWMAX are the minimum and maximum soil water contents. They should be in the same units as soil water values (specified in main met data). Soil moisture deficit, which affects <a href="#Stomatal%20conductance">stomatal conductance</a>, is calculated as: <br>
+        <span class="namelistlong">SMD = (SWMAX – SW) / (SWMAX – SWMIN)</span></p>-->
       <h3><a name="Latitude &"></a>Latitude &amp; Longitude
       </h3>
       <p class="namelistlong">NAMELIST /LATLONG/ LATHEM,LAT,LONHEM,LONG,TZLONG</p>
       <p>LATHEM is either 'N' or 'S', indicating the hemisphere. Similarly, LONHEM is either 'W' or 'E'. LAT and LONG are the latitude and longitude, respectively. Both are arrays of three numbers, indicating the degrees, minutes, and seconds. TZLONG is the longitude of the meridian of the time zone, specified in degrees.</p>
       <h3>Daily temperature amplitude </h3>
       <p class="namelistlong">NAMELIST /BRISTO/ DELTAT</p>
-      <p>If incident radiation values are missing, the program can use the formula of Bristow &amp; Campbell (1984) Ag For Met 31: 159-166 to calculate incident PAR from air temperature. To use this option the above namelist must be specified. DELTAT should have 12 values representing the mean monthly daily temperature amplitude for each month of the year.</p>
+      <p>If incident radiation values are missing, the program can use the formula of Bristow and Campbell (1984 Ag For Met 31: 159-166) to calculate incident PAR from air temperature. To use this option the above namelist must be specified. DELTAT should have 12 values representing the mean monthly daily temperature amplitude for each month of the year.</p>
       <h3><a name="metformat"></a>Metformat
       </h3>
       <p class="namelistlong">NAMELIST /METFORMAT/ DAYORHR, KHRSPERDAY, NOCOLUMNS, COLUMNS, STARTDATE, ENDDATE</p>
-      <p>NOTE:The format of this namelist was modified in April 2009, older files need to be reformatted accordingly.</p>
+      <p>Note: The format of this namelist was modified in April 2009, older files need to be reformatted accordingly.</p>
       <p>DAYORHR is a flag indicating whether the met file is daily (DAYORHR = 0) or 'hourly' (DAYORHR = 1) data.</p>
-      <p>KHRSPERDAY is the number of timesteps per day. For example, if the input data are hourly, this should be set to 24. There is no longer a need to recompile if this setting is changed. The maximum number of timesteps per day is set at 1440 (minutely input data). Note: If the input data are daily, KHRSPERDAY should still be set to 24 or 48, depending on how many calculations should be performed per day (which affects daily totals as well). It is recommended to set it to 48 when using daily data.</p>
+      <p>KHRSPERDAY is the number of timesteps per day. For example, if the input data are hourly, this should be set to 24. There is no longer a need to recompile if this setting is changed. The maximum number of timesteps per day is set at 1440 (minutely input data). </p>
+      <p><em>Note</em>: If the input data are daily, KHRSPERDAY should still be set to 24 or 48, depending on how many calculations should be performed per day (which affects daily totals as well). It is recommended to set it to 48 when using daily data.</p>
       <p>STARTDATE and ENDDATE are the start and end dates of the met data, respectively ('DD/MM/YY').</p>
       <p>NOCOLUMNS gives the number of columns of meteorological data, and COLUMNS is a list of names describing the content of each column. The following names are recognised:</p>
       <h3>For hourly data</h3>
@@ -249,7 +343,7 @@
           </tr>
           <tr>
             <td>'WIND'</td>
-            <td>m s-1</td>
+            <td>m s<sup>-1</sup></td>
             <td>wind speed above the canopy</td>
             <td>Assumed = DEFWIND (defined in maestcom.f90)</td>
           </tr>
@@ -285,7 +379,7 @@
           </tr>
           <tr>
             <td>'VMFD'</td>
-            <td>mmol mol-1</td>
+            <td>mmol mol<sup>-1</sup></td>
             <td>vapour pressure mole fraction deficit</td>
             <td>Calculated from RH or VPD, and PRESS</td>
           </tr>
@@ -297,13 +391,13 @@
           </tr>
           <tr>
             <td>'PAR'</td>
-            <td>mmol m-2s-1</td>
+            <td>mmol m<sup>-2</sup>s<sup>-1</sup></td>
             <td>hourly incident photosynthetically active radiation</td>
             <td>Calculated from RAD. If RAD absent, calculated from TAIR (DELTAT needed).</td>
           </tr>
           <tr>
             <td>'RAD'</td>
-            <td>W m-2</td>
+            <td>W m<sup>-2</sup></td>
             <td>hourly incident total short-wave radiation</td>
             <td>Calculated from 'PAR'. If PAR absent, calculated from TAIR (DELTAT needed).</td>
           </tr>
@@ -338,7 +432,7 @@
             <td>Use soil water content, or nothing.</td>
           </tr>
         </tbody>
-      </table>
+      </table><br>
       <h3>For daily data
       </h3>
       <table border="1" cellpadding="7" width="607">
@@ -351,7 +445,7 @@
           </tr>
           <tr>
             <td>'WIND'</td>
-            <td>m s-1</td>
+            <td>m s<sup>-1</sup></td>
             <td>wind speed above the canopy</td>
             <td>Assumed to be zero.</td>
           </tr>
@@ -375,7 +469,7 @@
           </tr>
           <tr>
             <td>'PAR' or 'SI'</td>
-            <td>MJ d-1</td>
+            <td>MJ d<sup>-1</sup></td>
             <td>daily incident radiation (PAR = photosynthetically active radiation, 400 - 700 nm; SI = total shortwave radiation)</td>
             <td>Error.</td>
           </tr>
@@ -398,22 +492,24 @@
             <td>Use soil water content, or nothing.</td>
           </tr>
         </tbody>
-      </table>
+      </table><br>
       <p>It doesn't matter what order these columns are in, so long as the columns of data correspond to the titles in the namelist. The available options are fairly readily extended through the functions OPENMETF, GETMETHR and GETMETDAY. Additional (unused) columns should be identified by some other name to those above; they will then be ignored by the program.</p>
       <h3>Missing data</h3>
       <p>The program does not handle missing met data at all, all data must be specified. Note that each new line of data is assumed to correspond to a timestep, it is not possible to indicate the time of the timestep. Make sure that when preparing the met data, that you have the same number of timesteps for each day (for example 24 or 48).</p>
     </section>
 
-    <section>
-      <h2>The structure file (str.dat)</h2>
-      <p>First line: title of the file used in the output files.</p>
-      <p>Following that, all input is in the following namelists.</p>
-      <a name="Crown shape"></a>Crown shape
+<section><h2>The structure file (str.dat)</h2>
+
+<p>As with the other input files, the first line contains an optional title of the file used in the output files. Following that, all input is in the following namelists.</p>
+      
+<h3><a name="Crown shape">Crown shape</a></h3>
       <p class="namelistlong">NAMELIST /CANOPY/ CSHAPE</p>
       <p>CSHAPE is a string indicating the shape of the crown: 'CONE' indicates a conical crown, 'ELIP' a half-ellipsoidal crown, 'PARA' a paraboloidal crown, 'ROUND' a full ellipsoid, 'CYL' an upright cylinder, 'BOX' a box shape (suitable for the mini-ecosystems, for example). Default: half-ellipsoidal.</p>
-      <a name="Leaf incidence"></a>Leaf incidence angle
-      <p class="namelistlong">NAMELIST /LIA/ ELP,NALPHA,FALPHA,AVGANG</p>
-      <p>This namelist describes the leaf angle distribution, used in the radiative transfer calculations. There are three options to specify this namelist:</p>
+
+<h3><a name="Leaf incidence">Leaf incidence angle</a></h3>
+ <p class="namelistlong">NAMELIST /LIA/ ELP,NALPHA,FALPHA,AVGANG</p>
+ 
+ <p>This namelist describes the leaf angle distribution, used in the radiative transfer calculations. There are three options to specify this namelist:</p>
       <p>(a) AVGANG &gt; 0 <br>
         The mean leaf inclination angle is specified by AVGANG. If NALPHA = 1, there is just on leaf angle class with angle AVGANG. If NALPHA &gt; 1, AVGANG is used to generate the LIA distribution assuming an elliptical distribution.</p>
       <p>(b) ELP &gt; 0.0 <br>
@@ -421,18 +517,17 @@
       <p>(c) ELP &lt; 0.0 <br>
         The proportion of leaf area in each angle class is read in from array FALPHA. The number of angle classes is given by NALPHA (max 9).</p>
       <p>Default values: NALPHA = 1, ELP = 1.0 (i.e. one leaf angle class, spherical distribution).</p>
-      <h3>Beta distributions for <a name="leaf area DD"></a>leaf area density
-      </h3>
+      <h3><a name="leaf area DD">Beta distributions for leaf area density</a></h3>
       <p class="namelistlong">NAMELIST /LADD/ JLEAF,NOAGEC,BPT,RANDOM</p>
       <p>If JLEAF = 0, the leaf area density is assumed to be uniform. If JLEAF = 1, it is assumed to follow a beta distribution in the vertical direction only. If JLEAF = 2, then it is assumed to follow beta distributions in both vertical and horizontal directions. Default: 0.</p>
       <p>NOAGEC is the number of age classes for which beta-distributions are specified. If NOAGEP (the number of age classes for physiology parameters, specified in phy.dat) is not equal to 1, then NOAGEC must equal 1 or NOAGEP.</p>
       <p>BPT contains the coefficients of the beta distributions for NOAGEC age classes. The beta distribution for each age class has six parameters, a, b, c, d, e, f:</p>
-      <p class="namelistlong">f(r,h) = a hb (1-h)c d re (1 - r)f</p>
+      <p>f(r,h) = a h<sup>b</sup> (1-h)<sup>c</sup> d r<sup>e</sup> (1 - r)<sup>f</sup></p>
       <p>where f(r,h) is the normalised leaf area density (see below) at relative height h (0, crown base; 1, crown top) and relative radius r (0, next to trunk; 1, exterior of canopy). The parameters should be given in the order a, b, c, d, e, f, for each age class. If JLEAF = 1, the parameters of the horizontal distribution (d,e,f) should still be given but will not be used; they can be set to zero.</p>
       <p>Important note: the parameters a and d must be determined from the following constraints:</p>
-      <p>(a) the integral of a hb (1-h)c from h = 0 to h = 1 must = 1</p>
-      <p>(a) the integral of d re+1 (1 - r)f from r = 0 to r = 1 must = 1/2p</p>
-      <p>For more information about the beta distributions see Wang et al (1990) Forest Ecology &amp; Management 32: 217-237.</p>
+      <p>(a) the integral of a hb (1-h)<sup>c</sup> from h = 0 to h = 1 must = 1</p>
+      <p>(b) the integral of d r<sup>e+1</sup> (1 - r)<sup>f</sup> from r = 0 to r = 1 must = 1/2&pi;</p>
+      <p>For more information about the beta distributions see Wang et al (1990 For Ecol Man 32: 217-237).</p>
       <p><a name="RANDOM"></a>RANDOM describes the level of clumping of foliage into shoots: it is given by the ratio of projected shoot area to projected needle area. Default: 1.0.</p>
       <h3><a name="wind"></a>Decline in wind speed with depth in the canopy
       </h3>
@@ -447,7 +542,7 @@
         NAMELIST /ALLOMR/ RCOEFFT, REXPONT, RINTERC, FRFRAC</p>
       <p>The woody biomass is calculated using the following allometric relationship:</p>
       <p class="namelistlong">WBIOM = COEFFT * HEIGHT * DIAMEXPONT + WINTERC (S1)</p>
-      <p>where: WBIOM is the woody biomass (in kg DW tree-1), HEIGHT is the total height of the tree in m (green height + trunk length), DIAM is the stem diameter in m, and COEFFT, EXPONT and WINTERC are parameters. The diameter should be specified (in trees.dat) at the height for which they were used to develop this allometric relationship. The woody biomass is only used to calculate the woody respiration rate.</p>
+      <p>where: WBIOM is the woody biomass (in kg DW tree<sup>-1</sup>), HEIGHT is the total height of the tree in m (green height + trunk length), DIAM is the stem diameter in m, and COEFFT, EXPONT and WINTERC are parameters. The diameter should be specified (in trees.dat) at the height for which they were used to develop this allometric relationship. The woody biomass is only used to calculate the woody respiration rate.</p>
       <p>Branch biomass and total root biomass are calculated using the same equations, again from stem height and diameter, but using different parameters. Fine root biomass is assumed to be a constant fraction (FRFRAC) of total root biomass. Again, these biomass estimates are only used to calculate <a href="#Woody%20respiration%20rates">respiration </a>rates.</p>
     </section>
 
@@ -457,10 +552,10 @@
       <h3><a name="age"></a>Number of age classes of foliage
       </h3>
       <p class="namelistlong">NAMELIST /NOAGES/ NOAGEP</p>
-      <p>NOAGEP is the number of age classes for which physiological parameters are specified. If NOAGEC (the number of age classes for which leaf area density distributions are specified, given in str.dat) is not equal to 1, then NOAGEP must equal 1 or NOAGEC. The parameters NFOL, JMAX, VCMAX and RD can be specified for different age classes of foliage. However they do not all need to be specified for all age classes - but they must either be specified for all foliage or for NOAGEP age classes. Neither NOAGEP nor NOAGEC should exceed MAXC, specified in maestcom.f90 If NOAGEP = 1, then this namelist can be omitted.</p>
+      <p>NOAGEP is the number of age classes for which physiological parameters are specified. If NOAGEC (the number of age classes for which leaf area density distributions are specified, given in str.dat) is not equal to 1, then NOAGEP must equal 1 or NOAGEC. The parameters NFOL, JMAX, VCMAX and RD can be specified for different age classes of foliage. However they do not all need to be specified for all age classes - but they must either be specified for all foliage or for NOAGEP age classes. Neither NOAGEP nor NOAGEC should exceed MAXC, specified in <span class="filename">maestcom.f90</span> If NOAGEP = 1, then this namelist can be omitted.</p>
       <h3>Proportions of leaf area in each age class </h3>
       <p class="namelistlong">NAMELIST /PHENOL/ PROP</p>
-      <p>PROP is an array containing the proportion of leaf area in each age class. This is only read in if either NOAGEP &gt; 1 or NOAGEC &gt; 1. NOAGEP or NOAGEC indicate how many entries there should be in this array (maximum MAXC, in maestcom.f90) Also, the entries in the array should sum to one.</p>
+      <p>PROP is an array containing the proportion of leaf area in each age class. This is only read in if either NOAGEP &gt; 1 or NOAGEC &gt; 1. NOAGEP or NOAGEC indicate how many entries there should be in this array (maximum MAXC, in <span class="filename">maestcom.f90</span>) Also, the entries in the array should sum to one.</p>
       <h3><a name="Reflectance"></a>Reflectance and transmittance
       </h3>
       <p class="namelistlong">NAMELIST /ABSORP/ NOLAYERS,RHOSOL,ATAU,ARHO</p>
@@ -468,16 +563,18 @@
       <p>RHOSOL is the soil reflectance, in three wavebands (PAR, NIR, thermal). This affects up-welling radiation (particularly long-wave radiation, for which soil reflectance is significant).</p>
       <p>ATAU is the leaf transmittance, also in three wavebands, and for NOLAYERS crown layers. It should be specified with the values for different layers in columns and the values for different wavelengths in rows.</p>
       <p>ARHO is the leaf reflectance, which should be specified similarly to ATAU.</p>
-      <a name="Stomatal conductance"></a>Stomatal conductance parameters
-      <p class="namelistlong">NAMELIST /BBGS/ G0,G1,GAMMA,WLEAF,NSIDES, SMD1, SMD2, SWPEXP<br>
+
+<h3><a name="Stomatal conductance">Stomatal conductance parameters</a></h3>
+
+<p class="namelistlong">NAMELIST /BBGS/ G0,G1,GAMMA,WLEAF,NSIDES, SMD1, SMD2, SWPEXP<br>
         NAMELIST /BBLGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP<br>
         NAMELIST /BBMGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP<br>
       NAMELIST /BBGSCON/ CONDUNITS</p>
       <p>The flag <a href="#Choice%20of%20submodel">MODELGS </a>(read in namelist CONTROL) indicates which stomatal conductance model is to be used, and hence, which set of parameters to read. If MODELGS = 2, BBGS is read; if MODELGS = 3, BBLGS is read; if MODELGS = 4, BBMGS is read.</p>
-      <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO2 or H2O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO2. A message is displayed in the Maeserr.dat file after running Maespa how the parameters were handled (to avoid fairly common mistakes).</p>
-      <p>If the stomatal conductance parameters are for CO2, they are converted in the program to conductance to water vapour by multiplying by the constant GSVGSC = 1.57 (in maestcom.f90).</p>
+      <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO<sub>2</sub> or H<sub>2</sub>O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO2. A message is displayed in the <span class="filename">Maeserr.dat</span> file after running Maespa how the parameters were handled (to avoid fairly common mistakes).</p>
+      <p>If the stomatal conductance parameters are for CO2, they are converted in the program to conductance to water vapour by multiplying by the constant GSVGSC = 1.57 (in <span class="filename">maestcom.f90</span>).</p>
       <p>For all models, WLEAF is the width of the leaf in m, used in calculating the boundary layer conductance (Leuning et al 1995 PC&amp;E 18:1183-1200). NSIDES is the number of sides of the leaf with stomata; default 1.</p>
-      <p>The effect of soil moisture is the same for all three models - gs is reduced by multiplying by a factor f that ranges from 0 to 1. There are three alternative ways of specifying f.</p>
+      <!-- !<p>The effect of soil moisture is the same for all three models - gs is reduced by multiplying by a factor f that ranges from 0 to 1. There are three alternative ways of specifying f.</p>
       <p>If the soil moisture is specified in the met file as soil water content, the soil moisture deficit (q) is calculated as q = (SWMAX - SWC)/(SWMAX - SWMIN). The effect of q on gs can be either an exponential or linear decline. The exponential relationship is given by:</p>
       <p class="namelistlong">f(q) = 1 – SMD1 * exp( SMD2 * q)</p>
       <p>Both parameters SMD1 and SMD2 should be &gt; 0. See Granier and Loustau (1994) Ag For Met 71:61-81 for further information on this function. The linear relationship is given by:</p>
@@ -485,126 +582,131 @@
       <p>and this relationship is chosen by setting SMD1 &lt; 0.</p>
       <p>If the soil moisture is specified in the met file as soil water potential p, then its effect on stomatal conductance is given by:</p>
       <p class="namelistlong">f(p) = exp(SWPEXP * p)</p>
-      <p>In all three of these functions, f is not allowed to be less than 0 or greater than 1. If soil moisture is omitted from the met file, or these parameters omitted, then there is no effect of soil moisture on gs.</p>
+      <p>In all three of these functions, f is not allowed to be less than 0 or greater than 1. If soil moisture is omitted from the met file, or these parameters omitted, then there is no effect of soil moisture on gs.</p> -->
       <p>In the Ball-Berry model (BBGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A * RH / (CA – GAMMA)</p>
-      <p>where gs (mol m-2 s-1) is the stomatal conductance to CO2, A (mmol m-2 s-1) is the assimilation rate, RH is the relative humidity, CA (mmol mol-1) is the atmospheric CO2 concentration and G0 (mol m-2 s-1), G1 (dimensionless), and GAMMA (mmol mol-1) are input parameters.</p>
+      <p>where gs (mol m<sup>-2</sup> s<sup>-1</sup>) is the stomatal conductance to CO2, A (mmol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, RH is the relative humidity, CA (mmol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), and GAMMA (mmol mol<sup>-1</sup>) are input parameters.</p>
       <p>In the Ball-Berry-Leuning model (BBLGS), stomatal conductance is given by</p>
       <p>gs = G0 + G1 * A / (CA – GAMMA) / (1 + VPD/D0L)</p>
-      <p>where gs (mol m-2 s-1) is the stomatal conductance to CO2, A (mmol m-2 s-1) is the assimilation rate, VPD (Pa) is the vapour pressure deficit, CA (mmol mol-1) is the atmospheric CO2 concentration and G0 (mol m-2 s-1), G1 (dimensionless), D0L (Pa) and GAMMA (mmol mol-1) are input parameters.</p>
+      <p>where gs (mol m-2 s-1) is the stomatal conductance to CO2, A (mmol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, VPD (Pa) is the vapour pressure deficit, CA (mmol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), D0L (Pa) and GAMMA (mmol mol<sup>-1</sup>) are input parameters.</p>
       <p>In the Ball-Berry-Opti model (BBMGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A/(CA - GAMMA) / SQRT(VPD)</p>
-      <p>where all units are the same as in the Ball-Berry-Leuning model. This model formulation is due to Medlyn et al. (2011, Glob. Change Biol. doi: 10.1111/j.1365-2486.2010.02375.x).</p>
-      <a name="Leaf N"></a>Leaf N content
-      <p class="namelistlong">NAMELIST /NFOLCON/ NODATES, NOLAYERS, NOAGES <br>
+      <p>where all units are the same as in the Ball-Berry-Leuning model. This model formulation is due to Medlyn et al. (2011).</p>
+
+<h3><a name="Leaf N">Leaf N content</a></h3>
+
+<p class="namelistlong">NAMELIST /NFOLCON/ NODATES, NOLAYERS, NOAGES <br>
         NAMELIST /NFOL/ DATES, VALUES</p>
       <p>If MODELJM = 1, or MODELRD = 1, indicating leaf N is required to calculate some of the parameters, then leaf N contents are read in. These can be specified for different dates, canopy layers, and foliage age classes.</p>
       <p>NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
       <p>DATES gives the dates at which N contents were specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then that value is used throughout the simulation.</p>
-      <p>VALUES gives the leaf N contents (in g m-2). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
-      <a name="Photosynthetic"></a>Photosynthetic parameters
-      <p>The tables of Jmax and Vcmax (JMAXTABLE and VCMAXTABLE) may be either read in, or calculated from leaf N content. If they are read in (MODELJM = 0), the following namelists should be used:</p>
-      <p class="namelistlong">NAMELIST /JMAXCON/ NODATES,NOLAYERS,NOAGES <br>
+      <p>VALUES gives the leaf N contents (in g m<sup>-2</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
+      
+<h3><a name="Photosynthetic">Photosynthetic parameters</a></h3>
+
+<p>The tables of Jmax and Vcmax (JMAXTABLE and VCMAXTABLE) may be either read in, or calculated from leaf N content. If they are read in (MODELJM = 0), the following namelists should be used:</p>
+
+<p class="namelistlong">NAMELIST /JMAXCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /JMAX/ VALUES, DATES <br>
         NAMELIST /VCMAXCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /VCMAX/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
-      <p>DATES gives the dates at which JMAX &amp; VCMAX were specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
-      <p>VALUES gives the parameter values (in mmol m-2 s-1). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class. The values should be corrected to 25 °C.</p>
+      <p>DATES gives the dates at which JMAX and VCMAX were specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
+      <p>VALUES gives the parameter values (in mmol m<sup>-2</sup> s<sup>-1</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class. The values should be corrected to 25 °C.</p>
       <p>If the parameters are <a href="#Choice%20of%20submodel">calculated from leaf N content</a>, then the following namelists should be used:</p>
       <p class="namelistlong">NAMELIST /JMAXN/ JMAXA,JMAXB,VCMAXA,VCMAXB</p>
       <p>Jmax is then calculated from leaf N content by Jmax = JMAXA * LEAFN + JMAXB. Similarly, Vcmax = VCMAXA * LEAFN + VCMAXB.</p>
       <p>The other parameters required for photosynthesis are read in using the following namelists:</p>
       <p class="namelistlong">NAMELIST /JMAXPARS/ THETA, EAVJ, EDVJ, DELSJ, AJQ, IECO <br>
         NAMELIST /VCMAXPARS/ EAVC, EDVC, DELSC, TVJUP, TVJDN</p>
-      <p>where THETA is the curvature of the light-response curve of electron transport, AJQ is the quantum yield of electron transport, and the other parameters describe the temperature responses of J&lt;max and Vcmax. The light response of electron transport, J, is given by a non-rectangular hyperbola:</p>
+      <p>where THETA is the curvature of the light-response curve of electron transport, AJQ is the quantum yield of electron transport, and the other parameters describe the temperature responses of Jmax and Vcmax. The light response of electron transport (J) is given by a non-rectangular hyperbola:</p>
       
         <p class="namelistlong">THETA J2 - (AJQI + JMAX) J + AJQ I JMAX = 0</p>
       
-      <p>where I is the leaf absorbed PAR, and JMAX, AJQ and THETA are the parameters. The default value of AJQ is ALPHAQ = 0.425 (defined in maestcom.f90). AJQ may also be specified by date, layer and age – see below.</p>
+      <p>where I is the leaf absorbed PAR, and JMAX, AJQ and THETA are the parameters. The default value of AJQ is ALPHAQ = 0.425 (defined in <span class="filename">maestcom.f90</span>). AJQ may also be specified by date, layer and age – see below.</p>
       <p>IECO determines whether the temperature dependences of Km and G* are those of Medlyn et al. (1999) Plant Cell Environ. 22:1475-1495 (IECO = 1 - default) or Bernacchi et al. (2001) Plant Cell Environ. 24:253-260 (IECO = 0).</p>
       <p>The temperature response of JMAX is given by:</p>
       
         <p>Jmax(T) = JMAX exp (EAVJ (T - 273) / (R T 273)) { [ 1 + exp((DELSJ 273 - EDVJ) / (R 273)) ] / [ 1 + exp((DELSJ T - EDVJ) / (R T)) ] }</p>
       
       <p>where T is the temperature in K, R is the gas constant, and EAVJ, EDVJ and DELSJ are the parameters.</p>
-      <p>The same function can be used for the temperature response of Vcmax. Alternatively, if EDVC £ 0, the simpler function</p>
+      <p>The same function can be used for the temperature response of Vcmax. Alternatively, if EDVC = 0, the simpler function</p>
       
         <p class="namelistlong">Vcmax(T) = VCMAX exp (EAVC (T - 273) / (R T 273))</p>
       
       <p>is used. The parameters TVJUP, TVJDN can be used to describe a linear decline to zero of Jmax and Vcmax at low temperature. They begin to decline linearly to zero at T = TVJUP °C and reach zero at T = TVJDN °C. Default value = -100°C.</p>
-      Quantum yield of electron transport
+      <h3>Quantum yield of electron transport</h3>
       <p>If there is just a single value for the quantum yield of electron transport, it can be specified as AJQ in the namelist JMAXPARS as described above. It is also possible to specify values by age class, height and date, using the namelists:</p>
       <p class="namelistlong">NAMELIST /AJQCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /AJQ/ VALUES,DATES</p>
       <p>in the same way as parameters JMAX and VCMAX are specified (see above).</p>
-      <a name="Leaf respirn"></a>Leaf respiration parameters
+<h3><a name="Leaf respirn">Leaf respiration parameters</a></h3>
       <p>The table of leaf respiration rates RD (RDTABLE) may be either read in, or calculated from leaf N content. If it is read in ( <a href="#Choice%20of%20submodel">MODELRD</a> = 0), the following namelists should be used:</p>
       <p class="namelistlong">NAMELIST /RDCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /RD/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
       <p>DATES gives the dates at which RD was specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
-      <p>VALUES gives the leaf dark respiration rate (in mmol m-2 s-1). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
+      <p>VALUES gives the leaf dark respiration rate (in mmol m<sup>-2</sup> s<sup>-1</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
       <p>If RD is to be calculated from leaf N content, then the following namelist should be used:</p>
       <p class="namelistlong">NAMELIST /RDN/ RDA, RDB</p>
       <p>RD is then calculated from leaf N content by RD = RDA * LEAFN + RDB.</p>
       <p>The other parameters required for leaf respiration are read in using the following namelist:</p>
       <p class="namelistlong">NAMELIST /RDPARS/ EFFYRF, Q10F, RTEMP, DAYRESP, TBELOW</p>
-      <p>Q10F is the exponential coefficient of the temperature response of foliage respiration, and RTEMP (° C) is the temperature at which the values of RD are specified:</p>
+      <p>Q10F is the exponential coefficient of the temperature response of foliage respiration, and RTEMP (°C) is the temperature at which the values of RD are specified:</p>
       
       <p class="namelistlong">Rd(T) = RD exp(Q10F (TAIR – RTEMP))</p>
       
       <p>TBELOW is the minimum temperature at which respiration occurs; below this, Rd(T) is set to zero. This applies to respiration of all plant components. Default: -100°C.</p>
       <p>DAYRESP determines the respiration in the light, relative to respiration in the dark. For example, if DAYRESP = 0.7, respiration in the light is 30% lower than in the dark.</p>
-      <p>The daily foliage growth respiration is calculated by multiplying EFFYRF (g g-1 C) by the increment in leaf biomass (obtained from the increment in leaf area and the SLA).</p>
+      <p>The daily foliage growth respiration is calculated by multiplying EFFYRF (g g<sup>-1</sup> C) by the increment in leaf biomass (obtained from the increment in leaf area and the SLA).</p>
       <p>The foliage respiration Q10 can also be specified by date using the following namelist:</p>
       <p class="namelistlong">NAMELIST /FOLQ10/ NDATES, RATES, DATES</p>
       <p>NDATES is the number of values given; RATES is the rates (note: the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in RDPARS will be ignored.</p>
-      <a name="Specific leaf"></a>Specific leaf area
+      <h3><a name="Specific leaf">Specific leaf area</a></h3>
       <p>The specific leaf area is required only for calculating the foliage growth respiration, for which foliage biomass is needed. SLA can be specified using the following namelists:</p>
       <p class="namelistlong">NAMELIST /SLACON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /SLA/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which SLA is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
       <p>DATES gives the dates at which SLA was specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
-      <p>VALUES gives the specific leaf area (in m2 kg-1). The values must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
-      <a name="Woody respiration rates"></a>Woody respiration rates
+      <p>VALUES gives the specific leaf area (in m<sup>2</sup> kg<sup>-1</sup>). The values must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
+      <h3><a name="Woody respiration rates">Woody respiration rates</a></h3>
       <p class="namelistlong">NAMELIST /WRESP/ EFFY, RM, RMA, RTEMP, Q10W, STEMFORM <br>
         NAMELIST /COLLWRESP/ COLLA, COLLK, STEMSDW</p>
       <p>The parameters in these namelists are used in calculating woody respiration as follows. Stem maintenance respiration is calculated on an hourly basis according to:</p>
       <p class="namelistlong">R = RMW * exp(Q10W * (TAIR - RTEMP)) * WBIOM</p>
-      <p>where RMW is the maintenance respiration rate per unit mass (in umol kg-1 DW s-1 or nmol g-1 DW s-1) at temperature RTEMP, Q10W is the temperature response factor, and WBIOM is the woody biomass (in kg DW) which is calculated from height and diameter according to the allometric relation given under str.dat.</p>
-      <p>There are three methods by which RMW can be specified, using the control parameter RDMODEL in confile.dat. <br>
+      <p>where RMW is the maintenance respiration rate per unit mass (in umol kg<sup>-1</sup> DW s<sup>-1</sup> or nmol g<sup>-1</sup> DW s<sup>-1</sup>) at temperature RTEMP, Q10W is the temperature response factor, and WBIOM is the woody biomass (in kg DW) which is calculated from height and diameter according to the allometric relation given under <span class="filename">str.dat</span>.</p>
+      <p>There are three methods by which RMW can be specified, using the control parameter RDMODEL in <span class="filename">confile.dat</span>. <br>
         (1) If RDMODEL = 0 and RM &gt; 0, then RMW = RM, the maintenance respiration rate per unit mass.</p>
-      <p>(2) If RDMODEL = 0 and RM = 0, the program will look for RMA, which is the rate of maintenance respiration per unit stem surface area (in umol m-2 s-1). This is converted to a value for RMW according to <br>
-        STEMAREA = STEMFORM*PI*(DIAM**2)*HT <br>
-        RMW = RMA*STEMAREA/WBIOM <br>
-        where STEMFORM is a parameter.</p>
-      <p>(3) If RDMODEL = 1, then the base rate of woody maintenance respiration (RMW) is calculated from the stem diameter according to <br>
-        RMW = CA * exp(CK * DIAM) * STEMSDW (P17) <br>
-        where CA and CK are parameters and STEMSDW is the stem surface area: dry weight ratio in m2 kg-1. For more information on this model, see Valentini et al (1996) Global Change Biol. 2: 199-207.</p>
+      <p>(2) If RDMODEL = 0 and RM = 0, the program will look for RMA, which is the rate of maintenance respiration per unit stem surface area (in umol m<sup>-2</sup> s<sup>-1</sup>). This is converted to a value for RMW according to:
+      <p>STEMAREA = STEMFORM*PI*(DIAM**2)*HT <br>
+             RMW = RMA*STEMAREA/WBIOM </p>
+        <p>where STEMFORM is a parameter.</p>
+      <p>(3) If RDMODEL = 1, then the base rate of woody maintenance respiration (RMW) is calculated from the stem diameter according to</p>
+      <p>RMW = CA * exp(CK * DIAM) * STEMSDW</p>
+      <p>where CA and CK are parameters and STEMSDW is the stem surface area: dry weight ratio in m<sup>2</sup> kg<sup>-1</sup>. For more information on this model, see Valentini et al (1996 Global Change Biol. 2: 199-207).</p>
       <p>The wood respiration Q10 can also be specified by date using the following namelist:</p>
       <p class="namelistlong">NAMELIST /WOODQ10/ NDATES, RATES, DATES</p>
       <p>NDATES is the number of values given; RATES is the rates (note: the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in WRESP will be ignored.</p>
       <p>The daily woody growth respiration is calculated from the increment in woody biomass on that day according to</p>
       <p class="namelistlong">RESPWG = WBINC * EFFY</p>
-      <p>where EFFY is the efficiency of woody biomass growth (g g-1 C) and WBINC is the daily increment in woody biomass (g DW d-1) which is calculated from the changes in height and diameter, using the allometric relation given in str.dat.</p>
+      <p>where EFFY is the efficiency of woody biomass growth (g g<sup>-1</sup> C) and WBINC is the daily increment in woody biomass (g DW d<sup>-1</sup>) which is calculated from the changes in height and diameter, using the allometric relation given in <span class="filename">str.dat</span>.</p>
       <h3><a name="Branch and root respiration"></a>Branch and root respiration rates
       </h3>
       <p class="namelistlong">NAMELIST /BRESP/ RMB, RTEMPB, Q10B <br>
         NAMELIST /RRESP/ RMFR, RMCR, RTEMPR, Q10R</p>
       <p>Branch respiration rates are calculated as:</p>
       <p class="namelistlong">R = RMB * exp(Q10B * (TAIR - RTEMPB)) * BBIOM</p>
-      <p>where the parameters required are: the maintenance respiration rate RMB (umol kg-1 DW s-1 at temperature RTEMPB and the temperature response parameter Q10B. BBIOM is the branch biomass which is calculated from tree height and diameter (see str.dat). Fine and coarse root respiration rates are calculated similarly. RMFR is the maintenance respiration rate for fine roots; RMCR that for coarse roots. Fine and coarse roots are assumed to have the same temperature response parameter RTEMPR.</p>
+      <p>where the parameters required are: the maintenance respiration rate RMB (umol kg<sup>-1</sup> DW s<sup>-1</sup> at temperature RTEMPB and the temperature response parameter Q10B. BBIOM is the branch biomass which is calculated from tree height and diameter (see <span class="filename">str.dat</span>). Fine and coarse root respiration rates are calculated similarly. RMFR is the maintenance respiration rate for fine roots; RMCR that for coarse roots. Fine and coarse roots are assumed to have the same temperature response parameter RTEMPR.</p>
     </section>
 
     <section>
       <h2>The understorey file (ustorey.dat)</h2>
       <p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated, and averaged to produce the output file.</p>
-      <p>WARNING : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead.</p>
+      <p>NOTE : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
       <p>This grid of understorey sampling points is defined by the following namelist:</p>
       <p class="namelistlong">NAMELIST /CONTROL/ NOPOINTS, X0, Y0, XMAX, YMAX, IOFORMAT</p>
       <p>This specified a rectangular grid from X0 to XMAX and Y0 to YMAX, having (approximately) NOPOINTS sampling points. The model then places the points accordingly within this rectangle.</p>
-      <p>The parameter IOFORMAT (0 or 1, default = 0) specifies the level of output required. If 0, outputs hourly values (of incident PAR, absorbed PAR, photosynthesis and transpiration) averaged over all understorey gridpoints. If IOFORMAT = 1, the 'uspar.dat' file will contain estimates for each grid point. Warning : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly. Only use this option for testing, or otherwise.</p>
+      <p>The parameter IOFORMAT (0 or 1, default = 0) specifies the level of output required. If 0, outputs hourly values (of incident PAR, absorbed PAR, photosynthesis and transpiration) averaged over all understorey gridpoints. If IOFORMAT = 1, the 'uspar.dat' file will contain estimates for each grid point. <em>Note</em> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly. Only use this option for testing, or otherwise.</p>
       <p>Next, the leaf area index, height, and leaf nitrogen content of the understorey is specified:</p>
       <p class="namelistlong">NAMELIST /ALLUSLAI/ NODATES, VALUES, DATES<br>
       NAMELIST /ALHTCROWN/ NODATES, VALUES, DATES<br>
@@ -622,7 +724,7 @@
       NAMELIST /BEWDYPARS/ JMAXN25,VCMAXN25,UNMIN,ABSRP<br>
       NAMELIST /RDPARS/ RD,RDK,RDT,SLA,EFFY</p>
       
-      <p>Where JMAXPAR and VCMAXPARS follow the same definitions as the 'phy.dat' file (see <a href="#phy">here</a>). The other parameters can be found in Medlyn et al. 2000 (Can J For Res, 30:873-888).</p>
+      <p>Where JMAXPAR and VCMAXPARS follow the same definitions as the <span class="filename">phy.dat</span> file. The other parameters can be found in Medlyn et al. (2000 Can J For Res, 30:873-888).</p>
     </section>
 
     <section>
@@ -646,21 +748,21 @@
       <p>If INPUTTYPE = 2, the XYZ namelist is ignored, and instead a transect of grid points is read in from the file. This may be useful for comparison against TRAC PAR transmission measurements. The namelist is:</p>
       <p class="namelistlong">NAMELIST /TRANSECT/ ANGLE,SPACING,ZHEIGHT</p>
       <p>where angle specifies the angle from north of the transect, spacing the distance between successive points, and zheight the height above the ground. The transect starts at X=0,Y=0, and continues for NOPOINTS as specified in the CONTROL namelist.</p>
-      <p>The output from this program is a file testflx.dat, which gives beam the following variables for each point for each half hour:</p>
+      <p>The output from this program is a file <span class="filename">testflx.dat</span>, which gives beam the following variables for each point for each half hour:</p>
       <ul>
         <li>Day, Hour</li>
         <li>Test point number, X,Y,Z locations of the point</li>
-        <li>Incident PAR above the canopy (mu mol m-2 s-1)</li>
+        <li>Incident PAR above the canopy (mu mol m<sup>-2</sup> s<sup>-1</sup>)</li>
         <li>Direct beam fraction (0-1)</li>
         <li>Sunlit leaf area fraction (0-1)</li>
         <li>Relative diffuse transmission (0-1)</li>
-        <li>Scattered PAR (incident to point) (mu mol m-2 s-1)</li>
-        <li>Total PAR (incident to point) (mu mol m-2 s-1)</li>
+        <li>Scattered PAR (incident to point) (mu mol m<sup>-2</sup> s<sup>-1</sup>)</li>
+        <li>Total PAR (incident to point) (mu mol m<sup>-2</sup> s<sup>-1</sup>)</li>
       </ul>
     </section>
 
     <section>
-      <h2>Output files</h2>
+      <h2><a id="outputfiles"></a>Output files</h2>
       <p>output files described here, need serious update of current manual!</p>
     </section>
   <!-- end .content --></article>
