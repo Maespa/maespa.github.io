@@ -172,9 +172,12 @@ th {
     color: white;
 }
 td {
-    text-align: right;
+    text-align: left;
     height: 40px;
-    vertical-align: bottom;
+    vertical-align: top;
 	padding: 5px;
+}
+tr a{
+	display:block
 }
 

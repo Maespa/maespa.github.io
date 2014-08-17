@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <title>Maespa technical manual</title>
 <link href="styles/main.css" rel="stylesheet" type="text/css">
-
+<link href="SpryAssets/SpryCollapsiblePanel.css" rel="stylesheet" type="text/css">
+<script src="SpryAssets/SpryCollapsiblePanel.js" type="text/javascript"></script>
 </head>
 
 <body id="manual">
@@ -31,69 +32,57 @@
     <section>
       <h2>Introduction</h2>
 
-<p>This page describes input and output files of Maespa (and Maespa). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels.</p>
-
-<p>Briefly,</p>
-<ul>
-        <li>The forest canopy is represented in the model as an array of tree crowns, whose positions and dimensions are specified.</li>
-          <li>Calculations are done for just one tree crown at a time, the 'target tree', but there can be multiple target trees in a plot.</li>
-          <li>The distribution of leaf area within the target crown is specified, as is the leaf angle distribution.</li>
-          <li>The main meteorological driving variables include incident radiation, air temperature and humidity, and optionally the CO2 concentration, atmospheric pressure, and others.</li>
-          <li>The target crown is divided into a number of grid points, and the radiation penetrating to each grid point is calculated for three wavebands (PAR, near infra-red and longwave). Direct, diffuse, and scattered radiation are considered separately.</li>
-          <li>The absorbed PAR at each grid point drives the photosynthesis and transpiration routines.</li>
-          <li>Photosynthesis is calculated from the Farquhar-von Caemmerer model, including temperature sensitivities of all parameters.</li>
-          <li>Stomatal conductance can be calculated from either of the Ball-Berry, Ball-Berry-Leuning, Ball-Berry-Opti or Tuzet et al. models.</li>
-          <li>Transpiration is calculated by applying the Penman-Monteith equation at each gridpoint, and summing over the gridpoints.</li>
-      </ul>
-  </section>
-    
+<p>This page describes input and output files of Maespa (and Maespa). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels, especially <a href="docs/MAESTRO_Retrospective_Chapter.pdf">Medlyn (2004) (pdf)</a>, <a href="http://treephys.oxfordjournals.org/content/27/12/1687.short">Medlyn et al. (2007)</a> and <a href="http://www.geosci-model-dev.net/5/919/2012/gmd-5-919-2012.html">Duursma and Medlyn (2012)</a>.</p>
+<p>The soil water and energy balance routines and soil-plant hydraulic pathway are described in detail in Duursma and Medlyn (2012).</p>
+    </section>
     <section><h2>Maestra or Maespa?</h2>
     
     <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (<span class="filename">watpars.dat</span>). If it is not present in the directory where you run Maespa, the model will run in Maestra mode.</p></section>
     
-    <section><h2>Input and output files</h2>
-      <p>The table below list the required and optional input files. All files must be present in the same directory as the executable. The next table shows the output files produced by Maespa.</p>
+<section><h2>Input and output files</h2>
+ 
+<p>The table below list the required and optional input files. All files must be present in the same directory as the executable. The next table shows the output files produced by Maespa.</p>
       <table width="200" border="1">
         <caption>
           <h3>Input files</h3>
         </caption>
         <tr>
-          <td width="24%" class="filename">trees.dat</td>
+          <td width="24%" class="filename"><a href="#treesdat">trees.dat</a></td>
           <td width="62%">Tree size and  location information</td>
           <td width="14%">Mandatory</td>
         </tr>
         <tr>
-          <td class="filename">str.dat</td>
+          <td class="filename"><a href="#strdat">str.dat</a></td>
           <td>Stand structure information</td>
           <td>Mandatory</td>
         </tr>
         <tr>
-          <td class="filename">confile.dat</td>
+          <td class="filename"><a href="#confiledat">confile.dat</a></td>
           <td>Simulation control parameters</td>
           <td>Mandatory</td>
         </tr>
         <tr>
-          <td class="filename">phy.dat</td>
+          <td class="filename"><a href="#phydat">phy.dat</a></td>
           <td>Leaf physiology model parameters</td>
           <td>Mandatory</td>
         </tr>
         <tr>
-          <td class="filename">met.dat</td>
+          <td class="filename"><a href="#metdat">met.dat</a></td>
           <td>Meteorological drivers, site location</td>
           <td>Mandatory</td>
         </tr>
         <tr>
-          <td class="filename">watpars.dat</td>
+          <td class="filename"><a href="#watparsdat">watpars.dat</a></td>
           <td>Water balance, soil and plant hydraulics. <br>If omitted, model is run in Maestra mode</td>
           <td>Optional</td>
         </tr>
         <tr>
-          <td class="filename">points.dat</td>
+          <td class="filename"><a href="#pointsdat">points.dat</a></td>
           <td>Coordinates of test points</td>
           <td>Optional</td>
         </tr>
         <tr>
-          <td class="filename">ustorey.dat</td>
+          <td class="filename"><a href="#ustoreydat">ustorey.dat</a></td>
           <td>Understorey parameters</td>
           <td>Optional</td>
         </tr>
@@ -104,32 +93,32 @@
           <h3>Output files</h3>
         </caption>
         <tr>
-          <td width="24%">hrflux.dat</td>
+          <td width="24%" class="filename"><a href="hrflux">hrflux.dat</a></td>
           <td width="53%">Hourly flux files, contains all flux estimates for each target tree for each timestep.</td>
-          <td width="23%">If eoufvnbierubv</td>
+          <td width="23%">Optional (recommended)</td>
         </tr>
         <tr>
-          <td>dayflx.dat</td>
+          <td class="filename">dayflx.dat</td>
           <td>Daily flux files, contains totals per tree for all flux estimates</td>
-          <td>&nbsp;</td>
+          <td>Always</td>
         </tr>
         <tr>
-          <td>Maeserr.dat</td>
+          <td class="filename">Maeserr.dat</td>
           <td>Maespa error messages and warnings.</td>
           <td>Always</td>
         </tr>
         <tr>
-          <td>watbal.dat</td>
+          <td class="filename">watbal.dat</td>
           <td>Water balance calculations for each timestep</td>
           <td>If run in Maespa mode</td>
         </tr>
         <tr>
-          <td>watbalday.dat</td>
+          <td class="filename">watbalday.dat</td>
           <td>Daily summaries of water balance calculations</td>
           <td>If run in Maespa mode</td>
         </tr>
         <tr>
-          <td>tutd.dat</td>
+          <td class="filename">tutd.dat</td>
           <td>Input / output file with diffuse transmittances</td>
           <td>Optional</td>
         </tr>
@@ -176,7 +165,7 @@
     </section>
 
     <section>
-      <h2>The control file (confile.dat)      </h2>
+      <h2><a id="confiledat"></a>The control file (confile.dat)      </h2>
       <p>The first line can include the title of the file, which is used to indicate in the output which input file was used.</p>
       <p>Following that, all input is in namelists, which may be in any order.</p>
       <h3><a name="Control of output"></a>Control of output files</h3>
@@ -204,7 +193,7 @@
       </ul>
       <h3><a name="Multi-species">Multi-species settings</a></h3>
       <p class="namelistlong">NAMELIST /SPECIES/ NSPECIES,SPECIESNAMES,PHYFILES,STRFILES</p>
-      <p>This namelist allows multi-species stands of trees. NSPECIES is the number of species in the stand. SPECIESNAMES is an array of names of the species, this is shown in the output files but not otherwise used. PHYFILES is an array of names of the physiology input files, the first corresponding to species 1, etc. STRFILES is an array of structure input files (to override str.dat if it exists). Note that if NSPECIES is set to 1, but an array of STRFILES or PHYFILES is defined, only the first one is used (and the standard phy.dat and str.dat files are not used!).</p>
+      <p>This namelist allows multi-species stands of trees. NSPECIES is the number of species in the stand. SPECIESNAMES is an array of names of the species, this is shown in the output files but not otherwise used. PHYFILES is an array of names of the physiology input files, the first corresponding to species 1, etc. STRFILES is an array of structure input files (to override <span class="filename">str.dat</span> if it exists). Note that if NSPECIES is set to 1, but an array of STRFILES or PHYFILES is defined, only the first one is used (and the standard <span class="filename">phy.dat</span> and <span class="filename">str.dat</span> files are not used!).</p>
       
       <p>Here is an example namelist:
       </p>
@@ -246,7 +235,7 @@
       <p>where BINSIZE is the size of the classes in the histogram (in mmol m<sup>-2</sup> s<sup>-1</sup>). The maximum number of classes is given by MAXHISTO in <span class="filename">maestcom.f90</span>.</p>
     </section>
     <section>
-      <h2>The trees file (trees.dat)      </h2>
+      <h2><a id="treesdat"></a>The trees file (trees.dat)      </h2>
       <p>First line: title of file (as with other input files, the title is included in the output files)</p>
       <p>Following that, all input is in namelist blocks, which may be in any order.</p>
       <h3><a name="Plot"></a>Plot Details
@@ -300,7 +289,7 @@
     </section>
 
     <section>
-      <h2>The met file (met.dat)</h2>
+      <h2><a id="metdat"></a>The met file (met.dat)</h2>
       <p>The first line of the file is the title, which is shown in the output files.</p>
       <p>This is followed by several namelists (described below).</p>
       <p>Then there is the line <br>
@@ -498,7 +487,7 @@
       <p>The program does not handle missing met data at all, all data must be specified. Note that each new line of data is assumed to correspond to a timestep, it is not possible to indicate the time of the timestep. Make sure that when preparing the met data, that you have the same number of timesteps for each day (for example 24 or 48).</p>
     </section>
 
-<section><h2>The structure file (str.dat)</h2>
+<section><h2><a id="strdat"></a>The structure file (str.dat)</h2>
 
 <p>As with the other input files, the first line contains an optional title of the file used in the output files. Following that, all input is in the following namelists.</p>
       
@@ -547,7 +536,7 @@
     </section>
 
     <section>
-      <h2>The physiology file (phy.dat)      </h2>
+      <h2><a id="phydat"></a>The physiology file (phy.dat)      </h2>
       <p>First line: title of physiology file used in the output files.</p>
       <h3><a name="age"></a>Number of age classes of foliage
       </h3>
@@ -698,9 +687,276 @@
       <p class="namelistlong">R = RMB * exp(Q10B * (TAIR - RTEMPB)) * BBIOM</p>
       <p>where the parameters required are: the maintenance respiration rate RMB (umol kg<sup>-1</sup> DW s<sup>-1</sup> at temperature RTEMPB and the temperature response parameter Q10B. BBIOM is the branch biomass which is calculated from tree height and diameter (see <span class="filename">str.dat</span>). Fine and coarse root respiration rates are calculated similarly. RMFR is the maintenance respiration rate for fine roots; RMCR that for coarse roots. Fine and coarse roots are assumed to have the same temperature response parameter RTEMPR.</p>
     </section>
+    
+<section id="watparsdat"><h2>The water balance file (watpars.dat)</h2>
+    
+<p>This file contains all the parameters related to the soil water balance calculations.</p>
+<p> Control parameters </p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;WATCONTROL</dt>
+<dt class="namelistlong">SIMTSOIL = 1</dt>
+<dt class="namelistlong">SIMSOILEVAP = 1</dt>
+<dt class="namelistlong">REASSIGNRAIN = 0</dt>
+<dt class="namelistlong">RETFUNCTION = 1</dt>
+<dt class="namelistlong">KEEPWET = 0</dt>
+<dt class="namelistlong">EQUALUPTAKE = 0</dt>
+<dt class="namelistlong">USEMEASET = 1</dt>
+<dt class="namelistlong">USEMEASSW = 0</dt>
+<dt class="namelistlong">USESTAND = 1</dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+<p>If SIMTSOIL is set to 0, soil temperature
+will not be simulated (and soil evaporation estimates are not to be
+trusted). This option is typically used only for debugging. Recall also
+that if TSOIL is input in the met.dat file, soil
+surface temperature is not simulated either.</p>
+<p>If SIMSOILEVAP is set to 1, the
+soil evaporation is calculated (if 0, it is not calculated -
+simplifying parameterization).</p>
+<p>If REASSIGNRAIN is set to 1, the
+(half-)hourly precipitation as read in from met.dat
+is re-assigned to more realistic (half-)hourly values. This is useful
+if the input rain data was actually measured daily (as is typical), but
+was input on the first of each day, for example. The routine to
+re-assign rain was borrowed from GRAECO (see the subroutine ASSIGNRAIN in
+getmet.for for more details).</p>
+<p>RETFUNCTION specifies which soil water
+retention curve should be used. RETFUNCTION =
+1 uses the Campbell curve:</p>
+<p>SOILWP
+= PSIE*(WATFRAC/POREFRAC)<sup>-BPAR</sup></p>
+<p>where POREFRAC is the porosity (0-1, see below), PSIE (MPa)
+and BPAR (-) parameters, WATFRAC the volumetric water content (m<sup>3</sup>m<sup>-3</sup>),
+and SOILWP the soil water potential (MPa). Values for the parameters BPAR and PSIE are
+given by, among others: <a href="#cosby1984">Cosby et al. (1984)</a>, as reproduced in <a href="#duursma2008">Duursma
+et al. (2008)</a> in the same units as used in MAESPA (but note
+PSIE is in kPa in that paper, so divide by 10<sup>3</sup>
+for use in MAESPA).
+
+When RETFUNCTION
+= 2, the only difference is that WATFRAC is not divided by POREFRAC
+(but still uses the parameters PSIE and BPAR).</p>
+<p>KEEPWET is used for testing, if set to 1,
+the soil water balance is calculated but soil water content is not
+actually updated (so that the soil stays wet).</p>
+<p>EQUALUPTAKE sets the option to use equal
+relative water uptake from all soil layers. If it is 0 (default), the
+relative water uptake is calculated from fine root density and soil
+water potential, and so on.</p>
+<p>The soil water balance can be calculated with measured (not
+simulated) canopy transpiration. To do this, set USEMEASET
+= 1, and make sure to add measured ET to the met file.</p>
+<p>Similarly, it is possible to use measured (not simulated) soil
+water content in the simulations. To do this, set USEMEASSW
+= 1. In that case, soil water stress will be calculated
+from measured water content, which needs to be added to the met file.</p>
+<p>By default, Maespa scales up water used by single trees to the
+entire stand, so that (area-based) soil water balance can be calculated
+from simulated single tree outputs. Or, if USESTAND
+= 0, this scaling up is not done. This setting is useful to simulate
+water balance for a single tree in a stand, or by itself.</p>
+
+<p>Rainfall interception</p>
+
+<ul>
+<dl>
+<dt class="namelistlong">&amp;WATTFALL</dt>
+<dt class="namelistlong">RUTTERB = 3.7</dt>
+<dt class="namelistlong">RUTTERD = 0.002</dt>
+<dt class="namelistlong">MAXSTORAGE = 0.5</dt>
+<dt class="namelistlong">THROUGHFALL = 0.5</dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+
+<p>Parameters RUTTERB and RUTTERD, MAXSTORAGE and THROUGHFALL
+control the throughfall, canopy storage and drainage based on the model
+by Rutter (1975). See <a href="#tfall">Canopy throughfall</a>
+for more details.</p>
+
+<p>If THROUGHFALL is assigned any negative number, it is calculated from PAR transmission. (not implemented yet).</p>
+<p>Soil evaporation</p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;SOILETPARS</dt>
+<dt class="namelistlong">DRYTHICKMIN = 0.001</dt>
+<dt class="namelistlong">TORTPAR = 0.66</dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+<p>DRYTHICKMIN is the minimum thickness of the
+layer of dry soil (m), used in calculating the conductance to water
+vapor in the <a href="#soilevap">soil evaporation</a>
+subroutine.</p>
+
+<p>TORTPAR is a parameter describing the
+tortuosity of the soil. The default value of 0.66 goes back to Penman
+(1940, in Hillel 1990).</p>
+
+<p>Root parameters</p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;ROOTPARS</dt>
+<dt class="namelistlong">ROOTRAD = 0.0001</dt>
+<dt class="namelistlong">ROOTDENS = 0.5E6</dt>
+<dt class="namelistlong">ROOTMASSTOT = 188</dt>
+<dt class="namelistlong">NROOTLAYER = 10</dt>
+<dt class="namelistlong">FRACROOT = 0.31
+0.22 0.15 0.11 0.073 0.051 0.036 0.025 0.017 0.012 </dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+
+<!--<p> ROOTRESFRAC is the fraction of total plant hydraulic resistance that is belowground. For example, if the leaf-specific hydraulic conductance (the inverse of resistance) of the plant is PLANTK = 3, the total root conductance would be 1.5. This partitioning of the hydraulic resistance is used to calculate water uptake in different layers of the soil. </p>-->
+<p>ROOTRAD is the average root radius (m),
+used in the soil conductance equation, ROOTDENS the
+density of root biomass (g m<sup>-3</sup>). ROOTMASSTOT
+is the total root biomass (g m<sup>-2</sup>), from which
+root length in each rooted soil layer is calculated using ROOTRAD
+and ROOTDENS, and FRACROOT (see
+below). NOTE: This manual previously incorrectly stated that ROOTMASSTOT is in units of kg
+m<sup>-2.</sup></p>
+
+<p>NROOTLAYER specifies the number of soil
+layers that are rooted. Together with the LAYTHICK
+parameter, it determines the rooting depth.</p>
+
+<p>FRACROOT is the fraction of
+(water-uptaking, typically fine) roots in each rooted layer. If they
+don&#8217;t add up to one, it is assumed that they are weights rather than
+fractions.</p>
+
+<p>As an alternative to specifying the root mass fractions by
+layer manually, it is possible to use a smooth distribution with depth,
+as summarized by <a href="#Jackson1996">Jackson et al.
+(1996)</a>. They summarized many measurements of root
+distributions, and use a BETA parameter to characterize the
+distribution. In the ROOTPARS
+namelist, in stead of FRACROOT,
+you can use :</p>
+
+<p>ROOTBETA
+= 0.99</p>
+
+<p>See <a href="#Jackson1996">Jackson et al. 1996</a>
+for values of ROOTBETA,
+and more background.</p>
+
+<p>Plant parameters</p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;PLANTPARS</dt>
+<dt class="namelistlong">MINLEAFWP = -2</dt>
+<dt class="namelistlong">MINROOTWP = -3</dt>
+<dt class="namelistlong">PLANTK = 3</dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+
+<p>MINROOTWP is the minimum root water
+potential (MPa), used in determining fractional water uptake in soil
+layers (see <a href="#uptake"> root water uptake </a>).</p>
+<p>MINLEAFWP is the minimum leaf water
+potential (MPa), which is needed when the stomatal conductance model (MODELGS
+in confile.dat) is anything but 4 (the Tuzet model).</p>
+<p>PLANTK is the leaf-specific (total) plant
+hydraulic conductance (mmol m<sup>-2</sup> s<sup>-1</sup>
+MPa<sup>-1</sup>). This parameter is always needed, and is
+important!</p>
+<p>Soil water retention and conductivity</p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;SOILRET</dt>
+<dt class="namelistlong">BPAR = 4.74</dt>
+<dt class="namelistlong">PSIE = -0.00138</dt>
+<dt class="namelistlong">KSAT = 57.2</dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+<p>BPAR and PSIE are parameters of the soil water retention curve (see RETFUNCTION description
+above). KSAT is the saturated soil hydraulic conductivity (mol m<sup>-1</sup> s<sup>-1</sup>
+MPa<sup>-1</sup>). For each of these three parameters, multiple values can be entered (space-separated) that apply to
+subsequent soil layers. If less values are entered than there are layers in the model, all deeper layers are set to the last value
+entered.</p>
+
+<p>Soil layer parameters</p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;LAYPARS</dt>
+<dt class="namelistlong">NLAYER = 20</dt>
+<dt class="namelistlong">LAYTHICK = 0.1 </dt>
+<dt class="namelistlong">POREFRAC = 0.5 </dt>
+<dt class="namelistlong">DRAINLIMIT = 0.0</dt>
+<dt class="namelistlong">FRACORGANIC = 0.2
+0.1 0.05</dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+
+<p>NLAYER is the number of soil layers in the
+model, NROOTLAYER the number of layers with roots
+in them. Note that the rooted layers are always assumed to be the top
+layers, but actual presence of roots in any of those layers can be
+controlled by setting the FRACROOT
+parameter.</p>
+
+<p>LAYTHICK is the thickness of each layer
+(m), and determines total rooting depth together with NLAYER.</p>
+
+<p>POREFRAC is the soil porosity (m<sup>3</sup>
+m<sup>-3</sup>).</p>
+
+<p>DRAINLIMIT is the fraction of the pore
+fraction below which no drainage occurs. This may be omitted, since <a href="#drainage">drainage</a> is calculated from
+hydraulic conductivity anyway. Could be useful for soils that show
+non-normal drainage, or if hydraulic conductivity function is uncertain
+(setting the DRAINLIMIT
+parameter essentially uses the simple field capacity concept instead of
+drainage calculated by Richard's flow equation).</p>
+
+<p>FRACORGANIC is the fraction of soil solids
+(by volume) that is organic matter. It is used for calculating soil
+thermal conductivity. At present, soil hydraulic conductivity is not
+modified by organic matter content (this is different from SPA). Note
+that this could be accounted for by specifiying different KSAT values
+manually.</p>
+
+<p> NOTE: For all arrays in this namelist
+except FRACORGANIC,
+multiple values can be specified and all deeper layers are set to the
+last value entered. For FRACORGANIC,
+soil layers for which no value is entered will be assumed to have no
+organic matter content.</p>
+<p>Initial parameters</p>
+<ul>
+<dl>
+<dt class="namelistlong">&amp;INITPARS</dt>
+<dt class="namelistlong">INITWATER = 0.3</dt>
+<dt class="namelistlong">SOILTEMP = 15 </dt>
+<dt class="namelistlong">/</dt>
+</dl>
+</ul>
+<p>INITWATER is the initial soil water content
+(m<sup>3</sup> m<sup>-3</sup>). SOILTEMP
+is the initial soil temperature (<sup>o</sup>C). Also for
+these parameters, one input value will be applied to all layers, and
+multiple values can also be specified (space-separated). If less values
+are entered than there are layers in the model, all deeper layers are
+set to the last value entered.<br>
+</p>
+
+    
+    
+    
+    
+    
+    
+    </section>
 
     <section>
-      <h2>The understorey file (ustorey.dat)</h2>
+      <h2><a id="ustoreydat"></a>The understorey file (ustorey.dat)</h2>
       <p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated, and averaged to produce the output file.</p>
       <p><em>Note</em> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
       <p>This grid of understorey sampling points is defined by the following namelist:</p>
@@ -728,7 +984,7 @@
     </section>
 
     <section>
-      <h2>The test points file (points.dat)</h2>
+      <h2><a id="pointsdat"></a>The test points file (points.dat)</h2>
       <p>Optionally, the Maespa model can output PAR transmission to user-defined xyz points (this was formerly done by the stand-alone maestest.exe program). This may be useful to compare to PAR sensor readings. The settings for these points are in the points.dat file.</p>
       <p>Note also that you need to set the flag IPOINTS=1 in the CONTROL namelist in confile.dat, see <a href="#confile">here</a> for details.</p>
       <p>The input file points.dat contains two namelists, one giving the number of points (and an 'input type' see below), the second giving the x, y, and z co-ordinates of each point. If INPUTTYPE=1, the example namelists may look like these:</p>
@@ -765,6 +1021,13 @@
       <h2><a id="outputfiles"></a>Output files</h2>
       <p>output files described here, need serious update of current manual!</p>
     </section>
+    
+    <section>
+    <h2><a id="hrflux">The hourly flux data file (hrflux.dat)</a></h2>
+    
+    <p> The hrflux.dat file will be described here.
+    </section>
+    
   <!-- end .content --></article>
   
   <footer>
