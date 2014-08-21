@@ -44,7 +44,7 @@ a:hover, a:active, a:focus { /* this group of selectors will give a keyboard nav
 .container {
 	width: 960px;
 	margin: 0 auto;
-	background-image: url(../images/treebark.jpg);
+	background-image: url(../images/treebarksm.jpg);
 	background-attachment: fixed;
 }
 
