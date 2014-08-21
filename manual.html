@@ -1100,42 +1100,39 @@ these parameters, one input value will be applied to all layers, and
 multiple values can also be specified (space-separated). If less values
 are entered than there are layers in the model, all deeper layers are
 set to the last value entered.<br>
+</p></section>
+
+<section><h2>The understorey file (ustorey.dat)</h2>
+
+<p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated.</p>
+<p><em>Note</em> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
+<p>This grid of understorey sampling points is defined by the following namelist:</p>
+<p class="namelistlong">NAMELIST /CONTROL/ NOUSPOINTS, X0, Y0, XMAX, YMAX</p>
+<p>This specified a rectangular grid from X0 to XMAX and Y0 to YMAX, having (approximately) NOUSPOINTS sampling points. The model then places the points accordingly within this rectangle.</p>
+<p>This produces the <span class="filename">uspar.dat</span> file will contain estimates for each grid point. <em>Note</em> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly! We might add an option with average understorey fluxes in the future.</p>
+<p>Next, the leaf area index and height of the understorey are specified:</p>
+<p class="namelistlong">NAMELIST /ALLUSLAI/ NODATES, VALUES, DATES<br>
+NAMELIST /ALHTCROWN/ NODATES, VALUES, DATES<br>
 </p>
+<p>Just like other namelists, a range of values can be specified for multiple dates (handy in case the understorey LAI changes much during the growing season, for example).</p>
+<p>Stomatal conductance is calculated with the Ball-Berry model (as of this writing, the only option!), specified by:</p>
+<p class="namelistlong">NAMELIST /BBGS/ G0,G1</p>
+<p>where G0 and G1 are the intercept and slope of the Ball-Berry parameters. Note that these are in units of conductance to CO<sub>2</sub>.</p>
+<p>The leaf angle distribution is defined by a namelist equivalent to that for the overstorey:</p>
+<p class="namelistlong">NAMELIST /LIA/ ELP,NALPHA,FALPHA,AVGANG</p>
+<p>See <a href="#Leaf incidence">here</a> for a full description of this namelist.</p>
+<p>Finally, a number of parameters specify the physiology of the understorey:</p>
+<p class="namelistlong">NAMELIST /JMAXPARS/ IECO,EAVJ,EDVJ,DELSJ,AJQ<br>
+NAMELIST /VCMAXPARS/ EAVC,EDVC,DELSC,TVJUP,TVJDN<br>
+NAMELIST /BEWDYPARS/ JMAX25N,VCMAX25N,UNMIN,ABSRP<br>
+NAMELIST /RDPARS/ RD,RDK,RDT,SLA,EFFY<br>
+NAMELIST/ALLFOLN/ NODATES, VALUES, DATES</p>
 
-    
-    
-    
-    
-    
-    
-    </section>
+<p>Where JMAXPAR and VCMAXPARS follow the same definitions as the <span class="filename">phy.dat</span> file. The other parameters can be found in Medlyn et al. (2000 Can J For Res, 30:873-888). Note that Jmax and Vcmax are specified per unit N, and leaf N is read in from the ALLFOLN namelist.</p>
 
-    <section>
-      <h2>The understorey file (ustorey.dat)</h2>
-      <p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated.</p>
-      <p><em>Note</em> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
-      <p>This grid of understorey sampling points is defined by the following namelist:</p>
-      <p class="namelistlong">NAMELIST /CONTROL/ NOUSPOINTS, X0, Y0, XMAX, YMAX</p>
-      <p>This specified a rectangular grid from X0 to XMAX and Y0 to YMAX, having (approximately) NOUSPOINTS sampling points. The model then places the points accordingly within this rectangle.</p>
-      <p>This produces the <span class="filename">uspar.dat</span> file will contain estimates for each grid point. <em>Note</em> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly! We might add an option with average understorey fluxes in the future.</p>
-      <p>Next, the leaf area index and height of the understorey are specified:</p>
-      <p class="namelistlong">NAMELIST /ALLUSLAI/ NODATES, VALUES, DATES<br>
-      NAMELIST /ALHTCROWN/ NODATES, VALUES, DATES<br>
-      </p>
-      <p>Just like other namelists, a range of values can be specified for multiple dates (handy in case the understorey LAI changes much during the growing season, for example).</p>
-      <p>Stomatal conductance is calculated with the Ball-Berry model (as of this writing, the only option!), specified by:</p>
-      <p class="namelistlong">NAMELIST /BBGS/ G0,G1</p>
-      <p>where G0 and G1 are the intercept and slope of the Ball-Berry parameters. Note that these are in units of conductance to CO<sub>2</sub>.</p>
-      <p>The leaf angle distribution is defined by a namelist equivalent to that for the overstorey:</p>
-      <p class="namelistlong">NAMELIST /LIA/ ELP,NALPHA,FALPHA,AVGANG</p>
-      <p>See <a href="#Leaf incidence">here</a> for a full description of this namelist.</p>
-      <p>Finally, a number of parameters specify the physiology of the understorey:</p>
-      <p class="namelistlong">NAMELIST /JMAXPARS/ IECO,EAVJ,EDVJ,DELSJ,AJQ<br>
-      NAMELIST /VCMAXPARS/ EAVC,EDVC,DELSC,TVJUP,TVJDN<br>
-      NAMELIST /BEWDYPARS/ JMAX25,VCMAX25,UNMIN,ABSRP<br>
-      NAMELIST /RDPARS/ RD,RDK,RDT,SLA,EFFY</p>
-      
-      <p>Where JMAXPAR and VCMAXPARS follow the same definitions as the <span class="filename">phy.dat</span> file. The other parameters can be found in Medlyn et al. (2000 Can J For Res, 30:873-888).</p></section>
+<!-- C4 model explanation goes here!!-->
+
+</section>
 
 
 <section><h2>The test points file (points.dat)</h2>
