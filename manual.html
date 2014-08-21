@@ -143,7 +143,7 @@
     </section>
     
     <section>
-      <h2><a id="setupstand">Setting up the stand for Maespa</a></h2></section>
+      <h2><a id="setupstand">Setting up the stand for Maespa</a></h2>
     <p>The Maespa model is an individual-based model, but the soil
 water balance is calculated for the average stand (or for a single
 tree). Some care must be taken to correctly specify the target trees to
@@ -247,19 +247,41 @@ calculated as (XMAX - X0) * (YMAX - Y0). For example, if your PLOT
 namelist looks like,</p>
 <ul>
 <dl>
-<dt>&amp;TREESCON</dt>
-<dt>X0 = 0</dt>
-<dt>Y0 = 0</dt>
-<dt>XMAX = 2</dt>
-<dt>YMAX = 2</dt>
-<dt>NOTREES = 101</dt>
-<dt>/</dt>
+<dt class="namelistlong">&amp;TREESCON</dt>
+<dt class="namelistlong">X0 = 0</dt>
+<dt class="namelistlong">Y0 = 0</dt>
+<dt class="namelistlong">XMAX = 2</dt>
+<dt class="namelistlong">YMAX = 2</dt>
+<dt class="namelistlong">NOTREES = 101</dt>
+<dt class="namelistlong">/</dt>
 </dl>
 </ul>
 
 <p> Then your plot area is 2 m<sup>2</sup>, and combine this with your soil depth of 1m, you have a total soil
 volume of 2 m<sup>3</sup>. </p>
 
+<h3><a id="canopyet">Canopy transpiration</a></h3>
+
+<p> MAESPA calculates tree transpiration with the
+Penman-Monteith equation. This is done for each tree separately,
+because canopy conductance varies between trees as a result of
+radiation interception (and possibly, parameters such as VCMAX). The
+tree-level conductance (GSCAN) is in units of mol CO<sub>2</sub> tree<sup>-1</sup>
+s<sup>-1</sup>. The first step is to get the average canopy
+conductance across the target trees (GSCANAV). This canopy conductance is 
+representative of the target trees, but can be a biased representation of 
+the whole stand if the average leaf area of the target trees is not equal 
+to that of all trees in the stand. To remedy this problem, GSCANAV
+is scaled by leaf area:</p>
+<p class="namelistlong"> GSCANAV
+= GSCANAV * (ALLTREELAMEAN / TREELAMEAN)</p>
+<p>Where ALLTREELAMEAN
+is the average tree leaf area for all trees in the stand, TREELAMEAN the
+average leaf area of the target trees.</p>
+<p>Note that this scaling is only done when USESTAND = 1
+in the <span class="filename">confile.dat</span> input file (see previous section).</p>
+    
+</section>    
     
 <section><h2>Input File Format</h2>
   <p>The input files for Maespa use the Fortran namelist format. In this manual we use the notation:</p>
@@ -1271,6 +1293,7 @@ third row is the transpiration (mmol m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
   
   <footer>
     <p>This page is maintained by Remko Duursma.</p>
+    <p>See <a href="https://github.com/Maespa/maespa.github.io">https://github.com/Maespa/maespa.github.io</a> for source code of this site.</p>
   </footer>
   <!-- end .container --></div>
 </body>
