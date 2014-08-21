@@ -32,12 +32,14 @@
     <section>
       <h2>Introduction</h2>
 
-<p>This page describes input and output files of Maespa (and Maespa). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels, especially <a href="docs/MAESTRO_Retrospective_Chapter.pdf">Medlyn (2004) (pdf)</a>, <a href="http://treephys.oxfordjournals.org/content/27/12/1687.short">Medlyn et al. (2007)</a> and <a href="http://www.geosci-model-dev.net/5/919/2012/gmd-5-919-2012.html">Duursma and Medlyn (2012)</a>.</p>
-<p>The soil water and energy balance routines and soil-plant hydraulic pathway are described in detail in Duursma and Medlyn (2012).</p>
-    </section>
+<p>This page describes input and output files of Maespa (and Maespa). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels, and <a href="docs/MAESTRO_Retrospective_Chapter.pdf">Medlyn (2004) (pdf)</a>, <a href="http://treephys.oxfordjournals.org/content/27/12/1687.short">Medlyn et al. (2007)</a> and <a href="http://www.geosci-model-dev.net/5/919/2012/gmd-5-919-2012.html">Duursma and Medlyn (2012)</a> for a more comprehensive overview. The soil water and energy balance routines and soil-plant hydraulic pathway are described in detail in Duursma and Medlyn (2012).</p>
+
+<p>Because Maespa is an individual-based model, where individual plants are specified with spatially explicit coordinates, great care must be taken to specify the tree locations. When calculating the stand water balance (in Maespa mode), this needs special attention as the water balance is calculated for the stand, but tree water use is calculated for a set of individual trees. <a href="#setupstand">Please read this section in detail</a> before setting up your own simulations.
+
+</section>
     <section><h2>Maestra or Maespa?</h2>
     
-    <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (<span class="filename">watpars.dat</span>). If it is not present in the directory where you run Maespa, the model will run in Maestra mode.</p></section>
+    <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (<span class="filename">watpars.dat</span>). If it is not present in the directory where you run Maespa, the model will run in Maestra mode. That way, the model is consistent with the legacy Maestra model (with some minor changes).</p></section>
     
 <section><h2>Input and output files</h2>
  
@@ -93,50 +95,195 @@
           <h3>Output files</h3>
         </caption>
         <tr>
-          <td width="24%" class="filename"><a href="hrflux">hrflux.dat</a></td>
-          <td width="53%">Hourly flux files, contains all flux estimates for each target tree for each timestep.</td>
+          <td width="24%" class="filename"><a href="#hrfluxdat">hrflux.dat</a></td>
+          <td width="53%">Hourly flux files, contains all flux estimates for each target tree for each timestep</td>
           <td width="23%">Optional (recommended)</td>
         </tr>
         <tr>
-          <td class="filename">dayflx.dat</td>
+          <td class="filename"><a href="#dayfluxdat">dayflx.dat</a></td>
           <td>Daily flux files, contains totals per tree for all flux estimates</td>
           <td>Always</td>
         </tr>
         <tr>
-          <td class="filename">Maeserr.dat</td>
-          <td>Maespa error messages and warnings.</td>
+          <td class="filename"><a href="#maeserrdat">Maeserr.dat</a></td>
+          <td>Maespa error messages and warnings</td>
           <td>Always</td>
         </tr>
         <tr>
-          <td class="filename">watbal.dat</td>
+          <td class="filename"><a href="#watbaldat">watbal.dat</a></td>
           <td>Water balance calculations for each timestep</td>
           <td>If run in Maespa mode</td>
         </tr>
         <tr>
-          <td class="filename">watbalday.dat</td>
+          <td class="filename"><a href="#watbaldaydat">watbalday.dat</a></td>
           <td>Daily summaries of water balance calculations</td>
           <td>If run in Maespa mode</td>
         </tr>
         <tr>
-          <td class="filename">tutd.dat</td>
+          <td class="filename"><a href="#tutddat">tutd.dat</a></td>
           <td>Input / output file with diffuse transmittances</td>
           <td>Optional</td>
         </tr>
         <tr>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
+          <td><a href="#otherwatbaldat">Other water balance output</a></td>
+          <td>watballay.dat, watupt.dat, watsoilt.dat</td>
+          <td>If run in Maespa mode</td>
         </tr>
         <tr>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
+          <td><a href="#testflxdat" class="filename">testflx.dat</a></td>
+          <td>Output for test grid points</td>
+          <td>Optional</td>
         </tr>
+        <tr>
+          <td><a href="#layflxdat" class="filename">layflx.dat</a></td>
+          <td>Output by canopy layer</td>
+          <td>Optional</td>
+        </tr>
+
       </table>
-      <p>&nbsp;</p>
-      <p>In addition, when run in Maespa mode, the following files are produced : <span class="filename">watballay.dat</span>,<span class="filename"> watsoilt.dat</span> and <span class="filename">watupt.dat</span> (and sometimes, <span class="filename">wattest.dat</span> - ignore this test file). Each of the three files lists values for, respectively, soil water content, soil temperature and fractional water uptake, for each soil layer for each timestep. Each soil layer is listed in a separate column (leftmost column is the surface layer, and so on), and each timestep is a separate row. These files do not contain any headers. </p>
-      <p>&nbsp;</p>
+
     </section>
+    
+    <section>
+      <h2><a id="setupstand">Setting up the stand for Maespa</a></h2></section>
+    <p>The MAESPA model is an individual-based model, but the soil
+water balance is calculated for the average stand (or for a single
+tree). Some care must be taken to correctly specify the target trees to
+scale up the water use from individual trees to a spatial
+average.</p>
+
+<p>There are several options to run the model, which depends on
+the purpose of your simulation. Below are the most obvious choices. <!--For
+each of these options, a set of (annotated) example files is available.--><br>
+</p>
+
+<p>1. Simulate a small subplot of trees surrounded
+by rows of other trees, calculate the soil water balance only for the
+subplot</p>
+<p>Example applications:  The soil
+water balance is measured on a small plot of trees, for example a
+subplot of a replicated study with a number of treatments (or species)
+(see Figure below). The surrounding trees are used in the simulation to
+take into account the shading by neighboring trees. </p>
+
+<p><input src="images/subplotsimulation.png" height="372" type="image" width="525"></p>
+
+<p>This is a situation where non-target trees in a stand (the
+green trees in the above figure) should not be used to calculate the
+soil water balance of the target trees : they are not the same species
+(or perhaps in other applications, of different size or
+structure). </p>
+
+<p>To set up your simulation like this, make sure to set USESTAND = 0
+in the WATCONTROL namelist in watpars.dat. Also, make
+sure you set the target trees correctly (in confile.dat).
+Also make sure that the plot area is set correctly (see examples
+above), by setting X0, XMAX, Y0 and YMAX in
+watpars.dat (Note: see <a href="#confile">this
+section of the Maestra manual</a> for tips on how to set the
+target trees).</p>
+
+<p>2. Simulate an entire stand, using a subset of
+trees to drive the water balance</p>
+
+<p>Example application: simulate the soil
+water balance of an entire stand of trees, based on a sample of target
+trees (these could be trees on which sapflow was measured, for
+example). See the Figure for an example layout.</p>
+
+<p><input src="images/randomtargettrees.png" height="346" type="image" width="493"></p>
+
+<p>In this situation, radiation capture, water use and
+photosynthesis are only calculated for a sample of target trees (shown
+in red) dispersed throughout the stand. The user needs to decide
+carefully how to choose the target trees, as their performance will be
+used to scale to the stand total transpiration (see the next section on
+
+<a href="#canopyet">Canopy transpiration</a>). This
+problem is no different from typical field studies where a sample of
+trees is instrumented with sap flow instruments, from which stand
+totals are calculated (using some appropriate assumptions for scaling).
+To avoid this problem altogether, it is possible to simply use all
+trees in the stand for a simulation, but this can be very slow if there
+are several hundred trees in the stand or more. It is recommended to
+the user to experiment with different layouts of the target trees (and
+also note that it is possible to exclude trees on the edge of the plot,
+by setting the EDGE parameter in the TREESCON namelist
+in confile.dat (see  <a href="#confile">this
+section of the Maestra manual</a>). </p>
+
+<p>To set up your simulation, make sure USESTAND = 1
+in the WATCONTROL namelist in watpars.dat (the
+default), and that you have chosen the target trees wisely. The output
+files dayflx.dat and hrflux.dat will give the tree-scale outputs (of your target trees), while watbal.dat
+will give the stand-scale estimates of transpiration (and many other
+variables).</p>
+
+<p>3. Simulate a single tree, and calculate the
+soil water balance using the simulated water use by this single tree
+only. </p>
+
+<p>Example applications: a single tree
+growing in a pot, or a tree growing in a natural stand, when the rooted
+soil volume is known. </p>
+
+<p>Because MAESPA was not originally set up for this situation,
+the user has to specify a few different settings (in different input
+files). Be careful, because if you forget one of them, the simulation
+will not behave as intended. </p>
+
+<p>First, specify the target tree in <a href="#confiledat">confile.dat</a>. For example, if your target tree is the 25th tree specified in trees.dat, the ITARGETS namelist
+in confile.dat will look like:</p>
+
+<ul>
+<dl>
+<dt>&amp;TREESCON</dt>
+<dt>ITARGETS = 25</dt>
+<dt>NOTREES = 101</dt>
+<dt>/</dt>
+</dl>
+</ul>
+
+<p>Recall that NOTREES specifies the number of neighboring trees that are used to
+calculate shading of the target tree (in this case I use all 101 trees
+in the trees.dat file).</p>
+
+<p>Next, we need to specify in MAESPA that the soil water balance
+will be calculated using the transpiration
+rate from the target trees only. This is done by
+setting USESTAND
+= 0 in the WATCONTROL namelist
+(watpars.dat).</p>
+
+<p>Finally, we need to specify the (rooted) soil volume available
+to the virtual tree. This is done in two steps: the soil depth, and the
+'plot area'. The soil depth is the number of soil layers times the
+depth of each of the layers. For example, suppose you have the
+following settings in the watpars.dat file.
+You specified NROOTLAYER
+= 10 in the ROOTPARS namelist
+(i.e., the top 10 soil layers have roots), and LAYTHICK = 0.1 in
+the LAYPARS namelist.
+Then, obviously, the total rooted soil depth is 1 m. The area of the
+plot is set by the PLOT namelist in the trees.dat file : it is
+calculated as (XMAX - X0) * (YMAX - Y0). For example, if your PLOT
+namelist looks like,</p>
+<ul>
+<dl>
+<dt>&amp;TREESCON</dt>
+<dt>X0 = 0</dt>
+<dt>Y0 = 0</dt>
+<dt>XMAX = 2</dt>
+<dt>YMAX = 2</dt>
+<dt>NOTREES = 101</dt>
+<dt>/</dt>
+</dl>
+</ul>
+
+<p> Then your plot area is 2 m<sup>2</sup>,
+and combine this with your soil depth of 1m, you have a total soil
+volume of 2 m<sup>3</sup>. </p>
+
     
     
     <section><h2>Input File Format</h2>
@@ -205,10 +352,12 @@
         /</span>
       </p>
 <p>The multi-species setting also needs another namelist in the trees.dat file, that specifies which trees are of which species. See <a href="#speclist">further below</a> for details on that namelist.</p>
-      <h3><a name="Number of layers and"></a>Number of layers and angles to integrate over</h3>
-      <p class="namelistlong">NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ</p>
-      <p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in maestcom.f90 as MAXLAY. Default: 6.</p>
-      <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
+
+<h3><a name="Number of layers and"></a>Number of layers and angles to integrate over</h3>
+<p class="namelistlong">NAMELIST /DIFFANG/ NOLAY, PPLAY, NZEN, NAZ</p>
+<p>NOLAY is the number of layers in the crown assumed when calculating radiation interception. PPLAY is the number of points per layer (this must be divisble by 4, if it is not the closest smaller number divisible by 4 is used). The maximum number of layers is given in maestcom.f90 as MAXLAY. Default: 6.</p>
+
+ <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
       <p>Defaults: NZEN = 5 (maximum MAXANG); NAZ = 11 (no maximum enforced).</p>
       <h3><a name="Choice of submodel"></a>Choice of submodel</h3>
       <p class="namelistlong">NAMELIST /MODEL/ MODELGS, MODELJM, MODELRD, MODELRW, MODELSS, ITERMAX, ISIMUS</p>
@@ -1004,7 +1153,7 @@ set to the last value entered.<br>
       <p>If INPUTTYPE = 2, the XYZ namelist is ignored, and instead a transect of grid points is read in from the file. This may be useful for comparison against TRAC PAR transmission measurements. The namelist is:</p>
       <p class="namelistlong">NAMELIST /TRANSECT/ ANGLE,SPACING,ZHEIGHT</p>
       <p>where angle specifies the angle from north of the transect, spacing the distance between successive points, and zheight the height above the ground. The transect starts at X=0,Y=0, and continues for NOPOINTS as specified in the CONTROL namelist.</p>
-      <p>The output from this program is a file <span class="filename">testflx.dat</span>, which gives beam the following variables for each point for each half hour:</p>
+      <p><a id="testflxdat">The output from this program is a file</a> <span class="filename">testflx.dat</span>, which gives beam the following variables for each point for each half hour:</p>
       <ul>
         <li>Day, Hour</li>
         <li>Test point number, X,Y,Z locations of the point</li>
@@ -1018,14 +1167,137 @@ set to the last value entered.<br>
     </section>
 
     <section>
-      <h2><a id="outputfiles"></a>Output files</h2>
-      <p>output files described here, need serious update of current manual!</p>
+    <h2><a id="hrfluxdat">The hourly flux data file (hrflux.dat)</a></h2>
+    
+<p>This file is only created if IOHRLY &gt; 0 (in confile.dat).
+It contains hourly output values. The format is essentially the same as
+that of the daily output file, except that values are given on an
+hourly basis. The additional values reported are the hourly woody
+maintenance respiration (the sum of stem and branch respiration) and
+the canopy stomatal conductance (calculated by summing gs over the
+canopy), and the 'decoupling coefficient' (DECO) (if 1, leaves were
+perfectly coupled to the atmosphere, indicating a very high boundary
+layer conductance).</p>
+
+    </section>
+       
+    <section>
+    <h2><a id="dayfluxdat">The daily flux data file (dayflx.dat)</a></h2>
+    
+ <p>The file containing daily output values of radiation
+absorbed, photosynthesis and transpiration. The format is :</p>
+<p>(1) five lines giving the titles of the input files </p>
+<p>(2) several lines describing the content of the columns of
+output (with units). This information is not repeated here in the manual.</p>
+<p>(3) the actual output. </p>
+
+<p>Notes:
+<p> - Both gross photosynthesis, and photosynthesis net of
+  foliage maintenance respiration, are given. Other respiration
+  components are not subtracted. 
+  <p>- Two estimates of transpiration are given (both in mol H<sub>2</sub>O
+    tree<sup>-1</sup> d<sup>-1</sup>). The first is
+    calculated by applying the Penman-Monteith equation at every grid
+    point. The second is calculated by applying the Penman-Monteith
+    equation to the canopy as a whole. 
+    
+  <p>- The sensible heat flux will only be calculated if the leaf
+energy balance is calculated (see  <a href="#confiledat"><span class="filename">confile.dat</span></a>).</p>
+    </section>
+    
+    
+    <section>
+    <h2><a id="watbaldat">The water balance file (watbal.dat)</a></h2>
+    
+    <p>The main water balance results are written to watbal.dat, which
+contains the water balance simulation output for each timestep. All
+variables are documented in the header for the file, which is not
+repeated here. The 'FSOIL' output (the 'soil water modifier') is the
+ratio of actual (simulated) stand transpiration rate, divided by what
+would be achieved if the soil water content was not limiting.
+</p>
+
+<p>The units for all fluxes are in mm (per timestep), which
+should be interpreted as the stand average (depending on which setting
+for the simulation, see <a href="#settingup">Setting up
+the stand</a>).</p>
+
+<p>Note that the first timestep (day 0, hour 0) are the initial
+conditions for the simulation (all other output is after
+that timestep has been completed).</p>
+
     </section>
     
     <section>
-    <h2><a id="hrflux">The hourly flux data file (hrflux.dat)</a></h2>
+    <h2><a id="watbaldaydat">The daily water balance file (watbalday.dat)</a></h2>
     
-    <p> The hrflux.dat file will be described here.
+    <p>A daily version of the water balance output file. All fluxes
+are in mm per day. </p>
+
+    </section>
+
+    <section>
+    <h2><a id="otherwatbaldat">Other detailed water balance output files</a></h2>
+    
+	<h3>watlay.dat</h3>
+
+<p>The soil water content (volumetric, in m<sup>3</sup>
+m<sup>-3</sup>) for each simulated layer, for all
+timesteps. Each row contains the water content for all layers (starting
+with the uppermost layer in the first column).  There are no
+headers in the file (which makes it easier to read the file for
+processing).</p>
+
+<h3>watsoilt.dat</h3>
+
+<p>Similar to the above, contains the soil temperature for each
+layer, for all timesteps.</p>
+
+<h3>watupt.dat</h3>
+
+<p>Similar to the above, contains the fractional water uptake
+from each rooted layer, for all timesteps. The
+values in each row should add up to unity.</p>
+
+    </section>
+        
+    <section>
+    <h2><a id="maeserrdat">The simulation errors and warnings file (maeserr.dat)</a></h2>
+    
+    <p>A typical maeserr.dat file looks like the below example. Note that if the model simulation
+    finishes, it prints that the 'simulation completed successfully'. However, there may still be
+    problems with the simulation.</p>
+    
+    <p class="namelistlong">GS PARAMETERS ARE ASSUMED TO BE FOR CO2.<br>
+    NO AJQ ARRAY; DEFAULT VALUE USED      <br>
+    GS PARAMETERS ARE ASSUMED TO BE FOR CO2.<br>
+      NO AJQ ARRAY; DEFAULT VALUE USED<br>
+      SIMULATION COMPLETED SUCCESSFULLY </p>
+    </section>
+	
+    <section><h2><a id="layflxdat">The layer output files (layflx.dat)</a></h2>
+    
+    <p>This file is only created if IOHRLY &gt; 1. It lists the
+leaf area and values of J<sub>max</sub>
+and V<sub>cmax</sub> in each layer of
+the canopy. (Leaf area is obtained by summing over the gridpoints in
+that layer).</p>
+<p>For each hour it gives three rows of output. The top row is
+the absorbed PAR in each layer (mmol
+m<sup>-2</sup> leaf s<sup>-1</sup>), the second
+row is the photosynthesis (mmol
+m<sup>-2</sup> leaf s<sup>-1</sup>), and the
+third row is the transpiration (mmol
+m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
+<p>The values for the topmost layer are always on the left.</p>
+
+</section>
+    
+    <section>
+    <h2><a id="tutddat">The diffuse transmittance file (tutd.dat)</a></h2>
+    
+    <p> This file is generated by Maespa as a temporary file containing diffuse transmittance estimates
+    at each gridpoint. Support for this file will likely be removed in the near future.</p>
     </section>
     
   <!-- end .content --></article>
