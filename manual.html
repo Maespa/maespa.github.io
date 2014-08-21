@@ -4,8 +4,6 @@
 <meta charset="utf-8">
 <title>Maespa technical manual</title>
 <link href="styles/main.css" rel="stylesheet" type="text/css">
-<link href="SpryAssets/SpryCollapsiblePanel.css" rel="stylesheet" type="text/css">
-<script src="SpryAssets/SpryCollapsiblePanel.js" type="text/javascript"></script>
 </head>
 
 <body id="manual">
@@ -179,7 +177,7 @@ in the WATCONTROL namelist in watpars.dat. Also, make
 sure you set the target trees correctly (in confile.dat).
 Also make sure that the plot area is set correctly (see examples
 above), by setting X0, XMAX, Y0 and YMAX in
-watpars.dat (Note: see <a href="#confile">this
+watpars.dat (Note: see <a href="#confiledat">this
 section of the Maestra manual</a> for tips on how to set the
 target trees).</p>
 
@@ -199,7 +197,7 @@ in red) dispersed throughout the stand. The user needs to decide
 carefully how to choose the target trees, as their performance will be
 used to scale to the stand total transpiration (see the next section on
 
-<a href="#canopyet">Canopy transpiration</a>). This
+<a href="#confiledat">Canopy transpiration</a>). This
 problem is no different from typical field studies where a sample of
 trees is instrumented with sap flow instruments, from which stand
 totals are calculated (using some appropriate assumptions for scaling).
@@ -209,7 +207,7 @@ are several hundred trees in the stand or more. It is recommended to
 the user to experiment with different layouts of the target trees (and
 also note that it is possible to exclude trees on the edge of the plot,
 by setting the EDGE parameter in the TREESCON namelist
-in confile.dat (see  <a href="#confile">this
+in confile.dat (see  <a href="#confiledat">this
 section of the Maestra manual</a>). </p>
 
 <p>To set up your simulation, make sure USESTAND = 1
@@ -306,22 +304,22 @@ volume of 2 m<sup>3</sup>. </p>
           <dt class="namelistlong">/</dt>
         </dl>
       </ul>
-      <p>It does not matter what order these namelists are in. Within a namelist, it does not matter what order the variables are in, <strong>except</strong> that all arrays of strings (such as lists of dates) should come last. It does not matter if some variables are missing, but you will, however, get an error if there are additional variables in any namelist. If some data is missing which is essential for the program to run, the program writes an error message to the error output file <a href="#maeserr" class="filename">maeserr.dat</a>, and terminates. If data is missing for which a default value can be used, a warning notice will be written to maeserr.dat, but the program will continue, using the default value.</p>
+      <p>It does not matter what order these namelists are in. Within a namelist, it does not matter what order the variables are in, <strong>except</strong> that all arrays of strings (such as lists of dates) should come last. It does not matter if some variables are missing, but you will, however, get an error if there are additional variables in any namelist. If some data is missing which is essential for the program to run, the program writes an error message to the error output file <a href="#confiledat" class="filename">maeserr.dat</a>, and terminates. If data is missing for which a default value can be used, a warning notice will be written to maeserr.dat, but the program will continue, using the default value.</p>
       <p><a name="date format"></a>All dates are specified in the format 'DD/MM/YY'. If 50 &lt;= YY &lt;= 99, the years 1950 - 1999 are assumed; if 00 &lt;= YY &lt;= 49 the years 2000 - 2049 are assumed. This will need to be fixed come the 2040's - hopefully by someone else!</p>
       <p><a name="Maximum array"></a>Maximum array sizes: all the maximum array sizes are defined in the file maestcom.f90. These maxima can be changed by altering maestcom.f90 and re-compiling the program. The maxumum sizes are now quite large so this should rarely be needed.</p>
     </section>
 
     <section>
-      <h2><a id="confiledat"></a>The control file (confile.dat)      </h2>
+      <h2>The control file (confile.dat)      </h2>
       <p>The first line can include the title of the file, which is used to indicate in the output which input file was used.</p>
       <p>Following that, all input is in namelists, which may be in any order.</p>
       <h3><a name="Control of output"></a>Control of output files</h3>
       <p class="namelistlong">NAMELIST /CONTROL/ IOHRLY, IOTUTD, IOHIST, IORESP, ISIMUS, IPOINTS</p>
-      <p><span class="code">IOHRLY</span> is a flag to indicate how detailed the outputs should be. If <span class="code">IOHRLY</span> = 0, there is no hourly output; if <span class="code">IOHRLY</span> = 1, hourly values are output to <a href="#hrflux" class="filename">hrflux.dat</a>; if <span class="code">IOHRLY</span> = 2, values for each layer are output to <a href="#layflx" class="filename">layflx.dat</a>. Default: 0.</p>
+      <p><span class="code">IOHRLY</span> is a flag to indicate how detailed the outputs should be. If <span class="code">IOHRLY</span> = 0, there is no hourly output; if <span class="code">IOHRLY</span> = 1, hourly values are output to <a href="#hrflux" class="filename">hrflux.dat</a>; if <span class="code">IOHRLY</span> = 2, values for each layer are output to <a href="#layflxdat" class="filename">layflx.dat</a>. Default: 0.</p>
       <p><span class="code">IOTUTD</span> is a flag to indicate how often the diffuse transmittances should be calculated. This calculation takes a significant amount of time, and does not really need to be done more than once a week unless the leaf area is changing rapidly (the diffuse transmittances do not change greatly from day to day). If <span class="code">IOTUTD</span> &gt; 0, the transmittances are calculated every <span class="code">TUTD</span>'th day. Default: 1.</p>
       <p><span class="code">IOHIST</span> is a flag to indicate that you want the <a href="#PAR">PAR histogram</a> printed out. The histogram is only printed if <span class="code">IOHIST</span> = 1. Default: <span class="code">IOHIST</span> = 0.</p>
-      <p><span class="code">IORESP</span> is a flag to indicate whether you want the respiration fluxes to be printed out. If <span class="code">IORESP</span> = 1, the file <a href="#resp" class="filename">resp.dat</a> is created. Default: <span class="code">IORESP</span> = 0.</p>
-      <p><span class="code">ISIMUS</span> is a flag to indicate whether you want the understorey calculations to be done. If <span class="code">ISIMUS</span> = 1, the input file <a href="#ustorey" class="filename">ustorey.dat</a> is required, and the file <a href="#ustorey" class="filename">uspar.dat</a> is created.</p>
+      <p><span class="code">IORESP</span> is a flag to indicate whether you want the respiration fluxes to be printed out. If <span class="code">IORESP</span> = 1, the file <a href="#layflxdat" class="filename">resp.dat</a> is created. Default: <span class="code">IORESP</span> = 0.</p>
+      <p><span class="code">ISIMUS</span> is a flag to indicate whether you want the understorey calculations to be done. If <span class="code">ISIMUS</span> = 1, the input file <a href="#ustoreydat" class="filename">ustorey.dat</a> is required, and the file <a href="#ustoreydat" class="filename">uspar.dat</a> is created.</p>
       <p><span class="code">IPOINTS</span> is a flag to indicate whether you want to output PAR transmission data to user-defined points. See the description of the <a href="#pointsdat" class="filename">points.dat</a> input file for instructions.</p>
       <h3><a name="Dates"></a>Dates</h3>
       <p class="namelistlong">NAMELIST /DATES/ START, END</p>
@@ -384,7 +382,7 @@ volume of 2 m<sup>3</sup>. </p>
       <p>where BINSIZE is the size of the classes in the histogram (in mmol m<sup>-2</sup> s<sup>-1</sup>). The maximum number of classes is given by MAXHISTO in <span class="filename">maestcom.f90</span>.</p>
     </section>
     <section>
-      <h2><a id="treesdat"></a>The trees file (trees.dat)      </h2>
+      <h2>The trees file (trees.dat)      </h2>
       <p>First line: title of file (as with other input files, the title is included in the output files)</p>
       <p>Following that, all input is in namelist blocks, which may be in any order.</p>
       <h3><a name="Plot"></a>Plot Details
@@ -399,10 +397,10 @@ volume of 2 m<sup>3</sup>. </p>
       <p>Transpiration rate is calculated from the conductance of the whole canopy, as well as by applying the coupled photosynthesis-stomatal conductance model at each grid point in the canopy (and summed). Both are output in <a href="#hrflux" class="filename">hrflux.dat</a> for comparison. The canopy stomatal conductance is calculated as the sum of the individual leaf conductances. The canopy boundary layer conductance is calculated from</p>
       <p class="namelistlong">gb = K<sup>2</sup> * U / (LN((ZHT - ZPD)/Z0HT))<sup>2</sup></p>
       <p>(Jones 1992 eqn. 3.42). U is the above-canopy wind speed, K is von Karman's constant (defined in maestcom.f90), and the parameters required are ZHT (measurement height, m), ZPD (zero-plane displacement, m) and Z0HT (roughness length, m). If these parameters aren't specified, this calculation is not done.</p>
-      <h3><a name="speclist"></a>Multi-species list</h3>
+      <h3><a id="speclist"></a>Multi-species list</h3>
       <p class="namelistlong">NAMELIST /SPECLIST/ ISPECIES</p>
       <p>Here, the species of each tree is specified. ISPECIES is an array of integers (1,2,...) that correspond to the multi-species definitions in confile.dat. See <a href="#multi-species">here</a> for those settings. If any of the ISPECIES values is set to a value higher than NSPECIES, a warning is printed to maeserr.dat, and all species are set to 1.</p>
-      <h3><a name="X & Y"></a>X &amp; Y Co-ordinates
+      <h3><a id="X & Y"></a>X &amp; Y Co-ordinates
       </h3>
       <p class="namelistlong">NAMELIST /XY/ XYCOORDS</p>
       <p>The X and Y co-ordinates of each tree can be specified explicitly in this namelist, in order x1, y1, x2, y2, .. etc. Alternatively, if this namelist is missing, then the trees will be assumed to be spaced evenly at a distance of <span class="code">SQRT(XMAX*YMAX / NOALLTREES)</span>.</p>
@@ -438,7 +436,7 @@ volume of 2 m<sup>3</sup>. </p>
     </section>
 
     <section>
-      <h2><a id="metdat"></a>The met file (met.dat)</h2>
+      <h2>The met file (met.dat)</h2>
       <p>The first line of the file is the title, which is shown in the output files.</p>
       <p>This is followed by several namelists (described below).</p>
       <p>Then there is the line <br>
@@ -636,7 +634,7 @@ volume of 2 m<sup>3</sup>. </p>
       <p>The program does not handle missing met data at all, all data must be specified. Note that each new line of data is assumed to correspond to a timestep, it is not possible to indicate the time of the timestep. Make sure that when preparing the met data, that you have the same number of timesteps for each day (for example 24 or 48).</p>
     </section>
 
-<section><h2><a id="strdat"></a>The structure file (str.dat)</h2>
+<section><h2>The structure file (str.dat)</h2>
 
 <p>As with the other input files, the first line contains an optional title of the file used in the output files. Following that, all input is in the following namelists.</p>
       
@@ -685,7 +683,7 @@ volume of 2 m<sup>3</sup>. </p>
     </section>
 
     <section>
-      <h2><a id="phydat"></a>The physiology file (phy.dat)      </h2>
+      <h2>The physiology file (phy.dat)      </h2>
       <p>First line: title of physiology file used in the output files.</p>
       <h3><a name="age"></a>Number of age classes of foliage
       </h3>
@@ -879,7 +877,7 @@ retention curve should be used. RETFUNCTION =
 <p>where POREFRAC is the porosity (0-1, see below), PSIE (MPa)
 and BPAR (-) parameters, WATFRAC the volumetric water content (m<sup>3</sup>m<sup>-3</sup>),
 and SOILWP the soil water potential (MPa). Values for the parameters BPAR and PSIE are
-given by, among others: <a href="#cosby1984">Cosby et al. (1984)</a>, as reproduced in <a href="#duursma2008">Duursma
+given by, among others: <a href="">Cosby et al. (1984)</a>, as reproduced in <a href="">Duursma
 et al. (2008)</a> in the same units as used in MAESPA (but note
 PSIE is in kPa in that paper, so divide by 10<sup>3</sup>
 for use in MAESPA).
@@ -1105,7 +1103,7 @@ set to the last value entered.<br>
     </section>
 
     <section>
-      <h2><a id="ustoreydat"></a>The understorey file (ustorey.dat)</h2>
+      <h2>The understorey file (ustorey.dat)</h2>
       <p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated, and averaged to produce the output file.</p>
       <p><em>Note</em> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
       <p>This grid of understorey sampling points is defined by the following namelist:</p>
@@ -1133,9 +1131,9 @@ set to the last value entered.<br>
     </section>
 
     <section>
-      <h2><a id="pointsdat"></a>The test points file (points.dat)</h2>
+      <h2>The test points file (points.dat)</h2>
       <p>Optionally, the Maespa model can output PAR transmission to user-defined xyz points (this was formerly done by the stand-alone maestest.exe program). This may be useful to compare to PAR sensor readings. The settings for these points are in the points.dat file.</p>
-      <p>Note also that you need to set the flag IPOINTS=1 in the CONTROL namelist in confile.dat, see <a href="#confile">here</a> for details.</p>
+      <p>Note also that you need to set the flag IPOINTS=1 in the CONTROL namelist in confile.dat, see <a href="#confiledat">here</a> for details.</p>
       <p>The input file points.dat contains two namelists, one giving the number of points (and an 'input type' see below), the second giving the x, y, and z co-ordinates of each point. If INPUTTYPE=1, the example namelists may look like these:</p>
       <ul>
         <dl>
@@ -1304,9 +1302,6 @@ m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
   
   <footer>
     <p>This page is maintained by Remko Duursma.</p>
-    <address>
-      <p>Contact : remkoduursma@gmail.com</p>
-    </address>
   </footer>
   <!-- end .container --></div>
 </body>
