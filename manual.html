@@ -696,7 +696,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /ALLOMB/ BCOEFFT, BEXPONT, BINTERC <br>
         NAMELIST /ALLOMR/ RCOEFFT, REXPONT, RINTERC, FRFRAC</p>
       <p>The woody biomass is calculated using the following allometric relationship:</p>
-      <p class="namelistlong">WBIOM = COEFFT * HEIGHT * DIAMEXPONT + WINTERC (S1)</p>
+      <p class="namelistlong">WBIOM = COEFFT * HEIGHT * (DIAM ** EXPONT) + WINTERC (S1)</p>
       <p>where: WBIOM is the woody biomass (in kg DW tree<sup>-1</sup>), HEIGHT is the total height of the tree in m (green height + trunk length), DIAM is the stem diameter in m, and COEFFT, EXPONT and WINTERC are parameters. The diameter should be specified (in trees.dat) at the height for which they were used to develop this allometric relationship. The woody biomass is only used to calculate the woody respiration rate.</p>
       <p>Branch biomass and total root biomass are calculated using the same equations, again from stem height and diameter, but using different parameters. Fine root biomass is assumed to be a constant fraction (FRFRAC) of total root biomass. Again, these biomass estimates are only used to calculate <a href="#woodyrespiration">respiration </a>rates.</p>
     </section>
