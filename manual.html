@@ -44,7 +44,7 @@
     <section>
       <h2>Introduction</h2>
 
-<p>This page describes input and output files of Maespa (and Maespa). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels, and <a href="docs/MAESTRO_Retrospective_Chapter.pdf">Medlyn (2004) (pdf)</a>, <a href="http://treephys.oxfordjournals.org/content/27/12/1687.short">Medlyn et al. (2007)</a> and <a href="http://www.geosci-model-dev.net/5/919/2012/gmd-5-919-2012.html">Duursma and Medlyn (2012)</a> for a more comprehensive overview. The soil water and energy balance routines and soil-plant hydraulic pathway are described in detail in Duursma and Medlyn (2012).</p>
+<p>This page describes input and output files of Maespa (and Maestra). It is not intended as a full scientific description of the inner workings of the model. Please see the <a href="bibliography.html">bibliography page</a> for publications describing the submodels, and <a href="docs/MAESTRO_Retrospective_Chapter.pdf">Medlyn (2004) (pdf)</a>, <a href="http://treephys.oxfordjournals.org/content/27/12/1687.short">Medlyn et al. (2007)</a> and <a href="http://www.geosci-model-dev.net/5/919/2012/gmd-5-919-2012.html">Duursma and Medlyn (2012)</a> for a more comprehensive overview. The soil water and energy balance routines and soil-plant hydraulic pathway are described in detail in Duursma and Medlyn (2012).</p>
 
 <p>Because Maespa is an individual-based model, where individual plants are specified with spatially explicit coordinates, great care must be taken to specify the tree locations. When calculating the stand water balance (in Maespa mode), this needs special attention as the water balance is calculated for the stand, but tree water use is calculated for a set of individual trees. <a href="#setupstand">Please read this section in detail</a> before setting up your own simulations.
 
@@ -375,7 +375,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
  <p>NZEN is the number of zenith angles for which diffuse transmittances are calculated; NAZ is the number of azimuth angles for which the calculation is done.</p>
       <p>Defaults: NZEN = 5 (maximum MAXANG); NAZ = 11 (no maximum enforced).</p>
       <h3><a id="choicesubmodel">Choice of submodel</a></h3>
-      <p class="namelistlong">NAMELIST /MODEL/ MODELGS, MODELJM, MODELRD, MODELRW, MODELSS, ITERMAX, ISIMUS</p>
+      <p class="namelistlong">NAMELIST /MODEL/ MODELGS, MODELJM, MODELRD, MODELRW, MODELSS, ITERMAX</p>
       <p>MODELGS indicates which model should be used to calculate stomatal conductance. If MODELGS = 2: Ball-Berry model (response to RH) If MODELGS = 3: Ball-Berry-Leuning model (response to VPD). If MODELGS = 4, the Ball-Berry-Opti model is used (Medlyn et al. 2011).</p>
       <p>Please see the section on <a href="#stomatalconductance">stomatal conductance</a> for more details about the choice of stomatal models.</p>
       <p>MODELJM indicates how the <a href="#Photosynthetic">JMAX and VCMAX</a> parameters should be read in. IF MODELJM = 0, they are read in directly from file. If MODELJM = 1, they are calculated from the leaf N content. Default: 0.</p>
