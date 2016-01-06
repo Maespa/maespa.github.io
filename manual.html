@@ -881,6 +881,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
 <dt class="namelistlong">REASSIGNRAIN = 0</dt>
 <dt class="namelistlong">RETFUNCTION = 1</dt>
 <dt class="namelistlong">KEEPWET = 0</dt>
+<dt class="namelistlong">KEEPDRY = 0</dt>
 <dt class="namelistlong">EQUALUPTAKE = 0</dt>
 <dt class="namelistlong">USEMEASET = 1</dt>
 <dt class="namelistlong">USEMEASSW = 0</dt>
@@ -903,41 +904,22 @@ if the input rain data was actually measured daily (as is typical), but
 was input on the first of each day, for example. The routine to
 re-assign rain was borrowed from GRAECO (see the subroutine ASSIGNRAIN in
 getmet.for for more details).</p>
-<p>RETFUNCTION specifies which soil water
-retention curve should be used. RETFUNCTION =
-1 uses the Campbell curve:</p>
-<p>SOILWP
-= PSIE*(WATFRAC/POREFRAC)<sup>-BPAR</sup></p>
-<p>where POREFRAC is the porosity (0-1, see below), PSIE (MPa)
-and BPAR (-) parameters, WATFRAC the volumetric water content (m<sup>3</sup>m<sup>-3</sup>),
-and SOILWP the soil water potential (MPa). Values for the parameters BPAR and PSIE are
-given by, among others: <a href="">Cosby et al. (1984)</a>, as reproduced in <a href="">Duursma
-et al. (2008)</a> in the same units as used in Maespa (but note
-PSIE is in kPa in that paper, so divide by 10<sup>3</sup>
-for use in Maespa).
+<p>RETFUNCTION specifies which soil water retention curve should be used. RETFUNCTION = 1 uses the Campbell curve:</p>
+<p>SOILWP = PSIE*(WATFRAC/POREFRAC)<sup>-BPAR</sup></p>
+<p>where POREFRAC is the porosity (0-1, see below), PSIE (MPa) and BPAR (-) parameters, WATFRAC the volumetric water content (m<sup>3</sup>m<sup>-3</sup>),
+and SOILWP the soil water potential (MPa). Values for the parameters BPAR and PSIE are given by, among others: <a href="">Cosby et al. (1984)</a>, as reproduced in <a href="">Duursma
+et al. (2008)</a> in the same units as used in Maespa (but note PSIE is in kPa in that paper, so divide by 10<sup>3</sup> for use in Maespa).
 
 When RETFUNCTION
 = 2, the only difference is that WATFRAC is not divided by POREFRAC
 (but still uses the parameters PSIE and BPAR).</p>
-<p>KEEPWET is used for testing, if set to 1,
-the soil water balance is calculated but soil water content is not
-actually updated (so that the soil stays wet).</p>
-<p>EQUALUPTAKE sets the option to use equal
-relative water uptake from all soil layers. If it is 0 (default), the
-relative water uptake is calculated from fine root density and soil
+<p>KEEPWET is used for testing, if set to 1, the soil water balance is calculated but soil water content is not
+actually updated (so that the soil stays wet). Similarly, if KEEPDRY is set to 1, all rainfall is set to zero (useful for testing).</p>
+<p>EQUALUPTAKE sets the option to use equal relative water uptake from all soil layers. If it is 0 (default), the relative water uptake is calculated from fine root density and soil
 water potential, and so on.</p>
-<p>The soil water balance can be calculated with measured (not
-simulated) canopy transpiration. To do this, set USEMEASET
-= 1, and make sure to add measured ET to the met file.</p>
-<p>Similarly, it is possible to use measured (not simulated) soil
-water content in the simulations. To do this, set USEMEASSW
-= 1. In that case, soil water stress will be calculated
-from measured water content, which needs to be added to the met file.</p>
-<p>By default, Maespa scales up water used by single trees to the
-entire stand, so that (area-based) soil water balance can be calculated
-from simulated single tree outputs. Or, if USESTAND
-= 0, this scaling up is not done. This setting is useful to simulate
-water balance for a single tree in a stand, or by itself.</p>
+<p>The soil water balance can be calculated with measured (not simulated) canopy transpiration. To do this, set USEMEASET = 1, and make sure to add measured ET to the met file.</p>
+<p>Similarly, it is possible to use measured (not simulated) soil water content in the simulations. To do this, set USEMEASSW = 1. In that case, soil water stress will be calculated from measured water content, which needs to be added to the met file.</p>
+<p>By default, Maespa scales up water used by single trees to the entire stand, so that (area-based) soil water balance can be calculated from simulated single tree outputs. Or, if USESTAND = 0, this scaling up is not done. This setting is useful to simulate water balance for a single tree in a stand, or by itself.</p>
 
 <p>Rainfall interception</p>
 
@@ -1039,13 +1021,8 @@ and more background.</p>
 <p>MINROOTWP is the minimum root water
 potential (MPa), used in determining fractional water uptake in soil
 layers (see <a href="#uptake"> root water uptake </a>).</p>
-<p>MINLEAFWP is the minimum leaf water
-potential (MPa), which is needed when the stomatal conductance model (MODELGS
-in confile.dat) is anything but 4 (the Tuzet model).</p>
-<p>PLANTK is the leaf-specific (total) plant
-hydraulic conductance (mmol m<sup>-2</sup> s<sup>-1</sup>
-MPa<sup>-1</sup>). This parameter is always needed, and is
-important!</p>
+<p>MINLEAFWP is the minimum leaf water potential (MPa), which is needed when the stomatal conductance model (MODELGS in confile.dat) is anything but 4 (the Tuzet model).</p>
+<p>PLANTK is the leaf-specific (total) plant hydraulic conductance (mmol m<sup>-2</sup> s<sup>-1</sup> MPa<sup>-1</sup>). This parameter is always needed, and is important!</p>
 <p>Soil water retention and conductivity</p>
 <ul>
 <dl>
@@ -1202,16 +1179,7 @@ NAMELIST/ALLFOLN/ NODATES, VALUES, DATES</p>
 
 <section><h2><a id="hrfluxdat">The hourly flux data file (hrflux.dat)</a></h2>
     
-<p>This file is only created if IOHRLY &gt; 0 (in confile.dat).
-It contains hourly output values. The format is essentially the same as
-that of the daily output file, except that values are given on an
-hourly basis. The additional values reported are the hourly woody
-maintenance respiration (the sum of stem and branch respiration) and
-the canopy stomatal conductance (calculated by summing gs over the
-canopy), and the 'decoupling coefficient' (DECO) (if 1, leaves were
-perfectly coupled to the atmosphere, indicating a very high boundary
-layer conductance).</p>
-
+<p>This file is only created if IOHRLY &gt; 0 (in confile.dat). It contains hourly output values. The format is essentially the same as  that of the daily output file, except that values are given on anhourly basis. The additional values reported are the hourly woody maintenance respiration (the sum of stem and branch respiration) and the canopy stomatal conductance (calculated by summing gs over the canopy), and the 'decoupling coefficient' (DECO) (if 1, leaves were perfectly coupled to the atmosphere, indicating a very high boundary layer conductance).</p>
  </section>
        
 <section><h2><a id="dayfluxdat">The daily flux data file (dayflx.dat)</a></h2>
@@ -1282,9 +1250,7 @@ values in each row should add up to unity.</p>
         
 <section><h2><a id="maeserrdat">The simulation errors and warnings file (maeserr.dat)</a></h2>
     
-    <p>A typical maeserr.dat file looks like the below example. Note that if the model simulation
-    finishes, it prints that the 'simulation completed successfully'. However, there may still be
-    problems with the simulation.</p>
+    <p>A typical maeserr.dat file looks like the below example. Note that if the model simulation finishes, it prints that the 'simulation completed successfully'. However, there may still be problems with the simulation.</p>
     
     <p class="namelistlong">GS PARAMETERS ARE ASSUMED TO BE FOR CO2.<br>
     NO AJQ ARRAY; DEFAULT VALUE USED      <br>
@@ -1295,12 +1261,8 @@ values in each row should add up to unity.</p>
 	
     <section><h2><a id="layflxdat">The layer output files (layflx.dat)</a></h2>
     
-<p>This file is only created if IOHRLY &gt; 1. It lists the leaf area and values of J<sub>max</sub>
-and V<sub>cmax</sub> in each layer of the canopy. (Leaf area is obtained by summing over the gridpoints in
-that layer).</p>
-<p>For each hour it gives three rows of output. The top row is the absorbed PAR in each layer (mmol
-m<sup>-2</sup> leaf s<sup>-1</sup>), the second row is the photosynthesis (mmol m<sup>-2</sup> leaf s<sup>-1</sup>), and the
-third row is the transpiration (mmol m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
+<p>This file is only created if IOHRLY &gt; 1. It lists the leaf area and values of J<sub>max</sub> and V<sub>cmax</sub> in each layer of the canopy. (Leaf area is obtained by summing over the gridpoints in that layer).</p>
+<p>For each hour it gives three rows of output. The top row is the absorbed PAR in each layer (mmol m<sup>-2</sup> leaf s<sup>-1</sup>), the second row is the photosynthesis (mmol m<sup>-2</sup> leaf s<sup>-1</sup>), and the third row is the transpiration (mmol m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
 
 <p>The values for the topmost layer are always on the left.</p>
 
