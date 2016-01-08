@@ -7,17 +7,19 @@
 <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
 <title>Maespa technical manual</title>
 <link href="styles/main.css" rel="stylesheet" type="text/css">
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-54660574-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
+	<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-54660574-1', 'auto');
+      ga('send', 'pageview');
+    
+    </script>
+    <script type="text/javascript"
+            src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
 </head>
 
 <body id="manual">
@@ -158,76 +160,38 @@
     
     <section>
       <h2><a id="setupstand">Setting up the stand for Maespa</a></h2>
-    <p>The Maespa model is an individual-based model, but the soil
-water balance is calculated for the average stand (or for a single
-tree). Some care must be taken to correctly specify the target trees to
-scale up the water use from individual trees to a spatial
-average.</p>
+    <p>The Maespa model is an individual-based model, but the soil water balance is calculated for the average stand (or for a single tree). Some care must be taken to correctly specify the target trees to scale up the water use from individual trees to a spatial average.</p>
 
-<p>There are several options to run the model, which depends on
-the purpose of your simulation. Below are the most obvious choices. <!--For
-each of these options, a set of (annotated) example files is available.--><br>
+<p>There are several options to run the model, which depends on the purpose of your simulation. Below are the most obvious choices.<br>
 </p>
 
-<p><strong>1. Simulate a small subplot of trees surrounded
-by rows of other trees, calculate the soil water balance only for the
-subplot</strong></p>
-<p>Example applications:  The soil
-water balance is measured on a small plot of trees, for example a
-subplot of a replicated study with a number of treatments (or species)
-(see Figure below). The surrounding trees are used in the simulation to
-take into account the shading by neighboring trees. </p>
+<p><strong>1. Simulate a small subplot of trees surrounded by rows of other trees, calculate the soil water balance only for the subplot</strong></p> <p>Example applications:  The soil water balance is measured on a small plot of trees, for example a subplot of a replicated study with a number of treatments (or species) (see Figure below). The surrounding trees are used in the simulation to take into account the shading by neighboring trees. </p>
 
 <p><input src="images/subplotsimulation.png" height="372" type="image" width="525"></p>
 
-<p>This is a situation where non-target trees in a stand (the
-green trees in the above figure) should not be used to calculate the
-soil water balance of the target trees : they are not the same species
-(or perhaps in other applications, of different size or
-structure). </p>
+<p>This is a situation where non-target trees in a stand (the green trees in the above figure) should not be used to calculate the soil water balance of the target trees : they are not the same species (or perhaps in other applications, of different size or structure). </p>
 
-<p>To set up your simulation like this, make sure to set USESTAND = 0 in the WATCONTROL namelist in <span class="filename">watpars.dat</span>. Also, make sure you set the target trees correctly (in <span class="filename">confile.dat</span>). Also make sure that the plot area is set correctly (see examples above), by setting X0, XMAX, Y0 and YMAX in watpars.dat (Note: see <a href="#confiledat">the description of the control file</a> for tips on how to set the
-target trees).</p>
+<p>To set up your simulation like this, make sure to set USESTAND = 0 in the WATCONTROL namelist in <span class="filename">watpars.dat</span>. Also, make sure you set the target trees correctly (in <span class="filename">confile.dat</span>). Also make sure that the plot area is set correctly (see examples above), by setting X0, XMAX, Y0 and YMAX in watpars.dat (<strong>Note:</strong> see <a href="#confiledat">the description of the control file</a> for tips on how to set the target trees).</p>
 
-<p><strong>2. Simulate an entire stand, using a subset of
-trees to drive the water balance</strong></p>
+<p><strong>2. Simulate an entire stand, using a subset of trees to drive the water balance</strong></p>
 
 <p>Example application: simulate the soil water balance of an entire stand of trees, based on a sample of target
 trees (these could be trees on which sapflow was measured, for example). See the Figure for an example layout.</p>
 
 <p><input src="images/randomtargettrees.png" height="346" type="image" width="493"></p>
 
-<p>In this situation, radiation capture, water use and
-photosynthesis are only calculated for a sample of target trees (shown
-in red) dispersed throughout the stand. The user needs to decide
-carefully how to choose the target trees, as their performance will be
-used to scale to the stand total transpiration (see the next section on
-<a href="#canopyet">Canopy transpiration</a>). This
-problem is no different from typical field studies where a sample of
-trees is instrumented with sap flow instruments, from which stand
-totals are calculated (using some appropriate assumptions for scaling).
-To avoid this problem altogether, it is possible to simply use all
-trees in the stand for a simulation, but this can be very slow if there
-are several hundred trees in the stand or more. It is recommended to
-the user to experiment with different layouts of the target trees (and
-also note that it is possible to exclude trees on the edge of the plot,
-by setting the EDGE parameter in the TREESCON namelist
-in <span class="filename">confile.dat</span> (see <a href="#confiledat">this
-section of the manual</a>). </p>
+<p>In this situation, radiation capture, water use and photosynthesis are only calculated for a sample of target trees (shown in red) dispersed throughout the stand. The user needs to decide
+carefully how to choose the target trees, as their performance will be used to scale to the stand total transpiration (see the next section on <a href="#canopyet">Canopy transpiration</a>). This problem is no different from typical field studies where a sample of trees is instrumented with sap flow instruments, from which stand totals are calculated (using some appropriate assumptions for scaling). To avoid this problem altogether, it is possible to simply use all trees in the stand for a simulation, but this can be very slow if there are several hundred trees in the stand or more. It is recommended to the user to experiment with different layouts of the target trees (and also note that it is possible to exclude trees on the edge of the plot, by setting the EDGE parameter in the TREESCON namelist in <span class="filename">confile.dat</span> (see <a href="#confiledat">this section of the manual</a>). </p>
 
-<p>To set up your simulation, make sure USESTAND = 1 in the WATCONTROL namelist in watpars.dat (the
-default), and that you have chosen the target trees wisely. The output files <span class="filename">dayflx.dat</span> and <span class="filename">hrflux.dat</span> will give the tree-scale outputs (of your target trees), while <span class="filename">watbal.dat</span> will give the stand-scale estimates of transpiration (and many other variables).</p>
+<p>To set up your simulation, make sure USESTAND = 1 in the WATCONTROL namelist in watpars.dat (the default), and that you have chosen the target trees wisely. The output files <span class="filename">dayflx.dat</span> and <span class="filename">hrflux.dat</span> will give the tree-scale outputs (of your target trees), while <span class="filename">watbal.dat</span> will give the stand-scale estimates of transpiration (and many other variables).</p>
 
-<p><strong>3. Simulate a single tree, and calculate the soil water balance using the simulated water use by this single tree
-only.</strong></p>
+<p><strong>3. Simulate a single tree, and calculate the soil water balance using the simulated water use by this single tree only.</strong></p>
 
-<p>Example applications: a single tree growing in a pot, or a tree growing in a natural stand, when the rooted
-soil volume is known. </p>
+<p>Example applications: a single tree growing in a pot, or a tree growing in a natural stand, when the rooted soil volume is known. </p>
 
 <p>Because Maespa was not originally set up for this situation, the user has to specify a few different settings (in different input files). Be careful, because if you forget one of them, the simulation will not behave as intended. </p>
 
-<p>First, specify the target tree in <a href="#confiledat">confile.dat</a>. For example, if your target tree is the 25th tree specified in trees.dat, the ITARGETS namelist
-in confile.dat will look like:</p>
+<p>First, specify the target tree in <a href="#confiledat">confile.dat</a>. For example, if your target tree is the 25th tree specified in trees.dat, the ITARGETS namelist in confile.dat will look like:</p>
 
 <ul>
 <dl>
@@ -433,6 +397,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /INDIVDIAM/ NODATES, VALUES, DATES <br>
         NAMELIST /INDIVLAREA/ NODATES, VALUES, DATES</p>
       <p>The tree dimensions (the radii of the crowns in both X and Y directions (in m), the height of the crown and the trunk space (both in m), the stem diameter (in m) and the leaf area (in m<sup>2</sup>) can be specified for each tree individually, using these namelists. They can be specified on a series of dates - linear interpolation is used between those dates.</p>
+      <p>INDIVLAREA denotes the total leaf area of the individual tree (normally as half-total surface area). </p>
       <p>If they are to be constant throughout the simulation, then NODATES should be 1. DATES can be omitted. VALUES should be given in order of tree number.</p>
       <p>If they are specified for a series of dates, then both NODATES and DATES should be given - the dates in format 'DD/MM/YY'. The values should be given in a table with a row for each tree and a column for each date.</p>
       <p>The stem diameter is only used for calculating the woody respiration. If it is missing, woody respiration is not calculated. If any of the other dimensions are missing, an error will occur. The stem diameter should be specified at the height required for the <a href="#Allometric">allometric relationship</a> between height, diameter, and woody biomass.</p>
@@ -481,10 +446,10 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <h3><a name="metformat"></a>Metformat
       </h3>
       <p class="namelistlong">NAMELIST /METFORMAT/ DAYORHR, KHRSPERDAY, NOCOLUMNS, COLUMNS, STARTDATE, ENDDATE</p>
-      <p>Note: The format of this namelist was modified in April 2009, older files need to be reformatted accordingly.</p>
+      <p><strong>Note:</strong> The format of this namelist was modified in April 2009, older files need to be reformatted accordingly.</p>
       <p>DAYORHR is a flag indicating whether the met file is daily (DAYORHR = 0) or 'hourly' (DAYORHR = 1) data.</p>
       <p>KHRSPERDAY is the number of timesteps per day. For example, if the input data are hourly, this should be set to 24. There is no longer a need to recompile if this setting is changed. The maximum number of timesteps per day is set at 1440 (minutely input data). </p>
-      <p><em>Note</em>: If the input data are daily, KHRSPERDAY should still be set to 24 or 48, depending on how many calculations should be performed per day (which affects daily totals as well). It is recommended to set it to 48 when using daily data.</p>
+      <p><strong>Note</strong>: If the input data are daily, KHRSPERDAY should still be set to 24 or 48, depending on how many calculations should be performed per day (which affects daily totals as well). It is recommended to set it to 48 when using daily data.</p>
       <p>STARTDATE and ENDDATE are the start and end dates of the met data, respectively ('DD/MM/YY').</p>
       <p>NOCOLUMNS gives the number of columns of meteorological data, and COLUMNS is a list of names describing the content of each column. The following names are recognised:</p>
       <h3>For hourly data</h3>
@@ -691,8 +656,8 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>BPT contains the coefficients of the beta distributions for NOAGEC age classes. The beta distribution for each age class has six parameters, a, b, c, d, e, f:</p>
       <p>f(r,h) = a h<sup>b</sup> (1-h)<sup>c</sup> d r<sup>e</sup> (1 - r)<sup>f</sup></p>
       <p>where f(r,h) is the normalised leaf area density (see below) at relative height h (0, crown base; 1, crown top) and relative radius r (0, next to trunk; 1, exterior of canopy). The parameters should be given in the order a, b, c, d, e, f, for each age class. If JLEAF = 1, the parameters of the horizontal distribution (d,e,f) should still be given but will not be used; they can be set to zero.</p>
-      <p>Important note: the parameters a and d must be determined from the following constraints:</p>
-      <p>(a) the integral of a hb (1-h)<sup>c</sup> from h = 0 to h = 1 must = 1</p>
+      <p>Important <strong>Note:</strong> the parameters a and d must be determined from the following constraints:</p>
+      <p>(a) the integral of a \\(hb(1-h)^{c}\\) from h = 0 to h = 1 must = 1</p>
       <p>(b) the integral of d r<sup>e+1</sup> (1 - r)<sup>f</sup> from r = 0 to r = 1 must = 1/2&pi;</p>
       <p>For more information about the beta distributions see Wang et al (1990 For Ecol Man 32: 217-237).</p>
       <p><a name="RANDOM"></a>RANDOM describes the level of clumping of foliage into shoots: it is given by the ratio of projected shoot area to projected needle area. Default: 1.0.</p>
@@ -794,7 +759,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>IECO determines whether the temperature dependences of Km and G* are those of Medlyn et al. (1999) Plant Cell Environ. 22:1475-1495 (IECO = 1 - default) or Bernacchi et al. (2001) Plant Cell Environ. 24:253-260 (IECO = 0).</p>
       <p>The temperature response of JMAX is given by:</p>
       
-        <p>Jmax(T) = JMAX exp (EAVJ (T - 273) / (R T 273)) { [ 1 + exp((DELSJ 273 - EDVJ) / (R 273)) ] / [ 1 + exp((DELSJ T - EDVJ) / (R T)) ] }</p>
+        <p class="namelistlong">Jmax(T) = JMAX exp (EAVJ (T - 273) / (R T 273)) { [ 1 + exp((DELSJ 273 - EDVJ) / (R 273)) ] / [ 1 + exp((DELSJ T - EDVJ) / (R T)) ] }</p>
       
       <p>where T is the temperature in K, R is the gas constant, and EAVJ, EDVJ and DELSJ are the parameters.</p>
       <p>The same function can be used for the temperature response of Vcmax. Alternatively, if EDVC = 0, the simpler function</p>
@@ -828,7 +793,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>The daily foliage growth respiration is calculated by multiplying EFFYRF (g g<sup>-1</sup> C) by the increment in leaf biomass (obtained from the increment in leaf area and the SLA).</p>
       <p>The foliage respiration Q10 can also be specified by date using the following namelist:</p>
       <p class="namelistlong">NAMELIST /FOLQ10/ NDATES, RATES, DATES</p>
-      <p>NDATES is the number of values given; RATES is the rates (note: the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in RDPARS will be ignored.</p>
+      <p>NDATES is the number of values given; RATES is the rates (<strong>Note:</strong> the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in RDPARS will be ignored.</p>
       <h3><a name="Specific leaf">Specific leaf area</a></h3>
       <p>The specific leaf area is required only for calculating the foliage growth respiration, for which foliage biomass is needed. SLA can be specified using the following namelists:</p>
       <p class="namelistlong">NAMELIST /SLACON/ NODATES,NOLAYERS,NOAGES <br>
@@ -856,7 +821,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>where CA and CK are parameters and STEMSDW is the stem surface area: dry weight ratio in m<sup>2</sup> kg<sup>-1</sup>. For more information on this model, see Valentini et al (1996 Global Change Biol. 2: 199-207).</p>
       <p>The wood respiration Q10 can also be specified by date using the following namelist:</p>
       <p class="namelistlong">NAMELIST /WOODQ10/ NDATES, RATES, DATES</p>
-      <p>NDATES is the number of values given; RATES is the rates (note: the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in WRESP will be ignored.</p>
+      <p>NDATES is the number of values given; RATES is the rates (<strong>Note:</strong> the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in WRESP will be ignored.</p>
       <p>The daily woody growth respiration is calculated from the increment in woody biomass on that day according to</p>
       <p class="namelistlong">RESPWG = WBINC * EFFY</p>
       <p>where EFFY is the efficiency of woody biomass growth (g g<sup>-1</sup> C) and WBINC is the daily increment in woody biomass (g DW d<sup>-1</sup>) which is calculated from the changes in height and diameter, using the allometric relation given in <span class="filename">str.dat</span>.</p>
@@ -979,7 +944,7 @@ density of root biomass (g m<sup>-3</sup>). ROOTMASSTOT
 is the total root biomass (g m<sup>-2</sup>), from which
 root length in each rooted soil layer is calculated using ROOTRAD
 and ROOTDENS, and FRACROOT (see
-below). NOTE: This manual previously incorrectly stated that ROOTMASSTOT is in units of kg
+below). <strong>Note:</strong> This manual previously incorrectly stated that ROOTMASSTOT is in units of kg
 m<sup>-2.</sup></p>
 
 <p>NROOTLAYER specifies the number of soil
@@ -1081,7 +1046,7 @@ modified by organic matter content (this is different from SPA). Note
 that this could be accounted for by specifiying different KSAT values
 manually.</p>
 
-<p> NOTE: For all arrays in this namelist
+<p> <strong>Note:</strong> For all arrays in this namelist
 except FRACORGANIC,
 multiple values can be specified and all deeper layers are set to the
 last value entered. For FRACORGANIC,
@@ -1108,11 +1073,11 @@ set to the last value entered.<br>
 <section id=ustoreydat><h2>The understorey file (ustorey.dat)</h2>
 
 <p>This optional input file contains all the parameters to define the understorey calculations. The understorey is homogenous, but the incident PAR onto the understorey does vary strongly spatially, because of the non-homogenous canopy above it. For this reason, the user needs to specify a grid of points at which the understorey PAR is calculated. For each of these grid points, photosynthesis and transpiration are estimated.</p>
-<p><em>Note</em> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
+<p><strong>Note</strong> : It is important to realize that the understorey does not shade the overstorey! It is therefore a true 'under'-storey. If your understorey is tall compared to your target trees, consider specifying it as a separate species instead. In that case, we recommend adding the understorey as one individual with a very large box crown shape. </p>
 <p>This grid of understorey sampling points is defined by the following namelist:</p>
 <p class="namelistlong">NAMELIST /CONTROL/ NOUSPOINTS, X0, Y0, XMAX, YMAX</p>
 <p>This specified a rectangular grid from X0 to XMAX and Y0 to YMAX, having (approximately) NOUSPOINTS sampling points. The model then places the points accordingly within this rectangle.</p>
-<p>This produces the <span class="filename">uspar.dat</span> file will contain estimates for each grid point. <em>Note</em> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly! We might add an option with average understorey fluxes in the future.</p>
+<p>This produces the <span class="filename">uspar.dat</span> file will contain estimates for each grid point. <strong>Note</strong> : if using many grid points and simulation days, the output can be extremely large, and the model will run slowly! We might add an option with average understorey fluxes in the future.</p>
 <p>Next, the leaf area index and height of the understorey are specified:</p>
 <p class="namelistlong">NAMELIST /ALLUSLAI/ NODATES, VALUES, DATES<br>
 NAMELIST /ALHTCROWN/ NODATES, VALUES, DATES<br>
@@ -1196,26 +1161,19 @@ output (with units). This information is not repeated here in the manual.</p>
   foliage maintenance respiration, are given. Other respiration
   components are not subtracted. 
 
-<p>- Two estimates of transpiration are given (both in mol H<sub>2</sub>O tree<sup>-1</sup> d<sup>-1</sup>). The first is calculated by applying the Penman-Monteith equation at every grid point. The second is calculated by applying the Penman-Monteith equation to the canopy as a whole. </p>
+<p>- Two estimates of transpiration are given (both in mol H<sub>2</sub>O tree<sup>-1</sup> d<sup>-1</sup>). The first is calculated by applying the Penman-Monteith equation at every grid point within the crowns of target trees (hrLE). The second is calculated by applying the Penman-Monteith equation to the canopy as a whole (LECAN). </p>
     
 <p>- The sensible heat flux will only be calculated if the leaf energy balance is calculated (see  <a href="#confiledat"><span class="filename">confile.dat</span></a>).</p>
 
-    </section>
+</section>
     
 <section><h2><a id="watbaldat">The water balance file (watbal.dat)</a></h2>
     
-<p>The main water balance results are written to <span class="filename">watbal.dat</span>, which
-contains the water balance simulation output for each timestep. All
-variables are documented in the header for the file, which is not
-repeated here. The 'FSOIL' output (the 'soil water modifier') is the
-ratio of actual (simulated) stand transpiration rate, divided by what
-would be achieved if the soil water content was not limiting. </p>
+<p>The main water balance results are written to <span class="filename">watbal.dat</span>, which contains the water balance simulation output for each timestep. All variables are documented in the header for the file, which is not repeated here. The 'FSOIL' output (the 'soil water modifier') is the ratio of actual (simulated) stand transpiration rate, divided by what would be achieved if the soil water content was not limiting. </p>  
+<p>The units for all water fluxes are in mm (per timestep), which should be interpreted as the stand average (depending on which setting for the simulation, see <a href="#setupstand">Setting up the stand</a>). Units for energy fluxes are in W m-2, also to be interpreted as stand averages. </p>
+<p>Note that the first timestep (day 0, hour 0) are the initial conditions for the simulation (all other output is after that timestep has been completed).</p>
 
-<p>The units for all fluxes are in mm (per timestep), which should be interpreted as the stand average (depending on which setting for the simulation, see <a href="#setupstand">Setting up the stand</a>).</p>
-
-<p>Note that the first timestep (day 0, hour 0) are the initial conditions for the simulation (all other output is after
-that timestep has been completed).</p>
-
+<p><strong>Note:</strong>The various outputs for transpiration and evaporation are related as follows. The variable 'et' is stand-level evapotranspiration (mm timestep-1), but excluding wet canopy evaporation. This is given by 'evapstore'. It does, however, include the soil evaporation (which is also given separately in energy units as the soil latent heat flux). For total evapotranspiration, then, it is necessary to add 'et' and 'evapstore'.</p>
 </section>
     
 <section><h2><a id="watbaldaydat">The daily water balance file (watbalday.dat)</a></h2>
@@ -1228,12 +1186,7 @@ that timestep has been completed).</p>
     
 	<h3>watlay.dat</h3>
 
-<p>The soil water content (volumetric, in m<sup>3</sup>
-m<sup>-3</sup>) for each simulated layer, for all
-timesteps. Each row contains the water content for all layers (starting
-with the uppermost layer in the first column).  There are no
-headers in the file (which makes it easier to read the file for
-processing).</p>
+<p>The soil water content (volumetric, in m<sup>3</sup> m<sup>-3</sup>) for each simulated layer, for all timesteps. Each row contains the water content for all layers (starting with the uppermost layer in the first column).  There are no headers in the file (which makes it easier to read the file for processing).</p>
 
 <h3>watsoilt.dat</h3>
 
