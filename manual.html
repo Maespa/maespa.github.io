@@ -658,11 +658,11 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>where f(r,h) is the normalised leaf area density (see below) at relative height h (0, crown base; 1, crown top) and relative radius r (0, next to trunk; 1, exterior of canopy). The parameters should be given in the order a, b, c, d, e, f, for each age class. If JLEAF = 1, the parameters of the horizontal distribution (d,e,f) should still be given but will not be used; they can be set to zero.</p>
       <p>Important <strong>Note:</strong> the parameters a and d must be determined from the following constraints:</p>
       <p>(a) the integral of a \(hb(1-h)^{c}\) from h = 0 to h = 1 must = 1</p>
-      <p>(b) the integral of d r<sup>e+1</sup> (1 - r)<sup>f</sup> from r = 0 to r = 1 must = 1/2&pi;</p>
+      <p>(b) the integral of d \(r^{e+1}(1 - r)^{f}\) from r = 0 to r = 1 must = 1/2&pi;</p>
       <p>For more information about the beta distributions see Wang et al (1990 For Ecol Man 32: 217-237).</p>
       <p><a name="RANDOM"></a>RANDOM describes the level of clumping of foliage into shoots: it is given by the ratio of projected shoot area to projected needle area. Default: 1.0.</p>
-      <h3><a name="wind"></a>Decline in wind speed with depth in the canopy
-      </h3>
+
+<h3><a name="wind"></a>Decline in wind speed with depth in the canopy</h3>
       <p class="namelistlong">NAMELIST /AERO/ EXTWIND</p>
       <p>The wind speed declines exponentially with depth in the canopy, where EXTWIND is the exponential coefficient. The windspeed at canopy depth D, W(D) is given by</p>
       <p class="namelistlong">W(D) = W(0)*exp(-EXTWIND*D)</p>
@@ -673,23 +673,22 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /ALLOMB/ BCOEFFT, BEXPONT, BINTERC <br>
         NAMELIST /ALLOMR/ RCOEFFT, REXPONT, RINTERC, FRFRAC</p>
       <p>The woody biomass is calculated using the following allometric relationship:</p>
-      <p class="namelistlong">WBIOM = COEFFT * HEIGHT * (DIAM ** EXPONT) + WINTERC (S1)</p>
+      <p><small>\(WBIOM = COEFFT \cdot HEIGHT \cdot (DIAM^{EXPONT}) + WINTERC\)</small></p>
       <p>where: WBIOM is the woody biomass (in kg DW tree<sup>-1</sup>), HEIGHT is the total height of the tree in m (green height + trunk length), DIAM is the stem diameter in m, and COEFFT, EXPONT and WINTERC are parameters. The diameter should be specified (in trees.dat) at the height for which they were used to develop this allometric relationship. The woody biomass is only used to calculate the woody respiration rate.</p>
       <p>Branch biomass and total root biomass are calculated using the same equations, again from stem height and diameter, but using different parameters. Fine root biomass is assumed to be a constant fraction (FRFRAC) of total root biomass. Again, these biomass estimates are only used to calculate <a href="#woodyrespiration">respiration </a>rates.</p>
     </section>
 
-    <section id=phydat><h2>The physiology file (phy.dat)</h2>
+<section id=phydat><h2>The physiology file (phy.dat)</h2>
     
       <p>First line: title of physiology file used in the output files.</p>
-      <h3><a name="age"></a>Number of age classes of foliage
-      </h3>
+<h3><a name="age"></a>Number of age classes of foliage</h3>
       <p class="namelistlong">NAMELIST /NOAGES/ NOAGEP</p>
       <p>NOAGEP is the number of age classes for which physiological parameters are specified. If NOAGEC (the number of age classes for which leaf area density distributions are specified, given in str.dat) is not equal to 1, then NOAGEP must equal 1 or NOAGEC. The parameters NFOL, JMAX, VCMAX and RD can be specified for different age classes of foliage. However they do not all need to be specified for all age classes - but they must either be specified for all foliage or for NOAGEP age classes. Neither NOAGEP nor NOAGEC should exceed MAXC, specified in <span class="filename">maestcom.f90</span> If NOAGEP = 1, then this namelist can be omitted.</p>
       <h3>Proportions of leaf area in each age class </h3>
       <p class="namelistlong">NAMELIST /PHENOL/ PROP</p>
       <p>PROP is an array containing the proportion of leaf area in each age class. This is only read in if either NOAGEP &gt; 1 or NOAGEC &gt; 1. NOAGEP or NOAGEC indicate how many entries there should be in this array (maximum MAXC, in <span class="filename">maestcom.f90</span>) Also, the entries in the array should sum to one.</p>
-      <h3><a name="Reflectance"></a>Reflectance and transmittance
-      </h3>
+
+<h3><a name="Reflectance"></a>Reflectance and transmittance</h3>
       <p class="namelistlong">NAMELIST /ABSORP/ NOLAYERS,RHOSOL,ATAU,ARHO</p>
       <p>NOLAYERS is the number of crown layers for which reflectance and transmittance are specified.</p>
       <p>RHOSOL is the soil reflectance, in three wavebands (PAR, NIR, thermal). This affects up-welling radiation (particularly long-wave radiation, for which soil reflectance is significant).</p>
@@ -698,23 +697,15 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
 
 <h3><a id="stomatalconductance">Stomatal conductance parameters</a></h3>
 
-<p class="namelistlong">NAMELIST /BBGS/ G0,G1,GAMMA,WLEAF,NSIDES, SMD1, SMD2, SWPEXP<br>
-        NAMELIST /BBLGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP<br>
-        NAMELIST /BBMGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP<br>
+<p class="namelistlong">NAMELIST /BBGS/ G0,G1,GAMMA,WLEAF,NSIDES, SMD1, SMD2, SWPEXP, WC1, WC2<br>
+        NAMELIST /BBLGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP, WC1, WC2<br>
+        NAMELIST /BBMGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, WC1, WC2<br>
       NAMELIST /BBGSCON/ CONDUNITS</p>
       <p>The flag <a href="#choicesubmodel">MODELGS </a>(read in namelist CONTROL) indicates which stomatal conductance model is to be used, and hence, which set of parameters to read. If MODELGS = 2, BBGS is read; if MODELGS = 3, BBLGS is read; if MODELGS = 4, BBMGS is read.</p>
+      <p>Please note that the Jarvis model is no longer supported in Maespa, not even when run in Maestra mode.</p>
       <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO<sub>2</sub> or H<sub>2</sub>O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO2. A message is displayed in the <span class="filename">Maeserr.dat</span> file after running Maespa how the parameters were handled (to avoid fairly common mistakes).</p>
-      <p>If the stomatal conductance parameters are for CO2, they are converted in the program to conductance to water vapour by multiplying by the constant GSVGSC = 1.57 (in <span class="filename">maestcom.f90</span>).</p>
       <p>For all models, WLEAF is the width of the leaf in m, used in calculating the boundary layer conductance (Leuning et al 1995 PC&amp;E 18:1183-1200). NSIDES is the number of sides of the leaf with stomata; default 1.</p>
-      <!-- !<p>The effect of soil moisture is the same for all three models - gs is reduced by multiplying by a factor f that ranges from 0 to 1. There are three alternative ways of specifying f.</p>
-      <p>If the soil moisture is specified in the met file as soil water content, the soil moisture deficit (q) is calculated as q = (SWMAX - SWC)/(SWMAX - SWMIN). The effect of q on gs can be either an exponential or linear decline. The exponential relationship is given by:</p>
-      <p class="namelistlong">f(q) = 1 – SMD1 * exp( SMD2 * q)</p>
-      <p>Both parameters SMD1 and SMD2 should be &gt; 0. See Granier and Loustau (1994) Ag For Met 71:61-81 for further information on this function. The linear relationship is given by:</p>
-      <p class="namelistlong">f(q) = (1-q)/SMD2</p>
-      <p>and this relationship is chosen by setting SMD1 &lt; 0.</p>
-      <p>If the soil moisture is specified in the met file as soil water potential p, then its effect on stomatal conductance is given by:</p>
-      <p class="namelistlong">f(p) = exp(SWPEXP * p)</p>
-      <p>In all three of these functions, f is not allowed to be less than 0 or greater than 1. If soil moisture is omitted from the met file, or these parameters omitted, then there is no effect of soil moisture on gs.</p> -->
+            
       <p>In the Ball-Berry model (BBGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A * RH / (CA – GAMMA)</p>
       <p>where gs (mol m<sup>-2</sup> s<sup>-1</sup>) is the stomatal conductance to CO2, A (mmol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, RH is the relative humidity, CA (mmol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), and GAMMA (mmol mol<sup>-1</sup>) are input parameters.</p>
@@ -724,6 +715,23 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>In the Ball-Berry-Opti model (BBMGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A/(CA - GAMMA) / SQRT(VPD)</p>
       <p>where all units are the same as in the Ball-Berry-Leuning model. This model formulation is due to Medlyn et al. (2011).</p>
+
+     <p>The user has various options to take into account the effect of soil moisture on stomatal conductance. These options can be set by specifying (a subset of) the parameters SMD1, SMD2, SWEXP or WC1 and WC2. If none of these parameters are set, and the model is run in Maespa mode (but not with the Tuzet model), the 'maximum transpiration rate' (cf. Duursma et al. 2008) is used. Since this is the recommended setting, we suggest parameters in the watpars.dat file are chosen carefully in order to simulate effects of soil water stress on stomatal conductance.</p>
+     <p>Alternatively, a simple modifier function can be specified that will be used to reduce stomatal conductance. This can either be a function of the volumetric water content directly (a simple threshold function, see below), or of the 'soil water deficit'. </p>
+     <p>To use the soil water deficit, specify WSOILMETHOD = 4 in the WATCONTROL namelist (watpars.dat), and specify one (or two) of SMD1, SMD2 or SWEXP, depending which function is to be used. <strong>Note:</strong> this method cannot be used with the BBMGS model (for no other reason than it is not implemented).</p>
+      <p>The soil moisture deficit (q) is calculated as q = (SWMAX - SWC)/(SWMAX - SWMIN), where SWC is the volumetric water content (alternatively, the met file can give the soil moisture deficit directly). In this case the parameters SWMIN and SWMAX have to be specified in the ENVIRON namelist (met.dat).</p>
+      
+<p>The effect of q on stomatal conductance can be either an exponential or linear decline. The exponential relationship is given by:</p>
+      
+      <p class="namelistlong">f(q) = 1 – SMD1 * exp( SMD2 * q)</p>
+      <p>Both parameters SMD1 and SMD2 should be &gt; 0. See Granier and Loustau (1994 Ag For Met 71:61-81) for further information on this function. The linear relationship is given by:</p>
+      <p class="namelistlong">f(q) = (1-q)/SMD2</p>
+      <p>and this relationship is chosen by setting SMD1 &lt; 0.</p>
+      <p>If the soil moisture is specified in the met file as soil water potential p, then its effect on stomatal conductance is given by:</p>
+      <p class="namelistlong">f(p) = exp(SWPEXP * p)</p>
+
+<p>Alternatively, a simple threshold function of the volumetric water content can be used. To do this, set WSOILMETHOD = 2 in the WATCONTROL namelist (watpars.dat), and specify WC1 and WC2 in the stomatal conductance namelist. If soil volumetric water content (either simulated or measured) is below WC1, stomatal conductance will be zero, if it is above WC2 there is no effect on stomatal conductance, with a linear decline between WC2 and WC1. </p>
+
 
 <h3><a name="Leaf N">Leaf N content</a></h3>
 
@@ -753,21 +761,25 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /VCMAXPARS/ EAVC, EDVC, DELSC, TVJUP, TVJDN</p>
       <p>where THETA is the curvature of the light-response curve of electron transport, AJQ is the quantum yield of electron transport, and the other parameters describe the temperature responses of Jmax and Vcmax. The light response of electron transport (J) is given by a non-rectangular hyperbola:</p>
       
-        <p class="namelistlong">THETA J2 - (AJQI + JMAX) J + AJQ I JMAX = 0</p>
+        <p><small>\( \theta J^{2} - (AJQ \cdot I + JMAX)J + AJQ \cdot I \cdot JMAX = 0\)</small></p>
       
-      <p>where I is the leaf absorbed PAR, and JMAX, AJQ and THETA are the parameters. The default value of AJQ is ALPHAQ = 0.425 (defined in <span class="filename">maestcom.f90</span>). AJQ may also be specified by date, layer and age – see below.</p>
-      <p>IECO determines whether the temperature dependences of Km and G* are those of Medlyn et al. (1999) Plant Cell Environ. 22:1475-1495 (IECO = 1 - default) or Bernacchi et al. (2001) Plant Cell Environ. 24:253-260 (IECO = 0).</p>
+      <p>where I is the leaf absorbed PAR, and JMAX, AJQ and THETA are the parameters. A single value of AJQ can be specified in the JMAXPARS namelist as described above, but it may also be specified by date, layer and age (in the AJQ namelist, see below).</p>
+      <p>IECO determines whether the temperature dependencies of Km and <small>\( \Gamma^{*} \)</small> are those of Medlyn et al. (1999 Plant Cell Environ. 22:1475-1495) (IECO = 1 - default) or Bernacchi et al. (2001 Plant Cell Environ. 24:253-260) (IECO = 0).</p>
       <p>The temperature response of JMAX is given by:</p>
-      
-        <p class="namelistlong">Jmax(T) = JMAX exp (EAVJ (T - 273) / (R T 273)) { [ 1 + exp((DELSJ 273 - EDVJ) / (R 273)) ] / [ 1 + exp((DELSJ T - EDVJ) / (R T)) ] }</p>
+        <p><small>\( J_{max}(T) = JMAX25 \cdot F_1 * F_2 / F_3 \).</small>Where:</p>
+        <p><small>\( F_1 = exp(EAVJ (T - 298) / (R \cdot T \cdot 298)) \)</small></p>
+        
+        <p><small>\(  F_2 = (1 + exp((DELSJ \cdot 298 - EDVJ)) / (R \cdot 298) \)</small></p>
+         <p><small>\( F_3 = (1 + exp((DELSJ \cdot T - EDVJ)) / (R \cdot T)   \)</small></p>
       
       <p>where T is the temperature in K, R is the gas constant, and EAVJ, EDVJ and DELSJ are the parameters.</p>
       <p>The same function can be used for the temperature response of Vcmax. Alternatively, if EDVC = 0, the simpler function</p>
       
-        <p class="namelistlong">Vcmax(T) = VCMAX exp (EAVC (T - 273) / (R T 273))</p>
+        <p><small>\( V_{cmax}(T) = VCMAX25 \cdot exp(EAVC(T - 273) / (R \cdot T \cdot 298)) \)</small></p>
       
       <p>is used. The parameters TVJUP, TVJDN can be used to describe a linear decline to zero of Jmax and Vcmax at low temperature. They begin to decline linearly to zero at T = TVJUP °C and reach zero at T = TVJDN °C. Default value = -100°C.</p>
-      <h3>Quantum yield of electron transport</h3>
+      
+<h3>Quantum yield of electron transport</h3>
       <p>If there is just a single value for the quantum yield of electron transport, it can be specified as AJQ in the namelist JMAXPARS as described above. It is also possible to specify values by age class, height and date, using the namelists:</p>
       <p class="namelistlong">NAMELIST /AJQCON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /AJQ/ VALUES,DATES</p>
@@ -786,7 +798,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p class="namelistlong">NAMELIST /RDPARS/ EFFYRF, Q10F, RTEMP, DAYRESP, TBELOW</p>
       <p>Q10F is the exponential coefficient of the temperature response of foliage respiration, and RTEMP (°C) is the temperature at which the values of RD are specified:</p>
       
-      <p class="namelistlong">Rd(T) = RD exp(Q10F (TAIR – RTEMP))</p>
+      <p><small>\(R_d(T) = RD \cdot exp(Q10F(TAIR – RTEMP)) \)</small></p>
       
       <p>TBELOW is the minimum temperature at which respiration occurs; below this, Rd(T) is set to zero. This applies to respiration of all plant components. Default: -100°C.</p>
       <p>DAYRESP determines the respiration in the light, relative to respiration in the dark. For example, if DAYRESP = 0.7, respiration in the light is 30% lower than in the dark.</p>
@@ -794,7 +806,8 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>The foliage respiration Q10 can also be specified by date using the following namelist:</p>
       <p class="namelistlong">NAMELIST /FOLQ10/ NDATES, RATES, DATES</p>
       <p>NDATES is the number of values given; RATES is the rates (<strong>Note:</strong> the exponential coefficient in eqn P15 above, not the actual Q10), and DATES the dates at which those rates apply, in the format 'DD/MM/YY'. If this parameter is specified using this namelist, any value given in RDPARS will be ignored.</p>
-      <h3><a name="Specific leaf">Specific leaf area</a></h3>
+
+<h3><a name="Specific leaf">Specific leaf area</a></h3>
       <p>The specific leaf area is required only for calculating the foliage growth respiration, for which foliage biomass is needed. SLA can be specified using the following namelists:</p>
       <p class="namelistlong">NAMELIST /SLACON/ NODATES,NOLAYERS,NOAGES <br>
         NAMELIST /SLA/ VALUES, DATES</p>
@@ -808,14 +821,18 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /COLLWRESP/ COLLA, COLLK, STEMSDW</p>
 
 <p>The parameters in these namelists are used in calculating woody respiration as follows. Stem maintenance respiration is calculated on an hourly basis according to:</p>
-      <p class="namelistlong">R = RMW * exp(Q10W * (TAIR - RTEMP)) * WBIOM</p>
+
+      <p><small>\(R = RMW \cdot exp(Q10W \cdot (TAIR - RTEMP)) \cdot WBIOM \)</small></p>
+
       <p>where RMW is the maintenance respiration rate per unit mass (in umol kg<sup>-1</sup> DW s<sup>-1</sup> or nmol g<sup>-1</sup> DW s<sup>-1</sup>) at temperature RTEMP, Q10W is the temperature response factor, and WBIOM is the woody biomass (in kg DW) which is calculated from height and diameter according to the allometric relation given under <span class="filename">str.dat</span>.</p>
       <p>There are three methods by which RMW can be specified, using the control parameter RDMODEL in <span class="filename">confile.dat</span>. <br>
         (1) If RDMODEL = 0 and RM &gt; 0, then RMW = RM, the maintenance respiration rate per unit mass.</p>
       <p>(2) If RDMODEL = 0 and RM = 0, the program will look for RMA, which is the rate of maintenance respiration per unit stem surface area (in umol m<sup>-2</sup> s<sup>-1</sup>). This is converted to a value for RMW according to:
-      <p>STEMAREA = STEMFORM*PI*(DIAM**2)*HT <br>
-             RMW = RMA*STEMAREA/WBIOM </p>
-        <p>where STEMFORM is a parameter.</p>
+      
+      <p><small>\(STEMAREA = STEMFORM \cdot PI \cdot (DIAM^2) \cdot HT\)</small></p>
+      <p><small>\(RMW = RMA \cdot STEMAREA/WBIOM \)</small></p>
+      
+        <p>where STEMFORM is a parameter (0-1).</p>
       <p>(3) If RDMODEL = 1, then the base rate of woody maintenance respiration (RMW) is calculated from the stem diameter according to</p>
       <p>RMW = CA * exp(CK * DIAM) * STEMSDW</p>
       <p>where CA and CK are parameters and STEMSDW is the stem surface area: dry weight ratio in m<sup>2</sup> kg<sup>-1</sup>. For more information on this model, see Valentini et al (1996 Global Change Biol. 2: 199-207).</p>
@@ -847,6 +864,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
 <dt class="namelistlong">RETFUNCTION = 1</dt>
 <dt class="namelistlong">KEEPWET = 0</dt>
 <dt class="namelistlong">KEEPDRY = 0</dt>
+<dt class="namelistlong">WSOILMETHOD = 1</dt>
 <dt class="namelistlong">EQUALUPTAKE = 0</dt>
 <dt class="namelistlong">USEMEASET = 1</dt>
 <dt class="namelistlong">USEMEASSW = 0</dt>
@@ -854,32 +872,16 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
 <dt class="namelistlong">/</dt>
 </dl>
 </ul>
-<p>If SIMTSOIL is set to 0, soil temperature
-will not be simulated (and soil evaporation estimates are not to be
-trusted). This option is typically used only for debugging. Recall also
-that if TSOIL is input in the met.dat file, soil
-surface temperature is not simulated either.</p>
-<p>If SIMSOILEVAP is set to 1, the
-soil evaporation is calculated (if 0, it is not calculated -
-simplifying parameterization).</p>
-<p>If REASSIGNRAIN is set to 1, the
-(half-)hourly precipitation as read in from met.dat
-is re-assigned to more realistic (half-)hourly values. This is useful
-if the input rain data was actually measured daily (as is typical), but
-was input on the first of each day, for example. The routine to
-re-assign rain was borrowed from GRAECO (see the subroutine ASSIGNRAIN in
-getmet.for for more details).</p>
+<p>If SIMTSOIL is set to 0, soil temperature will not be simulated (and soil evaporation estimates are not to be trusted). This option is typically used only for debugging. Recall also that if TSOIL is input in the met.dat file, soil surface temperature is not simulated either.</p>
+<p>If SIMSOILEVAP is set to 1, the soil evaporation is calculated (if 0, it is not calculated - simplifying parameterization).</p>
+<p>If REASSIGNRAIN is set to 1, the (half-)hourly precipitation as read in from met.dat is re-assigned to more realistic (half-)hourly values. This is useful if the input rain data was actually measured daily (as is typical), but was input on the first of each day, for example. The routine to re-assign rain was borrowed from GRAECO (see the subroutine ASSIGNRAIN in getmet.for for more details).</p>
 <p>RETFUNCTION specifies which soil water retention curve should be used. RETFUNCTION = 1 uses the Campbell curve:</p>
 <p>SOILWP = PSIE*(WATFRAC/POREFRAC)<sup>-BPAR</sup></p>
 <p>where POREFRAC is the porosity (0-1, see below), PSIE (MPa) and BPAR (-) parameters, WATFRAC the volumetric water content (m<sup>3</sup>m<sup>-3</sup>),
 and SOILWP the soil water potential (MPa). Values for the parameters BPAR and PSIE are given by, among others: <a href="">Cosby et al. (1984)</a>, as reproduced in <a href="">Duursma
-et al. (2008)</a> in the same units as used in Maespa (but note PSIE is in kPa in that paper, so divide by 10<sup>3</sup> for use in Maespa).
-
-When RETFUNCTION
-= 2, the only difference is that WATFRAC is not divided by POREFRAC
-(but still uses the parameters PSIE and BPAR).</p>
-<p>KEEPWET is used for testing, if set to 1, the soil water balance is calculated but soil water content is not
-actually updated (so that the soil stays wet). Similarly, if KEEPDRY is set to 1, all rainfall is set to zero (useful for testing).</p>
+et al. (2008)</a> in the same units as used in Maespa (but note PSIE is in kPa in that paper, so divide by 10<sup>3</sup> for use in Maespa). When RETFUNCTION = 2, the only difference is that WATFRAC is not divided by POREFRAC (but still uses the parameters PSIE and BPAR).</p> 
+<p>KEEPWET is used for testing, if set to 1, the soil water balance is calculated but soil water content is not actually updated (so that the soil stays wet). Similarly, if KEEPDRY is set to 1, all rainfall is set to zero (useful for testing).</p>
+<p>WSOILMETHOD determines the method used to reduce stomatal conductance in dry soil. If 1, the default, the model needs to be run in Maespa mode and the idea of 'maximum transpiration rate' (see Duursma et al. 2008, Duursma and Medlyn 2012) is used. If it is 2, a simple threshold function of the volumetric water content is used (and parameters WC1, WC2 need to be specified in the stomatal conductance namelists). If it is 4, a function of the soil moisture deficit is used. See <a href="#stomatalconductance">this section</a> for more information.
 <p>EQUALUPTAKE sets the option to use equal relative water uptake from all soil layers. If it is 0 (default), the relative water uptake is calculated from fine root density and soil
 water potential, and so on.</p>
 <p>The soil water balance can be calculated with measured (not simulated) canopy transpiration. To do this, set USEMEASET = 1, and make sure to add measured ET to the met file.</p>
@@ -983,10 +985,8 @@ and more background.</p>
 </dl>
 </ul>
 
-<p>MINROOTWP is the minimum root water
-potential (MPa), used in determining fractional water uptake in soil
-layers (see <a href="#uptake"> root water uptake </a>).</p>
-<p>MINLEAFWP is the minimum leaf water potential (MPa), which is needed when the stomatal conductance model (MODELGS in confile.dat) is anything but 4 (the Tuzet model).</p>
+<p>MINROOTWP is the minimum root water potential (MPa), used in determining fractional water uptake in soil layers (see <a href="#uptake"> root water uptake </a>).</p>
+<p>MINLEAFWP is the minimum leaf water potential (MPa), which is needed when the stomatal conductance model (MODELGS in confile.dat) is anything but 6 (the Tuzet model).</p>
 <p>PLANTK is the leaf-specific (total) plant hydraulic conductance (mmol m<sup>-2</sup> s<sup>-1</sup> MPa<sup>-1</sup>). This parameter is always needed, and is important!</p>
 <p>Soil water retention and conductivity</p>
 <ul>
@@ -1018,40 +1018,19 @@ entered.</p>
 </dl>
 </ul>
 
-<p>NLAYER is the number of soil layers in the
-model, NROOTLAYER the number of layers with roots
-in them. Note that the rooted layers are always assumed to be the top
-layers, but actual presence of roots in any of those layers can be
-controlled by setting the FRACROOT
-parameter.</p>
+<p>NLAYER is the number of soil layers in the model, NROOTLAYER the number of layers with roots in them. Note that the rooted layers are always assumed to be the top layers, but actual presence of roots in any of those layers can be controlled by setting the FRACROOT parameter.</p>
 
 <p>LAYTHICK is the thickness of each layer
 (m), and determines total rooting depth together with NLAYER.</p>
 
-<p>POREFRAC is the soil porosity (m<sup>3</sup>
-m<sup>-3</sup>).</p>
+<p>POREFRAC is the soil porosity (m<sup>3</sup> m<sup>-3</sup>), i.e. the volumetric water content at saturation.</p>
 
-<p>DRAINLIMIT is the fraction of the pore
-fraction below which no drainage occurs. This may be omitted, since <a href="#drainage">drainage</a> is calculated from
-hydraulic conductivity anyway. Could be useful for soils that show
-non-normal drainage, or if hydraulic conductivity function is uncertain
-(setting the DRAINLIMIT
-parameter essentially uses the simple field capacity concept instead of
-drainage calculated by Richard's flow equation).</p>
+<p>DRAINLIMIT is the fraction of the pore fraction below which no drainage occurs. This may be omitted, since <a href="#drainage">drainage</a> is calculated from hydraulic conductivity anyway. Could be useful for soils that show non-normal drainage, or if hydraulic conductivity function is uncertain (setting the DRAINLIMIT parameter essentially uses the simple field capacity concept instead of drainage calculated by Richard's flow equation).</p>
 
-<p>FRACORGANIC is the fraction of soil solids
-(by volume) that is organic matter. It is used for calculating soil
-thermal conductivity. At present, soil hydraulic conductivity is not
-modified by organic matter content (this is different from SPA). Note
-that this could be accounted for by specifiying different KSAT values
-manually.</p>
+<p>FRACORGANIC is the fraction of soil solids (by volume) that is organic matter. It is used for calculating soil thermal conductivity. At present, soil hydraulic conductivity is not modified by organic matter content (this is different from SPA). Note that this could be accounted for by specifiying different KSAT values manually.</p>
 
-<p> <strong>Note:</strong> For all arrays in this namelist
-except FRACORGANIC,
-multiple values can be specified and all deeper layers are set to the
-last value entered. For FRACORGANIC,
-soil layers for which no value is entered will be assumed to have no
-organic matter content.</p>
+<p> <strong>Note:</strong> For all arrays in this namelist except FRACORGANIC, multiple values can be specified and all deeper layers are set to the last value entered. For FRACORGANIC, soil layers for which no value is entered will be assumed to have no organic matter content.</p> 
+
 <p>Initial parameters</p>
 <ul>
 <dl>
