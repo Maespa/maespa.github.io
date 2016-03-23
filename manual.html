@@ -350,7 +350,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <h3>Climate change scenarios </h3>
       <p>The program can add a fixed amount to CO2 concentration and temperature from the met file. The following namelist is only needed if you want a scenario implemented:</p>
       <p class="namelistlong">NAMELIST /CCSCEN/ CO2INC, TINC</p>
-      <p>where CO2INC is the amount of increase in the CO2 concentration (in mmol mol<sup>-1</sup>) and TINC is the amount of increase in the air temperature (°C). Both soil and air temperature are increased. The absolute humidity (in g m<sup>-3</sup>) is maintained constant; RH and VPD are adjusted accordingly.</p>
+      <p>where CO2INC is the amount of increase in the CO2 concentration (in mu mol mol<sup>-1</sup>) and TINC is the amount of increase in the air temperature (°C). Both soil and air temperature are increased. The absolute humidity (in g m<sup>-3</sup>) is maintained constant; RH and VPD are adjusted accordingly.</p>
       <h3><a name="Effect of"></a>Effect of OTC on Met Data
       </h3>
       <p>If you are simulating growth within an open-top chamber (OTC) or other controlled environment and met data was measured outside the chamber you may want to correct for the effects of the chamber. This can be done using the namelist:</p>
@@ -360,7 +360,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       </h3>
       <p>The program can print out a histogram of PAR absorbed over the course of the simulation. It is printed to histo.dat if IOHIST = 1 (in the CONTROL namelist, above). The following namelist is needed only if you want the histogram:</p>
       <p class="namelistlong">NAMELIST /HISTO/ BINSIZE</p>
-      <p>where BINSIZE is the size of the classes in the histogram (in mmol m<sup>-2</sup> s<sup>-1</sup>). The maximum number of classes is given by MAXHISTO in <span class="filename">maestcom.f90</span>.</p>
+      <p>where BINSIZE is the size of the classes in the histogram (in mu mol m<sup>-2</sup> s<sup>-1</sup>). The maximum number of classes is given by MAXHISTO in <span class="filename">maestcom.f90</span>.</p>
     </section>
     
     <section id=treesdat><h2>The trees file (trees.dat)      </h2>
@@ -429,7 +429,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <h3><a name="Constant met"></a>Constant met data
       </h3>
       <p class="namelistlong">NAMELIST /ENVIRON/ CA, PRESS, DIFSKY, SWMIN, SWMAX</p>
-      <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mmol mol<sup>-1</sup>, which is assumed not to vary with time. This value is only used if the 'CA' column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
+      <p>This namelist is essential.CA is the atmospheric CO2 concentration, in mu mol mol<sup>-1</sup>, which is assumed not to vary with time. This value is only used if the 'CA' column is missing from the met file. If there is no value of CA in either met or phy files, an error will occur.</p>
       <p>PRESS is the atmospheric pressure, in Pa, also assumed not to vary with time. This value is only used if the 'PRESS' column is missing from the met file. The default value for PRESS is 1.0125 * 105 Pa.</p>
       <p>DIFSKY controls the distribution of diffuse radiation incident from the sky. The distribution function is given by</p>
       <p class="namelistlong">&Gamma;(q) = (1 + DIFSKY*cos(&theta;)) / (1 + 2/&pi; DIFSKY)</p>
@@ -511,7 +511,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
           </tr>
           <tr>
             <td>'PAR'</td>
-            <td>mmol m<sup>-2</sup>s<sup>-1</sup></td>
+            <td>mu mol m<sup>-2</sup>s<sup>-1</sup></td>
             <td>hourly incident photosynthetically active radiation</td>
             <td>Calculated from RAD. If RAD absent, calculated from TAIR (DELTAT needed).</td>
           </tr>
@@ -708,10 +708,10 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
             
       <p>In the Ball-Berry model (BBGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A * RH / (CA – GAMMA)</p>
-      <p>where gs (mol m<sup>-2</sup> s<sup>-1</sup>) is the stomatal conductance to CO2, A (mmol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, RH is the relative humidity, CA (mmol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), and GAMMA (mmol mol<sup>-1</sup>) are input parameters.</p>
+      <p>where gs (mol m<sup>-2</sup> s<sup>-1</sup>) is the stomatal conductance to CO2, A (mu mol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, RH is the relative humidity, CA (mu mol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), and GAMMA (mu mol mol<sup>-1</sup>) are input parameters.</p>
       <p>In the Ball-Berry-Leuning model (BBLGS), stomatal conductance is given by</p>
       <p>gs = G0 + G1 * A / (CA – GAMMA) / (1 + VPD/D0L)</p>
-      <p>where gs (mol m-2 s-1) is the stomatal conductance to CO2, A (mmol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, VPD (Pa) is the vapour pressure deficit, CA (mmol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), D0L (Pa) and GAMMA (mmol mol<sup>-1</sup>) are input parameters.</p>
+      <p>where gs (mol m-2 s-1) is the stomatal conductance to CO2, A (mu mol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, VPD (Pa) is the vapour pressure deficit, CA (mu mol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), D0L (Pa) and GAMMA (mu mol mol<sup>-1</sup>) are input parameters.</p>
       <p>In the Ball-Berry-Opti model (BBMGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A/(CA - GAMMA) / SQRT(VPD)</p>
       <p>where all units are the same as in the Ball-Berry-Leuning model. This model formulation is due to Medlyn et al. (2011).</p>
@@ -752,7 +752,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /VCMAX/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
       <p>DATES gives the dates at which JMAX and VCMAX were specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
-      <p>VALUES gives the parameter values (in mmol m<sup>-2</sup> s<sup>-1</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class. The values should be corrected to 25 °C.</p>
+      <p>VALUES gives the parameter values (in mu mol m<sup>-2</sup> s<sup>-1</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class. The values should be corrected to 25 °C.</p>
       <p>If the parameters are <a href="#choicesubmodel">calculated from leaf N content</a>, then the following namelists should be used:</p>
       <p class="namelistlong">NAMELIST /JMAXN/ JMAXA,JMAXB,VCMAXA,VCMAXB</p>
       <p>Jmax is then calculated from leaf N content by Jmax = JMAXA * LEAFN + JMAXB. Similarly, Vcmax = VCMAXA * LEAFN + VCMAXB.</p>
@@ -790,7 +790,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
         NAMELIST /RD/ VALUES, DATES</p>
       <p>In each case, NODATES gives the number of dates (maximum MAXPDATE), NOLAYERS the number of layers (maximum MAXLAY), and NOAGES the number of ages (maximum MAXC), for which leaf N is specified. An error occurs if the total number of values &lt; NODATES * NOLAYERS * NOAGES.</p>
       <p>DATES gives the dates at which RD was specified, in the format 'DD/MM/YY'. NODATES must be at least 1, but if it is only 1, then those values are used throughout the simulation.</p>
-      <p>VALUES gives the leaf dark respiration rate (in mmol m<sup>-2</sup> s<sup>-1</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
+      <p>VALUES gives the leaf dark respiration rate (in mu mol m<sup>-2</sup> s<sup>-1</sup>). They must be specified with the values for different layers in columns. The values for each date should be grouped together, with one row for each age class.</p>
       <p>If RD is to be calculated from leaf N content, then the following namelist should be used:</p>
       <p class="namelistlong">NAMELIST /RDN/ RDA, RDB</p>
       <p>RD is then calculated from leaf N content by RD = RDA * LEAFN + RDB.</p>
@@ -1194,7 +1194,7 @@ values in each row should add up to unity.</p>
     <section><h2><a id="layflxdat">The layer output files (layflx.dat)</a></h2>
     
 <p>This file is only created if IOHRLY &gt; 1. It lists the leaf area and values of J<sub>max</sub> and V<sub>cmax</sub> in each layer of the canopy. (Leaf area is obtained by summing over the gridpoints in that layer).</p>
-<p>For each hour it gives three rows of output. The top row is the absorbed PAR in each layer (mmol m<sup>-2</sup> leaf s<sup>-1</sup>), the second row is the photosynthesis (mmol m<sup>-2</sup> leaf s<sup>-1</sup>), and the third row is the transpiration (mmol m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
+<p>For each hour it gives three rows of output. The top row is the absorbed PAR in each layer (mu mol m<sup>-2</sup> leaf s<sup>-1</sup>), the second row is the photosynthesis (mu mol m<sup>-2</sup> leaf s<sup>-1</sup>), and the third row is the transpiration (mmol m<sup>-2</sup> leaf s<sup>-1</sup>).</p>
 
 <p>The values for the topmost layer are always on the left.</p>
 
