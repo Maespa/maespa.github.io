@@ -906,7 +906,7 @@ water potential, and so on.</p>
 <p>Similarly, it is possible to use measured (not simulated) soil water content in the simulations. To do this, set USEMEASSW = 1. In that case, soil water stress will be calculated from measured water content, which needs to be added to the met file.</p>
 <p>By default, Maespa scales up water used by single trees to the entire stand, so that (area-based) soil water balance can be calculated from simulated single tree outputs. Or, if USESTAND = 0, this scaling up is not done. This setting is useful to simulate water balance for a single tree in a stand, or by itself.</p>
 
-<p>Rainfall interception</p>
+<h3>Rainfall interception</h3>
 
 <ul>
 <dl>
@@ -939,11 +939,9 @@ layer of dry soil (m), used in calculating the conductance to water
 vapor in the <a href="#soilevap">soil evaporation</a>
 subroutine.</p>
 
-<p>TORTPAR is a parameter describing the
-tortuosity of the soil. The default value of 0.66 goes back to Penman
-(1940, in Hillel 1990).</p>
+<p>TORTPAR is a parameter describing the tortuosity of the soil. The default value of 0.66 goes back to Penman (1940, in Hillel 1990).</p>
 
-<p>Root parameters</p>
+<h3>Root parameters</h3>
 <ul>
 <dl>
 <dt class="namelistlong">&amp;ROOTPARS</dt>
@@ -958,41 +956,35 @@ tortuosity of the soil. The default value of 0.66 goes back to Penman
 </ul>
 
 <!--<p> ROOTRESFRAC is the fraction of total plant hydraulic resistance that is belowground. For example, if the leaf-specific hydraulic conductance (the inverse of resistance) of the plant is PLANTK = 3, the total root conductance would be 1.5. This partitioning of the hydraulic resistance is used to calculate water uptake in different layers of the soil. </p>-->
-<p>ROOTRAD is the average root radius (m),
-used in the soil conductance equation, ROOTDENS the
-density of root biomass (g m<sup>-3</sup>). ROOTMASSTOT
-is the total root biomass (g m<sup>-2</sup>), from which
-root length in each rooted soil layer is calculated using ROOTRAD
-and ROOTDENS, and FRACROOT (see
-below). <strong>Note:</strong> This manual previously incorrectly stated that ROOTMASSTOT is in units of kg
-m<sup>-2.</sup></p>
+<p>ROOTRAD is the average root radius (m), used in the soil conductance equation, ROOTDENS the density of root biomass (g m<sup>-3</sup>). ROOTMASSTOT is the total root biomass (g m<sup>-2</sup>), from which root length in each rooted soil layer is calculated using ROOTRAD and ROOTDENS, and FRACROOT (see below). <strong>Note:</strong> This manual previously incorrectly stated that ROOTMASSTOT is in units of kg m<sup>-2.</sup></p>
 
-<p>NROOTLAYER specifies the number of soil
-layers that are rooted. Together with the LAYTHICK
-parameter, it determines the rooting depth.</p>
+<p>NROOTLAYER specifies the number of soil layers that are rooted. Together with the LAYTHICK parameter, it determines the rooting depth.</p>
 
-<p>FRACROOT is the fraction of
-(water-uptaking, typically fine) roots in each rooted layer. If they
-don&#8217;t add up to one, it is assumed that they are weights rather than
-fractions.</p>
+<p>FRACROOT is the fraction of (water-uptaking, typically fine) roots in each rooted layer. If they don't add up to one, it is assumed that they are weights rather than fractions.</p>
 
-<p>As an alternative to specifying the root mass fractions by
-layer manually, it is possible to use a smooth distribution with depth,
-as summarized by <a href="">Jackson et al.
-(1996)</a>. They summarized many measurements of root
-distributions, and use a BETA parameter to characterize the
-distribution. In the ROOTPARS
-namelist, in stead of FRACROOT,
-you can use :</p>
+<p>As an alternative to specifying the root mass fractions by layer manually, it is possible to use a smooth distribution with depth, as summarized by Jackson et al. (1996 Oecologia 108:389-411). They summarized many measurements of root distributions, and use a BETA parameter to characterize the distribution. In the ROOTPARS namelist, in stead of FRACROOT, you can use :</p>
 
-<p>ROOTBETA
-= 0.99</p>
+<p>ROOTBETA = 0.99</p>
 
-<p>See <a href="">Jackson et al. 1996</a>
-for values of ROOTBETA,
-and more background.</p>
+<p>See Jackson et al. 1996 for values of ROOTBETA, and more background.</p>
 
-<p>Plant parameters</p>
+<h4>Rooting profile by species</h4>
+
+<p>If you updated Maespa after March 2016, it is also possible to specify a different rooting profile for each species in the simulation. This option will allow you to simulate a species with deep roots alongside a species with a more shallow root profile, for example, which will affect the response to drought.</p>
+
+<p>To set up multiple root profiles, first set up the multiple species options in the confile (see <a href="#multi-species">this Section</a>). Then, in the ROOTPARS namelist, set the NOROOTSPEC parameter to the number of rooting profiles you have specified in FRACROOT. In FRACROOT, each line contains the rooting profile for one species. For example,</p>
+
+<ul>
+<dl>
+<dt class="namelistlong">NOROOTSPEC = 2</dt>
+<dt class="namelistlong">fracroot = 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1</dt>
+<dt class="namelistlong">0.4 0.2 0.15 0.15 0.1 0.0 0.0 0.0 0.0 0.0</dt>
+</dl>
+</ul>
+
+<p>In this example, te first species has an even root distribution (10 percent in each soil layer), and the second species a very shallow profile. <strong>Note:</strong> It is not yet possible to specify multiple root profiles when using the ROOTBETA specification.</p>
+
+<h3>Plant parameters</h3>
 <ul>
 <dl>
 <dt class="namelistlong">&amp;PLANTPARS</dt>
@@ -1016,13 +1008,9 @@ and more background.</p>
 <dt class="namelistlong">/</dt>
 </dl>
 </ul>
-<p>BPAR and PSIE are parameters of the soil water retention curve (see RETFUNCTION description
-above). KSAT is the saturated soil hydraulic conductivity (mol m<sup>-1</sup> s<sup>-1</sup>
-MPa<sup>-1</sup>). For each of these three parameters, multiple values can be entered (space-separated) that apply to
-subsequent soil layers. If less values are entered than there are layers in the model, all deeper layers are set to the last value
-entered.</p>
+<p>BPAR and PSIE are parameters of the soil water retention curve (see RETFUNCTION description above). KSAT is the saturated soil hydraulic conductivity (mol m<sup>-1</sup> s<sup>-1</sup> MPa<sup>-1</sup>). For each of these three parameters, multiple values can be entered (space-separated) that apply to subsequent soil layers. If less values are entered than there are layers in the model, all deeper layers are set to the last value entered.</p>
 
-<p>Soil layer parameters</p>
+<h3>Soil layer parameters</h3>
 <ul>
 <dl>
 <dt class="namelistlong">&amp;LAYPARS</dt>
@@ -1049,7 +1037,7 @@ entered.</p>
 
 <p> <strong>Note:</strong> For all arrays in this namelist except FRACORGANIC, multiple values can be specified and all deeper layers are set to the last value entered. For FRACORGANIC, soil layers for which no value is entered will be assumed to have no organic matter content.</p> 
 
-<p>Initial parameters</p>
+<h3>Initial parameters</h3>
 <ul>
 <dl>
 <dt class="namelistlong">&amp;INITPARS</dt>
@@ -1058,14 +1046,10 @@ entered.</p>
 <dt class="namelistlong">/</dt>
 </dl>
 </ul>
-<p>INITWATER is the initial soil water content
-(m<sup>3</sup> m<sup>-3</sup>). SOILTEMP
-is the initial soil temperature (<sup>o</sup>C). Also for
-these parameters, one input value will be applied to all layers, and
-multiple values can also be specified (space-separated). If less values
-are entered than there are layers in the model, all deeper layers are
-set to the last value entered.<br>
-</p></section>
+<p>INITWATER is the initial soil water content (m<sup>3</sup> m<sup>-3</sup>). SOILTEMP is the initial soil temperature (<sup>o</sup>C). Also for these parameters, one input value will be applied to all layers, and multiple values can also be specified (space-separated). If less values are entered than there are layers in the model, all deeper layers are set to the last value entered.<br>
+</p>
+</section>
+
 
 <section id=ustoreydat><h2>The understorey file (ustorey.dat)</h2>
 
