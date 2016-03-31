@@ -51,9 +51,12 @@
 <p>Because Maespa is an individual-based model, where individual plants are specified with spatially explicit coordinates, great care must be taken to specify the tree locations. When calculating the stand water balance (in Maespa mode), this needs special attention as the water balance is calculated for the stand, but tree water use is calculated for a set of individual trees. <a href="#setupstand">Please read this section in detail</a> before setting up your own simulations.
 
 </section>
-    <section><h2>Maestra or Maespa?</h2>
+
+<section><h2>Maestra or Maespa?</h2>
     
-    <p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (<span class="filename">watpars.dat</span>). If it is not present in the directory where you run Maespa, the model will run in Maestra mode. That way, the model is consistent with the legacy Maestra model (with some minor changes).</p></section>
+<p>The original Maestra model and the newer Maespa model use the same code base. If you want to run Maespa, which includes water balance routines, plant hydraulics, and soil evaporation, you simply have to add one input file (<span class="filename">watpars.dat</span>). If it is not present in the directory where you run Maespa, the model will run in Maestra mode. That way, the model is consistent with the legacy Maestra model (with some minor changes).</p>
+
+</section>
     
 <section><h2>Input and output files</h2>
  
@@ -180,8 +183,7 @@ trees (these could be trees on which sapflow was measured, for example). See the
 
 <p><input src="images/randomtargettrees.png" height="346" type="image" width="493"></p>
 
-<p>In this situation, radiation capture, water use and photosynthesis are only calculated for a sample of target trees (shown in red) dispersed throughout the stand. The user needs to decide
-carefully how to choose the target trees, as their performance will be used to scale to the stand total transpiration (see the next section on <a href="#canopyet">Canopy transpiration</a>). This problem is no different from typical field studies where a sample of trees is instrumented with sap flow instruments, from which stand totals are calculated (using some appropriate assumptions for scaling). To avoid this problem altogether, it is possible to simply use all trees in the stand for a simulation, but this can be very slow if there are several hundred trees in the stand or more. It is recommended to the user to experiment with different layouts of the target trees (and also note that it is possible to exclude trees on the edge of the plot, by setting the EDGE parameter in the TREESCON namelist in <span class="filename">confile.dat</span> (see <a href="#confiledat">this section of the manual</a>). </p>
+<p>In this situation, radiation capture, water use and photosynthesis are only calculated for a sample of target trees (shown in red) dispersed throughout the stand. The user needs to decide carefully how to choose the target trees, as their performance will be used to scale to the stand total transpiration (see the next section on <a href="#canopyet">Canopy transpiration</a>). This problem is no different from typical field studies where a sample of trees is instrumented with sap flow instruments, from which stand totals are calculated (using some appropriate assumptions for scaling). To avoid this problem altogether, it is possible to simply use all trees in the stand for a simulation, but this can be very slow if there are several hundred trees in the stand or more. It is recommended to the user to experiment with different layouts of the target trees (and also note that it is possible to exclude trees on the edge of the plot, by setting the EDGE parameter in the TREESCON namelist in <span class="filename">confile.dat</span> (see <a href="#confiledat">this section of the manual</a>). </p>
 
 <p>To set up your simulation, make sure USESTAND = 1 in the WATCONTROL namelist in watpars.dat (the default), and that you have chosen the target trees wisely. The output files <span class="filename">dayflx.dat</span> and <span class="filename">hrflux.dat</span> will give the tree-scale outputs (of your target trees), while <span class="filename">watbal.dat</span> will give the stand-scale estimates of transpiration (and many other variables).</p>
 
@@ -680,11 +682,13 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
 
 <section id=phydat><h2>The physiology file (phy.dat)</h2>
     
-      <p>First line: title of physiology file used in the output files.</p>
+<p>As with the other input files, the first line contains an optional title of the file used in the output files. Following that, all input is in the following namelists.</p>
+
 <h3><a name="age"></a>Number of age classes of foliage</h3>
       <p class="namelistlong">NAMELIST /NOAGES/ NOAGEP</p>
       <p>NOAGEP is the number of age classes for which physiological parameters are specified. If NOAGEC (the number of age classes for which leaf area density distributions are specified, given in str.dat) is not equal to 1, then NOAGEP must equal 1 or NOAGEC. The parameters NFOL, JMAX, VCMAX and RD can be specified for different age classes of foliage. However they do not all need to be specified for all age classes - but they must either be specified for all foliage or for NOAGEP age classes. Neither NOAGEP nor NOAGEC should exceed MAXC, specified in <span class="filename">maestcom.f90</span> If NOAGEP = 1, then this namelist can be omitted.</p>
-      <h3>Proportions of leaf area in each age class </h3>
+      
+<h3>Proportions of leaf area in each age class </h3>
       <p class="namelistlong">NAMELIST /PHENOL/ PROP</p>
       <p>PROP is an array containing the proportion of leaf area in each age class. This is only read in if either NOAGEP &gt; 1 or NOAGEC &gt; 1. NOAGEP or NOAGEC indicate how many entries there should be in this array (maximum MAXC, in <span class="filename">maestcom.f90</span>) Also, the entries in the array should sum to one.</p>
 
@@ -731,6 +735,20 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p class="namelistlong">f(p) = exp(SWPEXP * p)</p>
 
 <p>Alternatively, a simple threshold function of the volumetric water content can be used. To do this, set WSOILMETHOD = 2 in the WATCONTROL namelist (watpars.dat), and specify WC1 and WC2 in the stomatal conductance namelist. If soil volumetric water content (either simulated or measured) is below WC1, stomatal conductance will be zero, if it is above WC2 there is no effect on stomatal conductance, with a linear decline between WC2 and WC1. </p>
+
+
+<h3><a id="joeyeffect">Water stress effects on Vcmax and Jmax</a></h3>
+
+<p>Optionally, the user can include non-stomatal limitations on photosynthesis via a dependence of Vcmax and Jmax on the soil water potential, following Zhou et al. (2013, AgForMet 182-183:204-214). A function can be specified which calculates a stress modifier (VJMOD), 1 indicates no stress (Vcmax and Jmax are equal to values specified in the physiology file), and 0 indicates complete inhibition of photosynthetic capacity as a result of water stress. This function uses the soil water potential (either the measured value provided in the met file, or the simulated root-weighted soil water potential). To use this functionality, include the following namelist in the physiology file:</p>
+
+<p class="namelistlong"> /VJMAXSTRESS/ VFUN,VPARA,VPARB </p>
+
+<p>where VFUN is the function that describes the stress effect on Vcmax and Jmax (0,1,or 2, see below), and VPARA and VPARB are parameters to that function.</p>
+
+<p>If VFUN is 0, no stress is simulated (VJMOD is always 1). If VFUN is 1, a simple ramp function is used where VJMOD = 0 when the soil water potential (SWP) < VPARA, VJMOD = 1 when SWP > VPARB, and a linear increase when it is in between VPARA and VPARB.</p>
+<p>When VFUN is 2, the sigmoidal function as parameterized by Zhou et al  (2013) is used. This is given by,</p>
+
+<p class="namelistlong">VJMOD = (1 + EXP(VPARA*VPARB) )/ (1 + EXP(VPARA*(VPARB-SWP)))</p>
 
 
 <h3><a name="Leaf N">Leaf N content</a></h3>
