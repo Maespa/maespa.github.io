@@ -704,22 +704,30 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
 <p class="namelistlong">NAMELIST /BBGS/ G0,G1,GAMMA,WLEAF,NSIDES, SMD1, SMD2, SWPEXP, WC1, WC2<br>
         NAMELIST /BBLGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, SMD1, SMD2 , SWPEXP, WC1, WC2<br>
         NAMELIST /BBMGS/ G0,G1,D0L,GAMMA,WLEAF,NSIDES, WC1, WC2<br>
+        NAMELIST /BBTUZ/ G0,G1,SF,PSIV,GAMMA,VPDMIN,WLEAF,NSIDES<br>
       NAMELIST /BBGSCON/ CONDUNITS</p>
-      <p>The flag <a href="#choicesubmodel">MODELGS </a>(read in namelist CONTROL) indicates which stomatal conductance model is to be used, and hence, which set of parameters to read. If MODELGS = 2, BBGS is read; if MODELGS = 3, BBLGS is read; if MODELGS = 4, BBMGS is read.</p>
-      <p>Please note that the Jarvis model is no longer supported in Maespa, not even when run in Maestra mode.</p>
-      <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO<sub>2</sub> or H<sub>2</sub>O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO2. A message is displayed in the <span class="filename">Maeserr.dat</span> file after running Maespa how the parameters were handled (to avoid fairly common mistakes).</p>
-      <p>For all models, WLEAF is the width of the leaf in m, used in calculating the boundary layer conductance (Leuning et al 1995 PC&amp;E 18:1183-1200). NSIDES is the number of sides of the leaf with stomata; default 1.</p>
+      
+      <p>The flag <a href="#choicesubmodel">MODELGS </a>(read in namelist CONTROL) indicates which stomatal conductance model is to be used, and hence, which set of parameters to read. If MODELGS = 2, BBGS is read; if MODELGS = 3, BBLGS is read; if MODELGS = 4, BBMGS; if MODELGS = 6, BBTUZ is read.</p>
+      
+      <p><strong>Restrictions:</strong> The Jarvis model is no longer supported in Maespa, not even when run in Maestra mode. The Tuzet model (BBTUZ) is only supported in Maespa (if the model is run in Maestra mode, and BBTUZ is selected, it stops with an error).</p>
+      <p>The namelist 'BBGSCON' controls whether the units of the stomatal conductance parameters are for CO<sub>2</sub> or H<sub>2</sub>O. For these two options, set CONDUNITS = 'CO2' or 'H2O'. The default is to assume that the parameters are for CO<sub>2</sub>. A message is displayed in the <span class="filename">Maeserr.dat</span> file after running Maespa how the parameters were handled (to avoid fairly common mistakes).</p>
+      <p>For all models, WLEAF is the width of the leaf in m, used in calculating the boundary layer conductance (Leuning et al 1995 PC&amp;E 18:1183-1200). NSIDES is the number of sides of the leaf with stomata; default 1 (set to 2 for hypostomatous leaves).</p>
             
       <p>In the Ball-Berry model (BBGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A * RH / (CA – GAMMA)</p>
+      
       <p>where gs (mol m<sup>-2</sup> s<sup>-1</sup>) is the stomatal conductance to CO2, A (mu mol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, RH is the relative humidity, CA (mu mol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), and GAMMA (mu mol mol<sup>-1</sup>) are input parameters.</p>
+      
       <p>In the Ball-Berry-Leuning model (BBLGS), stomatal conductance is given by</p>
       <p>gs = G0 + G1 * A / (CA – GAMMA) / (1 + VPD/D0L)</p>
       <p>where gs (mol m-2 s-1) is the stomatal conductance to CO2, A (mu mol m<sup>-2</sup> s<sup>-1</sup>) is the assimilation rate, VPD (Pa) is the vapour pressure deficit, CA (mu mol mol<sup>-1</sup>) is the atmospheric CO2 concentration and G0 (mol m<sup>-2</sup> s<sup>-1</sup>), G1 (dimensionless), D0L (Pa) and GAMMA (mu mol mol<sup>-1</sup>) are input parameters.</p>
+      
       <p>In the Ball-Berry-Opti model (BBMGS), stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A/(CA - GAMMA) / SQRT(VPD)</p>
       <p>where all units are the same as in the Ball-Berry-Leuning model. This model formulation is due to Medlyn et al. (2011).</p>
-
+      <p>In the Tuzet model of stomatal conductance, stomatal conductance is given by</p>
+      <p class="namelistlong">gs = G0 + G1 * A / (CA - GAMMA) * FPSIL(PSIL)</p>
+      <p>where parameters are as defined above, and FPSIL is a sigmoidal function of the leaf water potential (PSIL), which in turn is calculated as, PSIL = SWP - KTOT/ELEAF (where KTOT is the hydraulic conductance from soil to leaf, ELEAF the leaf transpiration rate, and SWP the soil water potential). This model is due to Tuzet et al. (2003, PCE 26:1097-1116), but note that we use CA in place of CI (see Duursma and Medlyn 2012 for rationale). The Tuzet model can only be used when Maespa is used (not Maestra).</p> 
      <p>The user has various options to take into account the effect of soil moisture on stomatal conductance. These options can be set by specifying (a subset of) the parameters SMD1, SMD2, SWEXP or WC1 and WC2. If none of these parameters are set, and the model is run in Maespa mode (but not with the Tuzet model), the 'maximum transpiration rate' (cf. Duursma et al. 2008) is used. Since this is the recommended setting, we suggest parameters in the watpars.dat file are chosen carefully in order to simulate effects of soil water stress on stomatal conductance.</p>
      <p>Alternatively, a simple modifier function can be specified that will be used to reduce stomatal conductance. This can either be a function of the volumetric water content directly (a simple threshold function, see below), or of the 'soil water deficit'. </p>
      <p>To use the soil water deficit, specify WSOILMETHOD = 4 in the WATCONTROL namelist (watpars.dat), and specify one (or two) of SMD1, SMD2 or SWEXP, depending which function is to be used. <strong>Note:</strong> this method cannot be used with the BBMGS model (for no other reason than it is not implemented).</p>
