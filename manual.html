@@ -727,7 +727,14 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>where all units are the same as in the Ball-Berry-Leuning model. This model formulation is due to Medlyn et al. (2011).</p>
       <p>In the Tuzet model of stomatal conductance, stomatal conductance is given by</p>
       <p class="namelistlong">gs = G0 + G1 * A / (CA - GAMMA) * FPSIL(PSIL)</p>
-      <p>where parameters are as defined above, and FPSIL is a sigmoidal function of the leaf water potential (PSIL), which in turn is calculated as, PSIL = SWP - KTOT/ELEAF (where KTOT is the hydraulic conductance from soil to leaf, ELEAF the leaf transpiration rate, and SWP the soil water potential). This model is due to Tuzet et al. (2003, PCE 26:1097-1116), but note that we use CA in place of CI (see Duursma and Medlyn 2012 for rationale). The Tuzet model can only be used when Maespa is used (not Maestra).</p> 
+      <p>where parameters are as defined above, and FPSIL is a sigmoidal function of the leaf water potential (PSIL), which in turn is calculated as, PSIL = SWP - KTOT/ELEAF (where KTOT is the hydraulic conductance from soil to leaf, ELEAF the leaf transpiration rate, and SWP the soil water potential). This model is due to Tuzet et al. (2003, PCE 26:1097-1116), but note that we use CA in place of CI (see Duursma and Medlyn 2012 for rationale). FPSIL is defined as in Tuzet et al. 2003,</p>
+      
+      <p class="namelistlong">FPSIL = (1 + EXP(SF*PSIV) )/ (1 + EXP(SF*(PSIV - PSIL)))</p>
+      
+      <p>where SF is a shape parameter, and PSIV the leaf water potential at which FPSIL = 0.5.</p> 
+
+<h3>Water stress effects on stomatal conductance</h3> 
+      
      <p>The user has various options to take into account the effect of soil moisture on stomatal conductance. These options can be set by specifying (a subset of) the parameters SMD1, SMD2, SWEXP or WC1 and WC2. If none of these parameters are set, and the model is run in Maespa mode (but not with the Tuzet model), the 'maximum transpiration rate' (cf. Duursma et al. 2008) is used. Since this is the recommended setting, we suggest parameters in the watpars.dat file are chosen carefully in order to simulate effects of soil water stress on stomatal conductance.</p>
      <p>Alternatively, a simple modifier function can be specified that will be used to reduce stomatal conductance. This can either be a function of the volumetric water content directly (a simple threshold function, see below), or of the 'soil water deficit'. </p>
      <p>To use the soil water deficit, specify WSOILMETHOD = 4 in the WATCONTROL namelist (watpars.dat), and specify one (or two) of SMD1, SMD2 or SWEXP, depending which function is to be used. <strong>Note:</strong> this method cannot be used with the BBMGS model (for no other reason than it is not implemented).</p>
