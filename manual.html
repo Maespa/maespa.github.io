@@ -1169,7 +1169,7 @@ output (with units). This information is not repeated here in the manual.</p>
 <p>The units for all water fluxes are in mm (per timestep), which should be interpreted as the stand average (depending on which setting for the simulation, see <a href="#setupstand">Setting up the stand</a>). Units for energy fluxes are in W m-2, also to be interpreted as stand averages. </p>
 <p>Note that the first timestep (day 0, hour 0) are the initial conditions for the simulation (all other output is after that timestep has been completed).</p>
 
-<p><strong>Note:</strong>The various outputs for transpiration and evaporation are related as follows. The variable 'et' is stand-level evapotranspiration (mm timestep-1), but excluding wet canopy evaporation. This is given by 'evapstore'. It does, however, include the soil evaporation (which is also given separately in energy units as the soil latent heat flux). For total evapotranspiration, then, it is necessary to add 'et' and 'evapstore'.</p>
+<p><strong>Note:</strong>The various outputs for transpiration and evaporation are related as follows. The variable 'et' is stand-level transpiration (mm timestep-1), excluding wet canopy evaporation ('evapstore') and soil evaporation ('soilevap'). For total evapotranspiration, then, it is necessary to add 'et', 'evapstore' and 'soilevap'.</p>
 </section>
     
 <section><h2><a id="watbaldaydat">The daily water balance file (watbalday.dat)</a></h2>
