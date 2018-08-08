@@ -659,7 +659,7 @@ in the <span class="filename">confile.dat</span> input file (see previous sectio
       <p>f(r,h) = a h<sup>b</sup> (1-h)<sup>c</sup> d r<sup>e</sup> (1 - r)<sup>f</sup></p>
       <p>where f(r,h) is the normalised leaf area density (see below) at relative height h (0, crown base; 1, crown top) and relative radius r (0, next to trunk; 1, exterior of canopy). The parameters should be given in the order a, b, c, d, e, f, for each age class. If JLEAF = 1, the parameters of the horizontal distribution (d,e,f) should still be given but will not be used; they can be set to zero.</p>
       <p>Important <strong>Note:</strong> the parameters a and d must be determined from the following constraints:</p>
-      <p>(a) the integral of a \(hb(1-h)^{c}\) from h = 0 to h = 1 must = 1</p>
+      <p>(a) the integral of a \(h^b(1-h)^{c}\) from h = 0 to h = 1 must = 1</p>
       <p>(b) the integral of d \(r^{e+1}(1 - r)^{f}\) from r = 0 to r = 1 must = 1/2&pi;</p>
       <p>For more information about the beta distributions see Wang et al (1990 For Ecol Man 32: 217-237).</p>
       <p><a name="RANDOM"></a>RANDOM describes the level of clumping of foliage into shoots: it is given by the ratio of projected shoot area to projected needle area. Default: 1.0.</p>
